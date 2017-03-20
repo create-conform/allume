@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" manifest="offline.appcache">
+<head>
+    <meta charset=utf-8 />
+    <title>allume.cc | bootloader</title>
+
+    <link rel="stylesheet" href="allume-dark.css">
+</head>
+<body data-allume-boot-status="Initializing..." data-allume-boot-progress="" data-allume-boot-time="">
+    <!-- Load using.js for loading packages -->
+    <script src="using.js/using.js"></script>
+    <!-- Add console log hook -->
+    <script>
+        (function() {
+            // Add hook to console.log. If the bootloader success message appears, unhook and remove boot splash by
+            // clearing the data-boot-status attribute.
+            var MSG_LOGIN = "Please sign in...";
+            var MSG_SUCCESS = "Bootloader finished succesfully.";
+            var ATTR_BOOT_STATUS = "data-boot-status";
+            var ATTR_BOOT_TIME = "data-boot-time";
+            var FN_CONS_LOG = console.log;
+
+            var login = false;
+
+            document.body.attributes[ATTR_BOOT_TIME].value = new Date().toString();
+
+            console.log = function(msg) {
+                if (msg == MSG_LOGIN) {
+                    login = true;
+                    document.body.attributes[ATTR_BOOT_STATUS].value = MSG_LOGIN;
+                }
+                else if (msg == MSG_SUCCESS) {
+                    console.log = FN_CONS_LOG;
+                    document.body.attributes[ATTR_BOOT_STATUS].value = "";
+                }
+                else if (!login && msg) {
+                    document.body.attributes[ATTR_BOOT_STATUS].value = msg;
+                }
+                try {
+                    FN_CONS_LOG.apply(FN_CONS_LOG, arguments);
+                }
+                catch(e) {
+                    //Safari
+                }
+            }
+        })();
+    </script>
+    <!-- PKX -->
+    <script src="include.js"></script>
+    <!-- Allume -->
+    <script src="allume.js"></script>
+</body>
+</html>

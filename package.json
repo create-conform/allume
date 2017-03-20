@@ -1,0 +1,37 @@
+{
+  "name": "allume",
+  "version": "1.0.0",
+  "description": "A cross-platform package bootloader for javascript.",
+  "main": "allume.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/create-conform/allume.git"
+  },
+  "bin": {
+    "allume": "bin/allume-util.js"
+  },
+  "keywords": [
+    "pkx",
+    "using",
+    "bootloader",
+    "package",
+    "module"
+  ],
+  "author": "Nick Verlinden",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/create-conform/allume/issues"
+  },
+  "homepage": "https://github.com/create-conform/allume#readme",
+  "dependencies": {
+    "commander": "^2.9.0"
+  },
+  "pkxDependencies": [
+    "cc.pkx.1.2",
+    "cc.io.http.1.1",
+    "cc.io.file-system.1.1"
+  ]
+}
