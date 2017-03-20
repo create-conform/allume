@@ -31,8 +31,8 @@ if (result.status != 0) {
 }
 
 // add required files to appcache manifest (add after second line)
-var appcacheLines = fs.readFileSync(appcacheFile).toString().split("\r\n");
+var appcacheLines = fs.readFileSync(appcacheFile).toString().split("\n");
 appcacheLines.splice(2, 0, appcacheFiles);
-fs.writeFile(appcacheFile, appcacheLines.join("\r\n"), function (err) {
+fs.writeFile(appcacheFile, appcacheLines.join("\n"), function (err) {
     if (err) return console.error("Could not add files to appcache file. Error: " + err);
 });
