@@ -1,6 +1,6 @@
 {
   "name": "allume",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "description": "A cross-platform package bootloader for javascript.",
   "main": "allume.js",
   "scripts": {
@@ -27,7 +27,8 @@
   },
   "homepage": "https://github.com/create-conform/allume#readme",
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "config": "^1.25.1"
   },
   "pkxDependencies": [
     "cc.error.1.0",
