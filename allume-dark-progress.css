@@ -1,0 +1,111 @@
+body[data-allume-boot-progress="10"]:after,
+body[data-allume-boot-progress="11"]:after,
+body[data-allume-boot-progress="12"]:after,
+body[data-allume-boot-progress="13"]:after,
+body[data-allume-boot-progress="14"]:after,
+body[data-allume-boot-progress="15"]:after,
+body[data-allume-boot-progress="16"]:after,
+body[data-allume-boot-progress="17"]:after,
+body[data-allume-boot-progress="18"]:after,
+body[data-allume-boot-progress="19"]:after {
+    background-image: repeating-linear-gradient(90deg, rgb(200,200,200), rgb(200,200,200) 10%, rgb(0,0,0) 10%, rgb(0,0,0));
+}
+body[data-allume-boot-progress="20"]:after,
+body[data-allume-boot-progress="21"]:after,
+body[data-allume-boot-progress="22"]:after,
+body[data-allume-boot-progress="23"]:after,
+body[data-allume-boot-progress="24"]:after,
+body[data-allume-boot-progress="25"]:after,
+body[data-allume-boot-progress="26"]:after,
+body[data-allume-boot-progress="27"]:after,
+body[data-allume-boot-progress="28"]:after,
+body[data-allume-boot-progress="29"]:after {
+    background-image: repeating-linear-gradient(90deg, rgb(200,200,200), rgb(200,200,200) 20%, rgb(0,0,0) 20%, rgb(0,0,0));
+}
+body[data-allume-boot-progress="30"]:after,
+body[data-allume-boot-progress="31"]:after,
+body[data-allume-boot-progress="32"]:after,
+body[data-allume-boot-progress="33"]:after,
+body[data-allume-boot-progress="34"]:after,
+body[data-allume-boot-progress="35"]:after,
+body[data-allume-boot-progress="36"]:after,
+body[data-allume-boot-progress="37"]:after,
+body[data-allume-boot-progress="38"]:after,
+body[data-allume-boot-progress="39"]:after {
+    background-image: repeating-linear-gradient(90deg, rgb(200,200,200), rgb(200,200,200) 30%, rgb(0,0,0) 30%, rgb(0,0,0));
+}
+body[data-allume-boot-progress="40"]:after,
+body[data-allume-boot-progress="41"]:after,
+body[data-allume-boot-progress="42"]:after,
+body[data-allume-boot-progress="43"]:after,
+body[data-allume-boot-progress="44"]:after,
+body[data-allume-boot-progress="45"]:after,
+body[data-allume-boot-progress="46"]:after,
+body[data-allume-boot-progress="47"]:after,
+body[data-allume-boot-progress="48"]:after,
+body[data-allume-boot-progress="49"]:after {
+    background-image: repeating-linear-gradient(90deg, rgb(200,200,200), rgb(200,200,200) 40%, rgb(0,0,0) 40%, rgb(0,0,0));
+}
+body[data-allume-boot-progress="50"]:after,
+body[data-allume-boot-progress="51"]:after,
+body[data-allume-boot-progress="52"]:after,
+body[data-allume-boot-progress="53"]:after,
+body[data-allume-boot-progress="54"]:after,
+body[data-allume-boot-progress="55"]:after,
+body[data-allume-boot-progress="56"]:after,
+body[data-allume-boot-progress="57"]:after,
+body[data-allume-boot-progress="58"]:after,
+body[data-allume-boot-progress="59"]:after {
+    background-image: repeating-linear-gradient(90deg, rgb(200,200,200), rgb(200,200,200) 50%, rgb(0,0,0) 50%, rgb(0,0,0));
+}
+body[data-allume-boot-progress="60"]:after,
+body[data-allume-boot-progress="61"]:after,
+body[data-allume-boot-progress="62"]:after,
+body[data-allume-boot-progress="63"]:after,
+body[data-allume-boot-progress="64"]:after,
+body[data-allume-boot-progress="65"]:after,
+body[data-allume-boot-progress="66"]:after,
+body[data-allume-boot-progress="67"]:after,
+body[data-allume-boot-progress="68"]:after,
+body[data-allume-boot-progress="69"]:after {
+    background-image: repeating-linear-gradient(90deg, rgb(200,200,200), rgb(200,200,200) 60%, rgb(0,0,0) 60%, rgb(0,0,0));
+}
+body[data-allume-boot-progress="70"]:after,
+body[data-allume-boot-progress="71"]:after,
+body[data-allume-boot-progress="72"]:after,
+body[data-allume-boot-progress="73"]:after,
+body[data-allume-boot-progress="74"]:after,
+body[data-allume-boot-progress="75"]:after,
+body[data-allume-boot-progress="76"]:after,
+body[data-allume-boot-progress="77"]:after,
+body[data-allume-boot-progress="78"]:after,
+body[data-allume-boot-progress="79"]:after {
+    background-image: repeating-linear-gradient(90deg, rgb(200,200,200), rgb(200,200,200) 70%, rgb(0,0,0) 70%, rgb(0,0,0));
+}
+body[data-allume-boot-progress="80"]:after,
+body[data-allume-boot-progress="81"]:after,
+body[data-allume-boot-progress="82"]:after,
+body[data-allume-boot-progress="83"]:after,
+body[data-allume-boot-progress="84"]:after,
+body[data-allume-boot-progress="85"]:after,
+body[data-allume-boot-progress="86"]:after,
+body[data-allume-boot-progress="87"]:after,
+body[data-allume-boot-progress="88"]:after,
+body[data-allume-boot-progress="89"]:after {
+    background-image: repeating-linear-gradient(90deg, rgb(200,200,200), rgb(200,200,200) 80%, rgb(0,0,0) 80%, rgb(0,0,0));
+}
+body[data-allume-boot-progress="90"]:after,
+body[data-allume-boot-progress="91"]:after,
+body[data-allume-boot-progress="92"]:after,
+body[data-allume-boot-progress="93"]:after,
+body[data-allume-boot-progress="94"]:after,
+body[data-allume-boot-progress="95"]:after,
+body[data-allume-boot-progress="96"]:after,
+body[data-allume-boot-progress="97"]:after,
+body[data-allume-boot-progress="98"]:after,
+body[data-allume-boot-progress="99"]:after {
+    background-image: repeating-linear-gradient(90deg, rgb(200,200,200), rgb(200,200,200) 90%, rgb(0,0,0) 90%, rgb(0,0,0));
+}
+body[data-allume-boot-progress="100"]:not([data-allume-boot-status="allume-error"]):after {
+    background-image: repeating-linear-gradient(90deg, rgb(200,200,200), rgb(200,200,200) 100%);
+}

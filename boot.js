@@ -9,8 +9,11 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-(function() {
+(function(allume) {
     var BOOT_SCREEN_DURATION = 3000;
+
+    var err = "";
+    var errName = allume.ERROR_UNKNOWN;
 
     //TODO
     // -if dom, get url parameters
@@ -31,15 +34,12 @@
     // parameters
     //   <request>
 
-
-    if (typeof require === "function" && require.main) {
-        require("./using.js/using.js");
-        require("./include.js");
-    }
-
     function getDeepestError(e) {
         if (e.innerError) {
             return getDeepestError(e.innerError);
+        }
+        if (e.name) {
+            errName = e.name;
         }
         return e;
     }
@@ -50,18 +50,21 @@
 
         // something went wrong with the loader
         for (var e in loader.err) {
-            console.error(indent + loader.err[e]);
+            err += indent + loader.err[e] + "\n";
+            if (loader.err[e].name) {
+                errName = loader.err[e].name;
+            }
         }
 
         // something went wrong with the individual requests
         for (var r in loader.requests) {
             if (loader.requests[r].module) {
-                displayModuleInfo(loader.requests[r].module, indent);
+                usingFailedModuleInfo(loader.requests[r].module, indent);
             }
             for (var e in loader.requests[r].err) {
-                if (loader.requests[r].err[e].name == pkx.ERROR_DEPENDENCY) {
-                    console.log(indent + "  Dependencies:");
-                    console.error(indent + "    One or more dependencies failed to load.");
+                if (loader.requests[r].err[e].name == "pkx-error-dependency") {
+                    err += indent + "    Dependencies:" + "\n";
+                    err += indent + "        One or more dependencies failed to load." + "\n";
                     usingFailed(loader.requests[r].err[e].data, indent + "    ");
                 }
                 else {
@@ -70,12 +73,39 @@
                         id =  loader.requests[r].request.package;
                     }
                     var deepE = getDeepestError(loader.requests[r].err[e]);
-                    console.error(indent + "  " + deepE);
+                    err += indent + "    " + deepE + "\n";
                 }
             }
         }
     }
-    function boot(url_base) {
+    function usingFailedModuleInfo(module, indent) {
+        if (!indent) {
+            indent = "";
+        }
+        // display basic package info
+        err += "\n" + indent + "Request '" + module.id + "':" + "\n";
+        if (module.parameters && module.parameters.pkx) {
+            err += indent + "    Title  : " + module.parameters.pkx.title + "\n";
+            err += indent + "    Version: " + module.parameters.pkx.version + "\n";
+            err += indent + "    Description:" + "\n";
+            err += indent + "        " + module.parameters.pkx.description + "\n";
+        }
+
+        // display dependencies
+        var foundDependencies = false;
+        for (var m in module.dependencies) {
+            // skip named dependencies, pkx, module & configuration
+            if (isNaN(m) || m <= 2) {
+                continue;
+            }
+            if (!foundDependencies) {
+                err += indent + "    Dependencies:" + "\n";
+                foundDependencies = true;
+            }
+            err += indent + "        • " + module.dependencies[m].id + "\n";
+        }
+    }
+    function linuxRedisplayRatpoisonWM() {
         var gui = null;
         var window = null;
 
@@ -99,29 +129,28 @@
         catch(e) {
             //ignore, not nw.js
         }
-
+    }
+    function boot(urlBase) {
         console.log("Loading packages...");
 
-        var options = getUrlParameters();
-
-        var request = null;
-        for (var o in options) {
-            if (o == "repo") {
-                //TODO - set repo
-            }
-            else if (!options[o]) {
-                request = o;
+        var requests = [];
+        for (var o in allume.parameters) {
+            if (!allume.parameters[o]) {
+                requests.push(o);
             }
             else if (o == "package") {
-                request = options[o];
+                request.push(allume.parameters[o]);
             }
         }
 
-        if (request) {
-            using(request).then(function() {
+        if (requests) {
+            using.apply(using, requests).then(function() {
                 console.log("allume-hide");
             }, function(loader) {
                 usingFailed(loader);
+                var e = new Error(err);
+                e.name = errName;
+                console.error(e);
                 console.log("allume-error");
             });
         }
@@ -164,7 +193,11 @@
         });*/
     }
 
-    //define.Loader.waitFor("pkx", function() {
-        boot();
-    //});
-})();
+    define.Loader.waitFor("pkx", function(loader) {
+        if (allume.parameters.profile && allume.parameters.profile.repo) {
+            loader.addRepository("", allume.parameters.profile.repo);
+        }
+    });
+
+    boot();
+})(typeof global !== "undefined"? global.allume : allume);

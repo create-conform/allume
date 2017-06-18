@@ -1,0 +1,175 @@
+body {
+    min-width: 691px;
+    margin: 0;
+    background-color: rgba(0,0,0,0.05);
+}
+#header {
+    background-color: rgb(235,235,235);
+    height: 36px;
+    padding: 20px 40px;
+}
+#logo {
+    position: relative;
+    top: -6px;
+}
+/* Thank You! http://lea.verou.me/css3patterns/ */
+#banner {
+    /*height: 240px;*/
+    position: relative;
+    padding-bottom: 40px;
+
+    background: linear-gradient(45deg, #dca 12%, transparent 0, transparent 88%, #dca 0),
+    linear-gradient(135deg, transparent 37%, #a85 0, #a85 63%, transparent 0),
+    linear-gradient(45deg, transparent 37%, #dca 0, #dca 63%, transparent 0) #753;
+    background-size: 25px 25px;
+    box-shadow: inset 1px 8px 9px -6px rgba(0,0,0,0.5);
+}
+#banner:after {
+    background: radial-gradient(rgba(0,0,0,0.2) 15%, transparent 16%) 0 0, radial-gradient(rgba(0, 0, 0, 0.2) 15%, transparent 16%) 4px 4px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 4px 5px;
+    background-color: rgba(255,255,255,0.9);
+    background-size: 8px 8px;
+    box-shadow: inset -4px -4px 20em rgba(255,0,0,0.3);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    content: "";
+    opacity: 0.3;
+}
+#banner-terminal {
+    box-shadow: 0 1px 0 #000000, 0 2px 0 #000000, 0 3px 0 #000000, 0 4px 0 #000000, 0 5px 0 #000000, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
+}
+/* Thank You! http://markdotto.com/playground/3d-text/ */
+h1 {
+    margin: 0;
+    padding: 20px 40px 60px;
+    font: bold 70px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #fff;
+    text-shadow: 0 1px 0 #cccccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbbbbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaaaaa, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
+    -webkit-transition: .2s all linear;
+}
+
+h2 {
+    padding: 0px 40px;
+    font: normal 40px sans-serif;
+    color: rgb(128,128,128);
+    margin: 20px 0px 40px;
+}
+
+h3 {
+    text-transform: uppercase;
+    font: normal 20px sans-serif;
+    color: rgb(140, 140, 140);
+    background-color: rgb(212,212,212);
+    padding: 10px 80px;
+    margin: 0px 0px 20px;
+}
+
+h4 {
+    text-transform: uppercase;
+    font: normal 20px sans-serif;
+    color: rgb(140, 140, 140);
+    margin: 20px 25px 30px;
+    display: inline-block;
+}
+
+pre {
+    margin: 0px;
+}
+code {
+    border: 1px black;
+    border-radius: 4px;
+    max-width: 600px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0px;
+}
+
+#content > div {
+    padding: 0px 0px 40px;
+}
+#content > div:nth-child(odd) {
+    background-color: rgba(0,0,0,0.05);
+}
+.container > p,
+.container > div > p,
+#content > div > p {
+    font: 15px sans-serif;
+    letter-spacing: 0.02em;
+    /*color: rgb(99, 99, 99);*/
+    padding: 20px 105px;
+}
+
+.container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    min-height: 200px;
+}
+
+#deploy-icons {
+    text-align: center;
+}
+
+#deploy-icons > img {
+    width: 64px;
+}
+
+#deploy-icons > div {
+    display: inline-block;
+    padding: 0px 40px;
+}
+
+/* ANIMATION */
+#deploy-icons > div > div {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background-color: rgb(255, 128, 0);
+    border-radius: 50%;
+    margin: 20px 10px;
+}
+#deploy-icons > div > div:nth-child(1) {
+    animation: deploy-icons-orb 1s linear 0s infinite;
+}
+#deploy-icons > div > div:nth-child(2) {
+    animation: deploy-icons-orb 1s linear 0.33s infinite;
+}
+#deploy-icons > div > div:nth-child(3) {
+    animation: deploy-icons-orb 1s linear 0.66s infinite;
+}
+
+@keyframes deploy-icons-orb {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+
+@media screen and (min-width: 1200px ) {
+    .column-left {
+        max-width: 600px
+    }
+    .column-right {
+        position: absolute;
+        top: 0px;
+        left: 600px;
+        width: 600px;
+    }
+}

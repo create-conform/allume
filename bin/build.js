@@ -9,6 +9,8 @@ var appcacheFile = "offline.appcache";
 var appcacheFiles = [
     "allume.js",
     "allume-dark.css",
+    "allume-dark-progress.css",
+    "allume-36.png",
     "using.js/using.js"
 ];
 
@@ -22,7 +24,7 @@ if (result.status != 0) {
 }
 
 // increment build number
-result = childProcess.spawnSync("npm", [ "version", "minor" ], { "cwd" : path.join(__dirname, "..") });
+result = childProcess.spawnSync("npm", [ "version", "minor", "--force" ], { "cwd" : path.join(__dirname, "..") });
 if (result.status != 0) {
     console.error("Could not bump the minor version.");
     console.error(result.stderr.toString());
@@ -32,7 +34,11 @@ if (result.status != 0) {
 
 // add required files to appcache manifest (add after second line)
 var appcacheLines = fs.readFileSync(appcacheFile).toString().split("\n");
-appcacheLines.splice(2, 0, appcacheFiles);
+for (var l in appcacheFiles) {
+    appcacheLines.splice(2, 0, appcacheFiles[l]);
+}
 fs.writeFile(appcacheFile, appcacheLines.join("\n"), function (err) {
     if (err) return console.error("Could not add files to appcache file. Error: " + err);
 });
+
+console.log("Build successfully completed!");

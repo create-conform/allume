@@ -1,0 +1,199 @@
+/*
+    Default body style.
+*/
+body {
+    z-index: 0;
+    overflow: hidden;
+    background-color: rgb(0,0,0);
+}
+body[data-allume-boot-status="allume-error"] {
+    overflow: auto;
+}
+/*
+    When the boot message is not empty (meaning it's not finished booting), force it's background color to be grey.
+*/
+html:not([data-allume=""]) > body,
+html[data-allume=""] > body:not([data-allume-boot-status=""]) {
+    background-color: rgb(0,0,0) !important;
+}
+/*
+    When the boot message is empty (meaning it's finished booting), reset z-index (required for animation to work).
+*/
+html[data-allume=""] > body[data-allume-boot-status=""] {
+    z-index: initial;
+}
+/*
+    Masking div that will cover the entire screen. Also contains the logo. Unfortunately, svg background image
+    rendering with embedded fonts is pretty lousy, so we use a hi-res png instead.
+*/
+body:before {
+    color: rgba(255,255,255,0.9);
+    font: 24px sans-serif;
+    letter-spacing: 0.1em;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    z-index: 2147483647;
+    min-width: 320px;
+
+    /*background-image: url();*/
+    background-size: 0px 60px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+
+    opacity: 0;
+
+    /* transition when the logo is hidden */
+    transition: opacity 0.25s ease-out 0.4s,
+    background-size 0.8s ease 1s,
+    height 0s linear 1s,
+    top 0s linear 1s;
+}
+/*
+    Div that will overlay the masking div.
+*/
+body:after {
+    display: block;
+    position: absolute;
+    z-index: 2147483647;
+    font: 12px sans-serif;
+    letter-spacing: 0.1em;
+    /*color: rgba(0,0,0,0.1);*/
+    color: rgba(255, 255, 255, 0.9);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+/*
+    Progress indicator when not displaying an error message.
+*/
+html[data-allume=""] > body:not([data-allume-boot-status="allume-error"]):after {
+    top: calc(50% + 80px);
+    left: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    -moz-transform: translateY(-50%) translateX(-50%);
+    -ms-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+    opacity: 0;
+    content: '\00000a\00000a' attr(data-allume-boot-status);
+    text-align: center;
+    width: calc(100% - 80px);
+    max-width: 300px;
+    height: 16px;
+    border: 2px solid rgb(200,200,200);
+    box-shadow: none;
+    border-radius: 10px;
+    background-color: rgb(0,0,0);
+
+    /* transition when the progress indicator is hidden */
+    transition: opacity 0.25s ease-in 0s,
+    height 0s linear 0.3s,
+    top 0s linear 0.3s;
+}
+html[data-allume=""] > body[data-allume-boot-progress=""]:not([data-allume-boot-status="allume-error"]):after {
+    background-color: rgba(0,0,0,0.1);
+    background-size: 400% 200%;
+    background-position: 0px -2px;
+    background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 10px, rgba(255,255,255,.2) 10px, rgba(255,255,255,.2) 20px);
+    animation: animations-boot-progress-slide 0.75s linear infinite;
+}
+html:not([data-allume=""]) > body:before,
+html[data-allume=""] > body[data-allume-boot-status="allume-error"]:before {
+    width: calc(100% - 120px);
+    height: calc(100% - 120px);
+    padding: 60px;
+    content: attr(data-allume-boot-error-name);
+
+    background-size: auto !important;
+    background-image: url('allume-36.png');
+    background-repeat: no-repeat;
+    background-position: calc(100% - 60px) 53px;
+
+    transition: none;
+
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+}
+html:not([data-allume=""]) > body:after,
+html[data-allume=""] > body[data-allume-boot-status="allume-error"]:after {
+    max-width: 900px;
+    padding: 240px 60px 60px 60px;
+    font-size: 16px;
+    content: attr(data-allume-boot-error-message);
+    left: 0px;
+    top: 0px;
+}
+/*
+    When the boot message is not empty (meaning it's not finished booting), show the logo and progress indicator.
+*/
+html[data-allume=""] > body:not([data-allume-boot-status=""]):not([data-allume-boot-status="alume-error"]):not([data-allume-boot-status="Initializing..."]):before {
+    background-size: 60px 60px;
+
+    /* transition when the logo is shown */
+    transition: opacity 0s ease-in 0s,
+    background-size 2s ease 4s,
+    height 0s linear 0s,
+    top 0s linear 0s;
+}
+/*
+    When the boot message is not empty (meaning it's not finished booting) and not displaying an error,
+    set the transition for showing the boot splash.
+*/
+html[data-allume=""] > body:not([data-allume-boot-status=""]):not([data-allume-boot-status="allume-error"]):after {
+    /* transition when the progress indicator is shown */
+    transition: opacity 0.5s ease-in 4s,
+    height 0s linear 0s,
+    top 0s linear 0s;
+}
+/*
+    When the boot message is not empty (meaning it's not finished booting), set the opacity.
+*/
+html:not([data-allume=""]) > body:not([data-allume-boot-status=""]):before,
+body:not([data-allume-boot-status=""]):before,
+html:not([data-allume=""]) > body:not([data-allume-boot-status=""]):after,
+body:not([data-allume-boot-status=""]):after {
+    opacity: 0.9 !important;
+}
+/*
+    When the boot message is empty (meaning it's finished booting), hide
+    the progress indicator.
+*/
+html[data-allume=""] > body[data-allume-boot-status=""]:after {
+    opacity: 0;
+}
+/*
+    When the boot message is empty (meaning it's finished booting), hide the logo and progress-indicator.
+*/
+html[data-allume=""] > body[data-allume-boot-status=""]:before,
+html[data-allume=""] > body[data-allume-boot-status=""]:after,
+html:not([data-allume=""]) > body[data-allume-boot-status=""]:before,
+html:not([data-allume=""]) > body[data-allume-boot-status=""]:after {
+    height: 0px;
+    top: -30px;
+}
+/*
+    Webkit scrollbar.
+*/
+::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+    background: #000;
+}
+::-webkit-scrollbar-corner {
+    background: #000;
+}
+::-webkit-scrollbar-thumb {
+    background: #1b1b1b;
+    border-radius: 1ex;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+@keyframes animations-boot-progress-slide {
+    0% { background-position-x: 0px; }
+    100% { background-position-x: -28px; }
+}
