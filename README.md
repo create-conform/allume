@@ -1,6 +1,10 @@
 # allume
 A cross-platform bootloader for javascript runtimes.
 
+# STATE
+
+Currently unfinished, WIP. Please come back another time.
+
 ```
 INSTALL
 
