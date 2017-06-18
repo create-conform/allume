@@ -1,6 +1,6 @@
 {
   "name": "allume",
-  "version": "1.26.0",
+  "version": "0.27.0",
   "description": "A cross-platform package bootloader for javascript.",
   "main": "allume.js",
   "scripts": {
@@ -31,9 +31,10 @@
     "config": "^1.25.1"
   },
   "pkxDependencies": [
-    "cc.error.1.0",
-    "cc.pkx.1.2",
-    "cc.io.http.1.1",
-    "cc.io.file-system.1.1"
+    "cc.error.0.1",
+    "cc.pkx.0.1",
+    "allume.request.github.0.1",
+    "cc.io.http.0.1",
+    "cc.io.file-system.0.1"
   ]
 }
