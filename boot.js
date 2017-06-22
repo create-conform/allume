@@ -19,7 +19,12 @@
                         "url": "http://localhost:8080"
                     },
                     "cc": {
-                        "url": "https://api.github.com/repos/create-conform"
+                        "url": "https://api.github.com/repos/create-conform",
+                        "github": {
+                            "token": "b0d01994e47a92f792b434bfe69e27684fea022a",
+                            "branch": "master",
+                            "enablePreRelease": true
+                        }
                     }
                 }
             }
