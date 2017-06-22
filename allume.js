@@ -20,6 +20,9 @@ var allume;
         return params;
     }
     function getNodeParameters() {
+        return process? process.argv.slice(1) : null;
+    }
+    function getNodeParametersOLD() {
         if (!require.main) {
             throw "Sorry, this platform is currently not supported.";
         }
@@ -153,7 +156,7 @@ var allume;
         return params;
     }
 
-    function Allume() {
+    function Allume(parameters) {
         var self = this;
         // Add hook to console.log. If the bootloader success message appears, unhook.
         this.MSG_SUCCESS = "allume-hide";
@@ -166,19 +169,10 @@ var allume;
         var FN_CONS_LOG = console.log;
         var FN_CONS_ERROR = console.error;
 
-        this.parameters = {};
-        if (typeof document !== "undefined") {
-            this.parameters = getUrlParameters();
-        }
-        else {
-            this.parameters = getNodeParameters();
-            if (!this.parameters) {
-                return;
-            }
-        }
+        this.parameters = parameters;
 
-        // set boot time attribute
-        if (typeof document !== "undefined") {
+        // set boot time attribute on first load
+        if (typeof document !== "undefined" && document.body.attributes[self.ATTR_BOOT_TIME].value == "") {
             document.body.attributes[self.ATTR_BOOT_TIME].value = new Date().toString();
         }
 
@@ -225,41 +219,19 @@ var allume;
             }
         };
 
-        var foundPackage;
-        for (var o in self.parameters) {
-            if (typeof document !== "undefined" && o == "theme") {
-                var theme = document.createElement("link");
-                theme.rel = "stylesheet";
-                theme.href = self.parameters[o];
-                document.head.appendChild(theme);
-            }
-            else if (!self.parameters[o] || o == "package") {
-                foundPackage = true;
-            }
+        // register global
+        allume = self;
+        if (typeof require.main !== "undefined") {
+            global.allume = allume;
         }
 
-        if (!foundPackage) {
-            if (typeof document !== "undefined") {
-                window.location = "./about.html";
-            }
-            else {
-                var e = new Error("The boot sequence can't start because no package was specified. If you are the developer of the app using allume, then please make sure you specify the package to load.");
-                e.name = "error-invalid-package";
-                console.error(e);
-                console.log(self.MSG_ERROR);
-            }
-        }
-        else {
-            allume = self;
-            if (typeof require.main !== "undefined") {
-                global.allume = allume;
-            }
+        // load dependencies
+        require("./using.js/using.js");
+        require("./include.js");
 
-            require("./using.js/using.js");
-            require("./include.js");
-            require("./boot.js");
-        }
+        //start boot sequence
+        require("./boot.js");
     }
 
-    new Allume();
+    new Allume(getNodeParameters() || getUrlParameters());
 })();

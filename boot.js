@@ -8,31 +8,35 @@
 // Copyright Nick Verlinden (info@createconform.com)
 //
 //////////////////////////////////////////////////////////////////////////////////
-
 (function(allume) {
     var BOOT_SCREEN_DURATION = 3000;
+    var CONFIG_DEFAULT = {
+        "activeProfile": "local",
+        "profiles": {
+            "local": {
+                "repositories": {
+                    "": {
+                        "url": "http://localhost:8080"
+                    },
+                    "cc": {
+                        "url": "https://api.github.com/repos/create-conform"
+                    }
+                }
+            }
+        }
+    };
+    var MODULE_ID_IO = "cc.io.0";
+    var MODULE_ID_CLI = "cc.cli.0";
 
     var err = "";
     var errName = allume.ERROR_UNKNOWN;
 
-    //TODO
-    // -if dom, get url parameters
-    // -if node, get cli parameters
-    //
-    // Usage:
-    //   HTML Client:
-    //     http://allume.cc/?cc.xeos.boot.0.1
-    //   NPM CLI Tool:
-    //     allume "cc.xeos.boot.0.1"
-    //     allume "{ 'package' : 'cc.xeos.boot.0.1' }"
-    //
-    // Features:
-    //   * HTML UI With Boot Progress
-    //   * CLI UI With Boot Progress
-    //   * Uses the HTML5 AppCache
-    //
-    // parameters
-    //   <request>
+    var config;
+    var repo;
+    var profile;
+
+    var cli;
+    var io;
 
     function getDeepestError(e) {
         if (e.innerError) {
@@ -105,99 +109,143 @@
             err += indent + "        • " + module.dependencies[m].id + "\n";
         }
     }
-    function linuxRedisplayRatpoisonWM() {
-        var gui = null;
-        var window = null;
 
-        //nw.js hacks
-        try {
-            //hack -> don't show window until loaded. Else window could flash white.
-            gui = require("nw.gui");
-            window = gui.Window.get();
-            window.show();
-
-            //hack -> when started in browser mode (not hosting panels in the host OS), X11 sometimes does not show window
-            //        fullscreen. If ratpoison is installed, invoke the redisplay command to fill the window te fullscreen.
-            if (process.platform == "linux" && !gui.App.manifest.xeos.host_panels) {
-                var cmd = "ratpoison -c redisplay";
-                var childProcess = require("child_process");
-                childProcess.exec(cmd, function (error, stdout, stderr) {
-                    // ignore outcome, if it doesn't work, it just doesn't.
-                });
-            }
-        }
-        catch(e) {
-            //ignore, not nw.js
-        }
+    function profileList(args) {
+        //TODO
     }
-    function boot(urlBase) {
-        console.log("Loading packages...");
+    function profileAdd(args) {
+        //TODO
+    }
+    function profileRemove(args) {
+        //TODO
+    }
+    function profileCurrent(args) {
+        //TODO
+    }
+    function profileSwitch(args) {
+        //TODO
+    }
+    function profileSet(args) {
+        //TODO
+    }
 
-        var requests = [];
-        for (var o in allume.parameters) {
-            if (!allume.parameters[o]) {
-                requests.push(o);
-            }
-            else if (o == "package") {
-                request.push(allume.parameters[o]);
-            }
-        }
+    function boot() {
+        // load dependencies
+        cli = cli || define.cache.get(MODULE_ID_CLI, "minor").factory();
 
-        if (requests) {
-            using.apply(using, requests).then(function() {
-                console.log("allume-hide");
-            }, function(loader) {
-                usingFailed(loader);
-                var e = new Error(err);
-                e.name = errName;
-                console.error(e);
-                console.log("allume-error");
-            });
-        }
-        //"https://create-conform.github.io/cc.error/build/cc.error.1.0.pkx"
-        //using("http://localhost:8081/cc.type.1.0.pkx").then(function() {
-        //    console.log("Success!", arguments);
+        // specify cli options
+        cli.option("--repo <url>", "Overrides the main repository for the active profile.");
+        cli.option("--profile <name>", "Overrides the active profile.");
+        cli.option("--theme <url>", "Loads the specified css theme (only in browser).");
+        cli.command("profile", "Performs configuration profile operations.")
+            .command("list", "Lists all of the profiles available in the configuration.")
+            .action(profileList);
+        cli.command("profile")
+            .command("add <name>", "Add a new profile.")
+            .action(profileAdd);
+        cli.command("profile")
+            .command("remove <name>", "Removes the profile with the given name.")
+            .action(profileRemove);
+        cli.command("profile")
+            .command("current", "Displays the name of the active profile.")
+            .action(profileCurrent);
+        cli.command("profile")
+            .command("switch <name>", "Activates the profile with the given name.")
+            .action(profileSwitch);
+        cli.command("profile")
+            .command("set <key> <value>", "Sets the key value combination in the active profile.")
+            .action(profileSet);
+        cli.parameter("allume <selector>");
+        var p = cli.parse(allume.parameters);
 
-        //}, console.error);
-        /*// attach request load event listener
-        using.events.addEventListener("done", function (loader, results) {
-            if (loader.err.length > 0) {
-                var log = "";
-                for (var i = 0; i < loader.err.length; i++) {
-                    log += " " + loader.err[i] + "\r\n";
-                }
-                console.log("Request '" + JSON.stringify(loader.request) + "' failed to load.");
-                console.log(log);
-            }
-            else {
-                //console.log("Request '" + JSON.stringify(loader.request) + "' successfully loaded.");
-            }
-        });
+        if (p) {
+            // attach config function to allume
+            allume.config = config;
 
-        // boot xeos platform
-        using("cc.xeos.boot.0.1", function(boot) {
-            // hide the splash screen on nw.js platform
-            if (gui) {
-                var diff = new Date() - Date.parse(document.body.attributes["data-boot-time"].value);
-                if (diff > BOOT_SCREEN_DURATION) {
-                    window.hide();
-                    window.setShowInTaskbar(true);
+            // process commands and options
+            if (p.repo) {
+                repo = p.repo;
+            }
+            if (p.profile) {
+                profile = p.profile;
+            }
+            if (p.theme && typeof document !== "undefined") {
+                var theme = document.createElement("link");
+                theme.rel = "stylesheet";
+                theme.href = p.theme;
+                document.head.appendChild(theme);
+            }
+            if (!p.selector) {
+                if (typeof document !== "undefined") {
+                    window.location = "./about.html";
                 }
                 else {
-                    setTimeout(function() {
-                        window.hide();
-                        window.setShowInTaskbar(true);
-                    }, BOOT_SCREEN_DURATION - diff);
+                    var e = new Error("The boot sequence can't start because no package was specified. If you are the developer of the app using allume, then please make sure you specify the package to load.");
+                    e.name = "error-invalid-package";
+                    console.error(e);
+                    console.log("allume-error");
                 }
             }
-        });*/
+            else {
+                // NOTE: currently cc.cli supports only one selector parameter
+                var requests = [];
+                requests.push(p.selector);
+
+                if (requests) {
+                    using.apply(using, requests).then(function () {
+                        console.log("allume-hide");
+                    }, function (loader) {
+                        usingFailed(loader);
+                        var e = new Error(err);
+                        e.name = errName;
+                        console.error(e);
+                        console.log("allume-error");
+                    });
+                }
+            }
+        }
     }
 
     define.Loader.waitFor("pkx", function(loader) {
-        if (allume.parameters.profile && allume.parameters.profile.repo) {
-            loader.addRepository("", allume.parameters.profile.repo);
+        // load dependencies
+        io = io || define.cache.get(MODULE_ID_IO, "minor").factory();
+
+        // add main repo
+        if (repo) {
+            loader.addRepository("", repo);
+        }
+
+        // get configuration, then boot
+        function success(c) {
+            config = c;
+            done();
+        }
+        function fail() {
+            config = CONFIG_DEFAULT;
+            done();
+        }
+        function done() {
+            // get active profile
+            var profile = config.profiles[config.activeProfile];
+
+            //add all repositories from profile
+            for (var r in profile.repositories) {
+                if (r == "" && repo) {
+                    continue;
+                }
+                loader.addRepository(r, profile.repositories[r].url);
+            }
+
+            boot();
+        }
+        var configVolume = io.volumes.get("config");
+        if (configVolume.length > 0) {
+            configVolume[0].open("allume.json", io.ACCESS_MODIFY).then(function (stream) {
+                config = stream.readAsJSON().then(success, fail);
+            }, fail);
+        }
+        else {
+            fail();
         }
     });
-
-    boot();
 })(typeof global !== "undefined"? global.allume : allume);

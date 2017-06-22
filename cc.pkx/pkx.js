@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.1/'
+// module 'cc.pkx.0.1.3/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.1/";
+    define.parameters.id = "cc.pkx.0.1.3/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.1",
+        "version": "0.1.3",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "main": "pkx.js",
@@ -826,20 +826,20 @@
                 var reposSorted = version.sort(repositories, "desc");
                 for (var r in reposSorted) {
                     if (selector.package.indexOf(reposSorted[r] + ".") == 0) {
-                        repository = repositories[reposSorted[r]];
+                        repository = { "namespace" : reposSorted[r], "url" : repositories[reposSorted[r]] };
                     }
                 }
                 if (!repository) {
-                    repository = self.repositoryURL;
+                    repository = { "namespace" : "", "url" : self.repositoryURL };
                 }
-                repository = replaceVariables(repository);
+                repository.url = replaceVariables(repository.url);
     
                 try {
                     if (host.runtime == host.RUNTIME_NODEJS) {
-                        own.uri = require("url").resolve(repository != ""? repository : process.cwd() + require("path").sep, selector.package);
+                        own.uri = require("url").resolve(repository.url != ""? repository.url : process.cwd() + require("path").sep, selector.package);
                     }
                     else {
-                        own.uri = repository + selector.package;
+                        own.uri = repository.url + selector.package;
                     }
                 }
                 catch (e) {

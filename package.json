@@ -27,7 +27,6 @@
   },
   "homepage": "https://github.com/create-conform/allume#readme",
   "dependencies": {
-    "commander": "^2.9.0",
     "config": "^1.25.1"
   },
   "pkxDependencies": [
@@ -35,6 +34,7 @@
     "cc.pkx.0.1",
     "allume.request.github.0.1",
     "cc.io.http.0.1",
-    "cc.io.file-system.0.1"
+    "cc.io.file-system.0.1",
+    "cc.cli.0.1"
   ]
 }

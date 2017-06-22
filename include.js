@@ -17,3 +17,4 @@ require("./cc.pkx/pkx.js");
 require("./allume.request.github/github.js");
 require("./cc.io.http/http.js");
 require("./cc.io.file-system/file-system.js");
+require("./cc.cli/cli.js");
