@@ -20,7 +20,7 @@ var allume;
         return params;
     }
     function getNodeParameters() {
-        return process? process.argv.slice(1) : null;
+        return typeof process !== "undefined" && process.argv? process.argv.slice(1) : null;
     }
     function getNodeParametersOLD() {
         if (!require.main) {
