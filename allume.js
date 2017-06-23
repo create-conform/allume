@@ -13,11 +13,11 @@ if (typeof require === "undefined") {
 var allume;
 (function() {
     function getUrlParameters() {
-        var params = {};
+        var params = [ "allume" ];
         location.search.substr(1).split("&").forEach(function (part) {
             if (!part) return;
             var item = part.split("=");
-            params[item[0]] = item[1] ? decodeURIComponent(item[1]) : null;
+            params.push(decodeURIComponent(item[0]));
         });
         return params;
     }

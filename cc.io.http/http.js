@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.http.0.1.1/'
+// module 'cc.io.http.0.1.3/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.http.0.1.1/";
+    define.parameters.id = "cc.io.http.0.1.3/";
     define.parameters.pkx = {
         "name": "cc.io.http",
-        "version": "0.1.1",
+        "version": "0.1.3",
         "title": "IO HTTP Module",
         "description": "IO module that implements HTTP & HTTPS protocol support.",
         "license": "Apache-2.0",
@@ -43,7 +43,7 @@
     //
     // Copyright Nick Verlinden (info@createconform.com)
     //
-    ///////////////////////////////////////////////////////////////////////////////////////////// 
+    /////////////////////////////////////////////////////////////////////////////////////////////
     
     (function() {
         function HTTP(pkx, module) {
@@ -116,10 +116,10 @@
     
                         function getLengthXHR() {
                             var xhr = new XMLHttpRequest();
+                            xhr.open("HEAD", uri, true);
                             for (var h in own.headers) {
                                 xhr.setRequestHeader(h, own.headers[h]);
                             }
-                            xhr.open("HEAD", uri, true);
                             xhr.onreadystatechange = function () {
                                 if (xhr.readyState == xhr.DONE) {
                                     acceptRanges = xhr.getResponseHeader("Accept-Ranges") == "bytes";
@@ -247,10 +247,10 @@
     
                         function downloadXHR() {
                             var xhr = new XMLHttpRequest();
+                            xhr.open("GET", uri, true);
                             for (var h in own.headers) {
                                 xhr.setRequestHeader(h, own.headers[h]);
                             }
-                            xhr.open("GET", uri, true);
                             xhr.onprogress = progressXHR;
                             xhr.responseType = "arraybuffer";
                             xhr.onreadystatechange = function() {
@@ -354,10 +354,10 @@
     
                         function readXHR() {
                             var xhr = new XMLHttpRequest();
+                            xhr.open("GET", uri, true);
                             for (var h in own.headers) {
                                 xhr.setRequestHeader(h, own.headers[h]);
                             }
-                            xhr.open("GET", uri, true);
                             xhr.onprogress = progressXHR;
                             xhr.responseType = "arraybuffer";
                             xhr.setRequestHeader("Range", "bytes=" + position + "-" + (len? position + len - 1 : ""));

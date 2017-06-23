@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.3/'
+// module 'cc.pkx.0.1.4/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.3/";
+    define.parameters.id = "cc.pkx.0.1.4/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.3",
+        "version": "0.1.4",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "main": "pkx.js",
@@ -1239,7 +1239,7 @@
                     var Module = require("module");
                     var originalRequire = Module.prototype.require;
                     var requireCache = [];
-
+    
                     Module.prototype.require = function(id) {
                         if (!requireCache[id]) {
                             requireCache[id] = originalRequire.call(this, id);
@@ -1247,7 +1247,7 @@
                         return requireCache[id];
                     };
                 }
-
+    
                 try {
                     type = require("./cc.type");
                     event = require("./cc.event");

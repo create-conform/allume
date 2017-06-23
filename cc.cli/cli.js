@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.cli.0.1.5/'
+// module 'cc.cli.0.1.9/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.cli.0.1.5/";
+    define.parameters.id = "cc.cli.0.1.9/";
     define.parameters.pkx = {
         "name": "cc.cli",
-        "version": "0.1.5",
+        "version": "0.1.9",
         "title": "CLI Package",
         "description": "Library for processing command line interface parameters..",
         "license": "Apache-2.0",
@@ -186,7 +186,8 @@
             self.updateLayout();
         };
     
-        this.print = function () {
+        this.print = function (noprint) {
+            var text = "";
             var uRows = self.getRows();
             for (var r in uRows) {
                 var rowStr = "";
@@ -203,8 +204,14 @@
                 for (var c = 0; c < row.length; c++) {
                     rowStr += string.padRight(row[c] || "", layout[c] || 0);
                 }
-                console.log(self.margin + rowStr + (vSpacing > 0 ? Array(vSpacing + 1).join("\n") : ""));
+                text += self.margin + rowStr + (vSpacing > 0 ? Array(vSpacing + 1).join("\n") : "") + "\n";
             }
+    
+            if (!noprint) {
+                console.log(text);
+            }
+    
+            return text;
         };
     };
     var Option = function (c, description) {
@@ -242,9 +249,9 @@
         }
     
         this.displayHelp = function() {
-            console.log("\nUsage: " + self.getFullName() + getUsageParameters(self));
+            var text = "\nUsage: " + self.getFullName() + getUsageParameters(self) + "\n"; 
             if (self.description) {
-                console.log("\n" + self.description);
+                text += "\n" + self.description + "\n";
             }
             var tableCommands, tableOptions;
             // initialize table (for matching)
@@ -269,14 +276,16 @@
                 }
             }
             if (tableCommands) {
-                console.log("\nCommands:\n");
-                tableCommands.print();
+                text += "\nCommands:\n";
+                text += tableCommands.print(true);
             }
             if (tableOptions) {
-                console.log("\nOptions:\n");
-                tableOptions.print();
+                text += "\nOptions:\n";
+                text += tableOptions.print(true);
             }
-            console.log();
+            text += "\n";
+            console.log(text);
+            return text;
         };
     
         this.getFullName = function () {
@@ -330,8 +339,7 @@
     
             // check if help is needed
             if (args[1] === HELP_OPTION) {
-                self.displayHelp();
-                return;
+                return { "--help" : self.displayHelp() };
             }
     
             // check next argument, if command, invoke parser

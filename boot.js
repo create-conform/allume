@@ -137,6 +137,7 @@
         cli.option("--repo <url>", "Overrides the main repository for the active profile.");
         cli.option("--profile <name>", "Overrides the active profile.");
         cli.option("--theme <url>", "Loads the specified css theme (only in browser).");
+        cli.option("--param <json>", "A JSON object with parameters for the package module loaded.");
         cli.command("profile", "Performs configuration profile operations.")
             .command("list", "Lists all of the profiles available in the configuration.")
             .action(profileList);
@@ -169,27 +170,54 @@
             if (p.profile) {
                 profile = p.profile;
             }
-            if (p.theme && typeof document !== "undefined") {
+            if (p["--theme"] && typeof document !== "undefined") {
                 var theme = document.createElement("link");
                 theme.rel = "stylesheet";
-                theme.href = p.theme;
+                theme.href = p["--theme"].url;
                 document.head.appendChild(theme);
             }
-            if (!p.selector) {
+            if (p["--help"]) {
                 if (typeof document !== "undefined") {
-                    window.location = "./about.html";
+                    var e = new Error(p["--help"]);
+                    e.name = "help";
+                    console.error(e);
+                    console.log("allume-error");
+                }
+            }
+            else if (!p.selector) {
+                if (typeof document !== "undefined") {
+                    //window.location = "./about.html";
                 }
                 else {
                     var e = new Error("The boot sequence can't start because no package was specified. If you are the developer of the app using allume, then please make sure you specify the package to load.");
                     e.name = "error-invalid-package";
                     console.error(e);
-                    console.log("allume-error");
+                    if (typeof document !== "undefined") {
+                        console.log("allume-error");
+                    }
                 }
             }
             else {
                 // NOTE: currently cc.cli supports only one selector parameter
                 var requests = [];
-                requests.push(p.selector);
+                var request = p.selector;
+                if (p["--param"]) {
+                    var json;
+                    try {
+                        json = JSON.parse(p["--param"].json);
+                    }
+                    catch(e) {
+                        var e = new Error("Make sure the data you pass to the --param switch is valid JSON data.");
+                        e.name = "error-invalid-parameter";
+                        console.error(e);
+                        if (typeof document !== "undefined") {
+                            console.log("allume-error");
+                        }
+                        return;
+                    }
+                    request = { "package" : p.selector, "configuration" : json };
+                }
+                requests.push(request);
 
                 if (requests) {
                     using.apply(using, requests).then(function () {
@@ -199,9 +227,19 @@
                         var e = new Error(err);
                         e.name = errName;
                         console.error(e);
-                        console.log("allume-error");
+                        if (typeof document !== "undefined") {
+                            console.log("allume-error");
+                        }
                     });
                 }
+            }
+        }
+        else {
+            if (typeof document !== "undefined") {
+                var e = new Error("Parameters where missing or invalid. Please check your browser javascript console.");
+                e.name = "error-invalid-parameter";
+                console.error(e);
+                console.log("allume-error");
             }
         }
     }
