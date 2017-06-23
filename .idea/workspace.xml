@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="55b77946-0dfe-4d43-b91f-16914598582c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testtheme.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/allume-dark.css" afterPath="$PROJECT_DIR$/allume-dark.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/allume.js" afterPath="$PROJECT_DIR$/allume.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/testtheme.css" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/boot.js" afterPath="$PROJECT_DIR$/boot.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cc.cli/cli.js" afterPath="$PROJECT_DIR$/cc.cli/cli.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cc.io.http/http.js" afterPath="$PROJECT_DIR$/cc.io.http/http.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/offline.appcache" afterPath="$PROJECT_DIR$/offline.appcache" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cc.pkx/pkx.js" afterPath="$PROJECT_DIR$/cc.pkx/pkx.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="allume.iws" />
@@ -60,11 +53,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.022255193">
-              <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+            <state vertical-scroll-proportion="-1.25">
+              <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -78,16 +71,6 @@
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testtheme.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testtheme.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -115,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="boot.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="boot.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/boot.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="143" column="30" selection-start-line="143" selection-start-column="30" selection-end-line="143" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.48424068">
+              <caret line="183" column="37" selection-start-line="183" selection-start-column="37" selection-end-line="183" selection-end-column="37" />
               <folding>
                 <element signature="e#993#1168#0" expanded="false" />
                 <element signature="e#1210#2540#0" expanded="false" />
@@ -203,9 +186,9 @@
         <option value="$PROJECT_DIR$/allume-dark.css" />
         <option value="$PROJECT_DIR$/cc.pkx/pkx.js" />
         <option value="$PROJECT_DIR$/allume.request.github/github.js" />
-        <option value="$PROJECT_DIR$/boot.js" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/boot.js" />
       </list>
     </option>
   </component>
@@ -451,7 +434,13 @@
       <option name="project" value="LOCAL" />
       <updated>1498222848670</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Various fixes for web.">
+      <created>1498231276582</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1498231276582</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -508,7 +497,8 @@
     <MESSAGE value="Bugfix that prevented browser from loading." />
     <MESSAGE value="Added nojekyll file for github pages." />
     <MESSAGE value="Browser and about page now working." />
-    <option name="LAST_COMMIT_MESSAGE" value="Browser and about page now working." />
+    <MESSAGE value="Various fixes for web." />
+    <option name="LAST_COMMIT_MESSAGE" value="Various fixes for web." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -860,26 +850,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testtheme.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/allume.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
-          <folding>
-            <element signature="e#908#1008#0" expanded="false" />
-            <element signature="e#1955#2654#0" expanded="false" />
-            <element signature="e#2693#3438#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/allume-dark.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -916,18 +886,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/boot.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="143" column="30" selection-start-line="143" selection-start-column="30" selection-end-line="143" selection-end-column="30" />
-          <folding>
-            <element signature="e#993#1168#0" expanded="false" />
-            <element signature="e#1210#2540#0" expanded="false" />
-            <element signature="e#2592#3641#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.586207">
@@ -941,9 +899,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.022255193">
-          <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+        <state vertical-scroll-proportion="-1.25">
+          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allume.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+          <folding>
+            <element signature="e#908#1008#0" expanded="false" />
+            <element signature="e#1955#2654#0" expanded="false" />
+            <element signature="e#2693#3438#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/boot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48424068">
+          <caret line="183" column="37" selection-start-line="183" selection-start-column="37" selection-end-line="183" selection-end-column="37" />
+          <folding>
+            <element signature="e#993#1168#0" expanded="false" />
+            <element signature="e#1210#2540#0" expanded="false" />
+            <element signature="e#2592#3641#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

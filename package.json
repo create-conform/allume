@@ -1,6 +1,6 @@
 {
   "name": "allume",
-  "version": "0.29.4",
+  "version": "0.29.5",
   "description": "A cross-platform package bootloader for javascript.",
   "main": "allume.js",
   "scripts": {
