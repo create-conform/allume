@@ -80,9 +80,9 @@
             <div class="fakeButtons fakeZoom"></div>
         </div>
         <div id="banner-terminal" class="fakeScreen">
-            <p class="line1">$ allume cc.demo --repo http://demo.com<span class="cursor1">_</span></p>
-            <p class="line2">Out of the box I include HTML5 Boilerplate, jQuery, and a gulpfile.js to build your app.<span class="cursor2">_</span></p>
-            <p class="line3">[?] What more would you like? (Press space to select)<span class="cursor3">_</span></p>
+            <p class="line1">$ allume cc.demo<span class="cursor1">_</span></p>
+            <p class="line2">More information coming soon!<span class="cursor2">_</span></p>
+            <p class="line3">The project is still under development.<span class="cursor3">_</span></p>
             <p class="line4">><span class="cursor4">_</span></p>
         </div>
     </div>
@@ -106,84 +106,10 @@
         </div>
         <h2>usage</h2>
         <div>
-            <h3>1. create</h3>
-            <div class="container">
-                <div class="column-left">
-                    <p>
-                        Create a package to run on multiple runtime environments, such as a browser or node.js.
-                        Allume can load pkx packages from http and the file-system (in supported runtime environments).
-                        With pkx you create a tar file with ".pkx" extension of your app or library that has a package.json file, and publish it
-                        to a public repository (which is just a static http server). In future versions of pkx, offline caching of the packages will
-                        make sure your app or library can be used offline. Allume already works offline by using HTML5's application cache. You can also install allume locally from npm for node.js.
-                    </p>
-                </div>
-                <div class="column-right">
-                    <pre>
-                        <code class="javascript">
-    (function() {
-        function Demo(pkx, module, config) {
-            var self = this;
-
-            this.sayHello = function(to) {
-                console.log("Hello, " + to + "!");
-            }
-
-            self.sayHello(config? config.name : "guest");
-        }
-
-        define(function() {
-            return
-                new (Function.prototype.bind.apply(Demo, arguments));
-        });
-    })();
-                        </code>
-                    </pre>
-                </div>
-            </div>
-        </div>
-        <div>
-            <h3>2. deploy</h3>
             <div class="container">
                 <p>
-                    Upload the pkx package to a public webserver.
+                    More information coming soon!
                 </p>
-                <div id="deploy-icons">
-                    <img src="web/box.svg" /> <div><div></div><div></div><div></div></div> <img src="web/cloud.svg" />
-                </div>
-            </div>
-        </div>
-        <div>
-            <h3>3. run</h3>
-            <div class="container">
-                <div class="column-left">
-                    <h4>node.js</h4>
-                    <div class=fakeMenu>
-                        <div class="fakeButtons fakeClose"></div>
-                        <div class="fakeButtons fakeMinimize"></div>
-                        <div class="fakeButtons fakeZoom"></div>
-                    </div>
-                    <div class="fakeScreen">
-                        <p class="line1">$ allume cc.demo --config "{ 'name': 'Dave' }" --repo http://demo.com<span class="cursor1">_</span></p>
-                        <!--<p class="line2">Loading packages....<span class="cursor2">_</span></p>-->
-                        <p class="line3">Hello, Dave!<span class="cursor3">_</span></p>
-                        <p class="line4">$ <span class="cursor4">_</span></p>
-                    </div>
-                </div>
-                <div class="column-right">
-                    <h4>browser</h4>
-                    <div class=fakeMenu>
-                        <div class="fakeButtons fakeClose"></div>
-                        <div class="fakeButtons fakeMinimize"></div>
-                        <div class="fakeButtons fakeZoom"></div>
-                    </div>
-                    <div class="fakeBrowser">
-                        <div class="fakeAddressBar"><div>http://allume.cc/?cc.demo&config={'name':'Dave'}&repo=http://demo.com</div></div>
-                        <div class="fakeDevTools"><div>CONSOLE</div><p>Hello, Dave!</p></div>
-                        <div class="browser-icons">
-                            <img src="web/chrome.svg" /> <img src="web/firefox.svg" /> <img src="web/opera.svg" /> <img src="web/safari.svg" /> <img src="web/edge.svg" />
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

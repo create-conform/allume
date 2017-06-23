@@ -1239,7 +1239,7 @@
                     var Module = require("module");
                     var originalRequire = Module.prototype.require;
                     var requireCache = [];
-    
+
                     Module.prototype.require = function(id) {
                         if (!requireCache[id]) {
                             requireCache[id] = originalRequire.call(this, id);
@@ -1247,38 +1247,45 @@
                         return requireCache[id];
                     };
                 }
-    
-                type = require("./cc.type");
-                event = require("./cc.event");
-                validate = require("./cc.validate");
-                string = require("./cc.string");
-                object = require("./cc.object");
-                boolean = require("./cc.boolean");
-                array = require("./cc.array");
-                log = require("./cc.log");
-                host = require("./cc.host");
-                io = require("./cc.io");
-                tar = require("./cc.io.format.tar");
-                gzip = require("./cc.io.format.gzip");
-                version = require("./cc.version");
+
+                try {
+                    type = require("./cc.type");
+                    event = require("./cc.event");
+                    validate = require("./cc.validate");
+                    string = require("./cc.string");
+                    object = require("./cc.object");
+                    boolean = require("./cc.boolean");
+                    array = require("./cc.array");
+                    log = require("./cc.log");
+                    host = require("./cc.host");
+                    io = require("./cc.io");
+                    tar = require("./cc.io.format.tar");
+                    gzip = require("./cc.io.format.gzip");
+                    version = require("./cc.version");
+                }
+                catch(e) {
+                    if (e.code != "MODULE_NOT_FOUND") {
+                        throw e;
+                    }
+                }
     
                 init = true;
             }
-            else if (typeof define != "undefined" && define.using) {
+            if (!init && typeof define != "undefined" && define.using) {
                 try {
-                    type = define.cache.get("cc.type.1", "minor").factory();
-                    event = define.cache.get("cc.event.1", "minor").factory();
-                    validate = define.cache.get("cc.validate.1", "minor").factory();
-                    string = define.cache.get("cc.string.1", "minor").factory();
-                    object = define.cache.get("cc.object.1", "minor").factory();
-                    boolean = define.cache.get("cc.boolean.1", "minor").factory();
-                    array = define.cache.get("cc.array.1", "minor").factory();
-                    log = define.cache.get("cc.log.1", "minor").factory();
-                    host = define.cache.get("cc.host.1", "minor").factory();
-                    io = define.cache.get("cc.io.1", "minor").factory();
-                    tar = define.cache.get("cc.io.format.tar.1", "minor").factory();
-                    gzip = define.cache.get("cc.io.format.gzip.1", "minor").factory();
-                    version = define.cache.get("cc.version.1", "minor").factory();
+                    type = define.cache.get("cc.type.0", "minor").factory();
+                    event = define.cache.get("cc.event.0", "minor").factory();
+                    validate = define.cache.get("cc.validate.0", "minor").factory();
+                    string = define.cache.get("cc.string.0", "minor").factory();
+                    object = define.cache.get("cc.object.0", "minor").factory();
+                    boolean = define.cache.get("cc.boolean.0", "minor").factory();
+                    array = define.cache.get("cc.array.0", "minor").factory();
+                    log = define.cache.get("cc.log.0", "minor").factory();
+                    host = define.cache.get("cc.host.0", "minor").factory();
+                    io = define.cache.get("cc.io.0", "minor").factory();
+                    tar = define.cache.get("cc.io.format.tar.0", "minor").factory();
+                    gzip = define.cache.get("cc.io.format.gzip.0", "minor").factory();
+                    version = define.cache.get("cc.version.0", "minor").factory();
     
                     init = true;
                 }
