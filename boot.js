@@ -137,7 +137,7 @@
         cli.option("--repo <url>", "Overrides the main repository for the active profile.");
         cli.option("--profile <name>", "Overrides the active profile.");
         cli.option("--theme <url>", "Loads the specified css theme (only in browser).");
-        cli.option("--param <json>", "A JSON object with parameters for the package module loaded.");
+        cli.option("--config <json>", "A JSON object with parameters for the package module loaded.");
         cli.command("profile", "Performs configuration profile operations.")
             .command("list", "Lists all of the profiles available in the configuration.")
             .action(profileList);
@@ -201,14 +201,14 @@
                 // NOTE: currently cc.cli supports only one selector parameter
                 var requests = [];
                 var request = p.selector;
-                if (p["--param"]) {
+                if (p["--config"]) {
                     var json;
                     try {
-                        json = JSON.parse(p["--param"].json);
+                        json = JSON.parse(p["--config"].json);
                     }
                     catch(e) {
-                        var e = new Error("Make sure the data you pass to the --param switch is valid JSON data.");
-                        e.name = "error-invalid-parameter";
+                        var e = new Error("Make sure the data you pass to the --config switch is valid JSON data.");
+                        e.name = "error-invalid-configuration";
                         console.error(e);
                         if (typeof document !== "undefined") {
                             console.log("allume-error");
