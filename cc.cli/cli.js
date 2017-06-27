@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.cli.0.1.9/'
+// module 'cc.cli.0.1.12/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.cli.0.1.9/";
+    define.parameters.id = "cc.cli.0.1.12/";
     define.parameters.pkx = {
         "name": "cc.cli",
-        "version": "0.1.9",
+        "version": "0.1.12",
         "title": "CLI Package",
         "description": "Library for processing command line interface parameters..",
         "license": "Apache-2.0",
@@ -249,7 +249,7 @@
         }
     
         this.displayHelp = function() {
-            var text = "\nUsage: " + self.getFullName() + getUsageParameters(self) + "\n"; 
+            var text = "\nUsage: " + self.getFullName() + getUsageParameters(self) + "\n";
             if (self.description) {
                 text += "\n" + self.description + "\n";
             }
@@ -337,6 +337,8 @@
                 self.name = args[0];
             }
     
+            var command = {};
+    
             // check if help is needed
             if (args[1] === HELP_OPTION) {
                 return { "--help" : self.displayHelp() };
@@ -345,12 +347,12 @@
             // check next argument, if command, invoke parser
             for (var i in self.commands) {
                 if (self.commands[i].name === args[1]) {
-                    return self.commands[i].parse(args.slice(1));
+                    command[self.commands[i].name] = self.commands[i].parse(args.slice(1));
+                    return command;
                 }
             }
     
             // start parsing commands
-            var command = {};
             command.displayHelp = self.displayHelp;
             var pIdx = 0;
             var oIdx = 0;

@@ -25,6 +25,7 @@
             }
         }
     };
+    var MSG_MISSING_FEATURE = "This feature is not yet implemented.";
     var MODULE_ID_IO = "cc.io.0";
     var MODULE_ID_CLI = "cc.cli.0";
 
@@ -112,21 +113,27 @@
 
     function profileList(args) {
         //TODO
+        console.log(MSG_MISSING_FEATURE);
     }
     function profileAdd(args) {
         //TODO
+        console.log(MSG_MISSING_FEATURE);
     }
     function profileRemove(args) {
         //TODO
+        console.log(MSG_MISSING_FEATURE);
     }
     function profileCurrent(args) {
         //TODO
+        console.log(MSG_MISSING_FEATURE);
     }
     function profileSwitch(args) {
         //TODO
+        console.log(MSG_MISSING_FEATURE);
     }
     function profileSet(args) {
         //TODO
+        console.log(MSG_MISSING_FEATURE);
     }
 
     function boot() {
@@ -135,9 +142,14 @@
 
         // specify cli options
         cli.option("--repo <url>", "Overrides the main repository for the active profile.");
-        cli.option("--profile <name>", "Overrides the active profile.");
         cli.option("--theme <url>", "Loads the specified css theme (only in browser).");
         cli.option("--config <json>", "A JSON object with parameters for the package module loaded.");
+        cli.option("--profile <name>", "Overrides the active profile.");
+        cli.option("--gh-username <username>", "Overrides the global configuration GitHub username key.");
+        cli.option("--gh-password <password>", "Overrides the global configuration GitHub password key.");
+        cli.option("--gh-token <token>", "Overrides the global configuration GitHub token key.");
+        cli.option("--gh-branch <branch>", "Overrides the global configuration GitHub branch key.");
+        cli.option("--gh-enable-pre-release <enable>", "Overrides the global configuration GitHub enable pre-release key.");
         cli.command("profile", "Performs configuration profile operations.")
             .command("list", "Lists all of the profiles available in the configuration.")
             .action(profileList);
@@ -167,7 +179,8 @@
             if (p.repo) {
                 repo = p.repo;
             }
-            if (p.profile) {
+            if (p["--profile"]) {
+                console.log(MSG_MISSING_FEATURE);
                 profile = p.profile;
             }
             if (p["--theme"] && typeof document !== "undefined") {
@@ -175,6 +188,27 @@
                 theme.rel = "stylesheet";
                 theme.href = p["--theme"].url;
                 document.head.appendChild(theme);
+            }
+            if (p["--gh-username"]) {
+                config.github = config.github || {};
+                config.github.username = p["--gh-username"].username;
+            }
+            if (p["--gh-password"]) {
+                config.github = config.github || {};
+                config.github.password = p["--gh-password"].password;
+            }
+            if (p["--gh-token"]) {
+                config.github = config.github || {};
+                config.github.token = p["--gh-token"].token;
+            }
+            if (p["--gh-branch"]) {
+                config.github = config.github || {};
+                config.github.branch = p["--gh-branch"].branch;
+            }
+            if (p["--gh-enable-pre-release"]) {
+                var val = p["--gh-enable-pre-release"].enable;
+                config.github = config.github || {};
+                config.github.enablePreRelease = !(val == "false" || !val);
             }
             if (p["--help"]) {
                 if (typeof document !== "undefined") {
@@ -184,7 +218,7 @@
                     console.log("allume-error");
                 }
             }
-            else if (!p.selector) {
+            else if (!p.selector && !p.profile) {
                 if (typeof document !== "undefined") {
                     window.location = "./about.html";
                 }
@@ -197,7 +231,7 @@
                     }
                 }
             }
-            else {
+            else if (p.selector) {
                 // NOTE: currently cc.cli supports only one selector parameter
                 var requests = [];
                 var request = p.selector;

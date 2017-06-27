@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.4/'
+// module 'cc.pkx.0.1.6/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.4/";
+    define.parameters.id = "cc.pkx.0.1.6/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.4",
+        "version": "0.1.6",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "main": "pkx.js",
@@ -231,12 +231,12 @@
                                     if (requests[d].package.substr(0, 2) == "./") {
                                         requests[d].package = "pkx:///" + volume.pkx.id + (requests[d].package.length > 2 ? "/" + requests[d].package.substr(2) : "");
                                     }
-                                    if (volume.localId.lastIndexOf("/") == volume.localId.length - 1) {
+                                    else if (volume.localId.lastIndexOf("/") == volume.localId.length - 1) {
                                         requests[d].package = "pkx:///" + volume.pkx.id + "/" + requests[d].package;
                                     }
     
                                     // modify package url if parent is not an archive (for debugging)
-                                    if (!selector.isArchive) {
+                                    /*if (!selector.isArchive) {
                                         var name = "";
                                         var nameParts = requests[d].package.substr(requests[d].package.lastIndexOf("/") + 1).split(".");
                                         for (var i = 0; i < nameParts.length; i++) {
@@ -245,7 +245,7 @@
                                             }
                                         }
                                         requests[d].package = requests[d].package.substr(0, requests[d].package.lastIndexOf("/") + 1) + name + "/";
-                                    }
+                                    }*/
                                 }
                             }
     
@@ -342,7 +342,7 @@
                                         // load code
                                         if (host.runtime == host.RUNTIME_NODEJS) {
                                             try {
-                                                require("vm").runInThisContext(require("module").wrap(data), {filename: resource})(exports, require, module, __filename, __dirname);
+                                                require("vm").runInThisContext(require("module").wrap(data), {filename: resource})(exports, require.original, module, __filename, __dirname);
                                             }
                                             catch (e) {
                                                 error(e);
@@ -823,19 +823,25 @@
                 }
     
                 // find repository
-                var reposSorted = version.sort(repositories, "desc");
-                for (var r in reposSorted) {
-                    if (selector.package.indexOf(reposSorted[r] + ".") == 0) {
-                        repository = { "namespace" : reposSorted[r], "url" : repositories[reposSorted[r]] };
+                var protocolDetected = selector.package.indexOf("://") != -1;
+                if (protocolDetected || (host.runtime == host.RUNTIME_NODEJS && selector.package.indexOf(".") == 0)) {
+                    repository = {"namespace": "", "url": ""};
+                }
+                else {
+                    var reposSorted = version.sort(repositories, "desc");
+                    for (var r in reposSorted) {
+                        if (selector.package.indexOf(reposSorted[r] + ".") == 0) {
+                            repository = {"namespace": reposSorted[r], "url": repositories[reposSorted[r]]};
+                        }
                     }
+                    if (!repository) {
+                        repository = {"namespace": "", "url": self.repositoryURL};
+                    }
+                    repository.url = replaceVariables(repository.url);
                 }
-                if (!repository) {
-                    repository = { "namespace" : "", "url" : self.repositoryURL };
-                }
-                repository.url = replaceVariables(repository.url);
     
                 try {
-                    if (host.runtime == host.RUNTIME_NODEJS) {
+                    if (host.runtime == host.RUNTIME_NODEJS && !protocolDetected) {
                         own.uri = require("url").resolve(repository.url != ""? repository.url : process.cwd() + require("path").sep, selector.package);
                     }
                     else {
