@@ -24,3 +24,8 @@ Options:
    --gh-enable-pre-release    <enable>     Overrides the global configuration GitHub enable pre-release key.   
 
 ```
+
+#nwjs
+
+Currently stuck on 0.20.1 because of this issue:
+https://github.com/nwjs/npm-installer/issues/56

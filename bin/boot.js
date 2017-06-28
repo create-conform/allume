@@ -18,6 +18,9 @@
                     "": {
                         "url": "http://localhost:8080"
                     },
+                    "allume": {
+                        "url": "https://api.github.com/repos/create-conform"
+                    },
                     "cc": {
                         "url": "https://api.github.com/repos/create-conform"
                     }
@@ -140,6 +143,22 @@
         // load dependencies
         cli = cli || define.cache.get(MODULE_ID_CLI, "minor").factory();
 
+        // TODO - open files when receive event
+        // PROBLEM: nw.js strips quotes and single quotes from parameters, passing json config is impossible
+        //gui.Window.get().showDevTools();
+        /*gui.App.on('open', function(cmdline) {
+            cmdline = cmdline.replace(/"([^"]+)"/g, function(a) {
+                return a.replace(/\s/g, "&nbsp;");
+            }).split(' ');
+            for (var i = 0, length = cmdline.length, arg = '', args = []; i < length; ++i) {
+                arg = cmdline[i].replace(/&nbsp;/g, ' ');
+                // Filter by exe file and exe args.
+                if (arg === '"' + process.execPath + '"' || arg.search(/^\-\-/) === 0) continue;
+                args.push(arg);
+            }
+            console.log("OPEN", args);
+        });*/
+
         // specify cli options
         cli.option("--repo <url>", "Overrides the main repository for the active profile.");
         cli.option("--theme <url>", "Loads the specified css theme (only in browser).");
@@ -220,7 +239,8 @@
             }
             else if (!p.selector && !p.profile) {
                 if (typeof document !== "undefined") {
-                    window.location = "./about.html";
+                    //debug
+                    //window.location = "./about.html";
                 }
                 else {
                     var e = new Error("The boot sequence can't start because no package was specified. If you are the developer of the app using allume, then please make sure you specify the package to load.");
@@ -281,6 +301,11 @@
     define.Loader.waitFor("pkx", function(loader) {
         // load dependencies
         io = io || define.cache.get(MODULE_ID_IO, "minor").factory();
+
+        // reset require polyfill
+        if (allume.require) {
+            require = allume.require;
+        }
 
         // add main repo
         if (repo) {
