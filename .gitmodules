@@ -1,3 +1,3 @@
-[submodule "using.js"]
+[submodule "bin/using.js"]
 	path = bin/using.js
 	url = https://github.com/create-conform/using.js
