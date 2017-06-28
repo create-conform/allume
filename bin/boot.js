@@ -38,6 +38,7 @@
     var config;
     var repo;
     var profile;
+    var firstOpen = true;
 
     var cli;
     var io;
@@ -143,22 +144,6 @@
         // load dependencies
         cli = cli || define.cache.get(MODULE_ID_CLI, "minor").factory();
 
-        // TODO - open files when receive event
-        // PROBLEM: nw.js strips quotes and single quotes from parameters, passing json config is impossible
-        //gui.Window.get().showDevTools();
-        /*gui.App.on('open', function(cmdline) {
-            cmdline = cmdline.replace(/"([^"]+)"/g, function(a) {
-                return a.replace(/\s/g, "&nbsp;");
-            }).split(' ');
-            for (var i = 0, length = cmdline.length, arg = '', args = []; i < length; ++i) {
-                arg = cmdline[i].replace(/&nbsp;/g, ' ');
-                // Filter by exe file and exe args.
-                if (arg === '"' + process.execPath + '"' || arg.search(/^\-\-/) === 0) continue;
-                args.push(arg);
-            }
-            console.log("OPEN", args);
-        });*/
-
         // specify cli options
         cli.option("--repo <url>", "Overrides the main repository for the active profile.");
         cli.option("--theme <url>", "Loads the specified css theme (only in browser).");
@@ -189,6 +174,75 @@
             .action(profileSet);
         cli.parameter("allume <selector>");
         var p = cli.parse(allume.parameters);
+
+        //
+        // start the loading process for the specified selector
+        //
+        function open(selector) {
+            var requests = [];
+            var request = selector;
+            if (p["--config"]) {
+                var json;
+                try {
+                    json = JSON.parse(p["--config"].json);
+                }
+                catch(e) {
+                    var e = new Error("Make sure the data you pass to the --config switch is valid JSON data.");
+                    e.name = "error-invalid-configuration";
+                    console.error(e);
+                    if (typeof document !== "undefined" && firstOpen) {
+                        console.log("allume-error");
+                    }
+                    firstOpen = false;
+                    return;
+                }
+                request = { "package" : selector, "configuration" : json };
+            }
+            requests.push(request);
+
+            if (requests) {
+                using.apply(using, requests).then(function () {
+                    if (firstOpen) {
+                        console.log("allume-hide");
+                        firstOpen = false;
+                    }
+                }, function (loader) {
+                    usingFailed(loader);
+                    var e = new Error(err);
+                    e.name = errName;
+                    console.error(e);
+                    if (typeof document !== "undefined") {
+                        if (firstOpen) {
+                            console.log("allume-error");
+                            firstOpen = false;
+                        }
+                    }
+                });
+            }
+        }
+
+        // nw.js feature
+        var gui;
+        try {
+            // listen for OS open file event
+            gui = require("nw.gui");
+            gui.App.on("open", function(cmdline) {
+                cmdline = cmdline.replace(/"([^"]+)"/g, function(a) {
+                    return a.replace(/\s/g, "&nbsp;");
+                }).split(" ");
+                for (var i = 0, length = cmdline.length, arg = "", args = []; i < length; ++i) {
+                    arg = cmdline[i].replace(/&nbsp;/g, " ");
+                    // Filter by exe file and exe args.
+                    if (arg === "\"" + process.execPath + "\"" || arg.search(/^\-\-/) === 0) continue;
+                    args.push(arg);
+                }
+                //console.log("OPEN", args[args.length -1]);
+                open(args[args.length -1]);
+            });
+        }
+        catch(e) {
+            // ignore
+        }
 
         if (p) {
             // attach config function to allume
@@ -252,40 +306,7 @@
                 }
             }
             else if (p.selector) {
-                // NOTE: currently cc.cli supports only one selector parameter
-                var requests = [];
-                var request = p.selector;
-                if (p["--config"]) {
-                    var json;
-                    try {
-                        json = JSON.parse(p["--config"].json);
-                    }
-                    catch(e) {
-                        var e = new Error("Make sure the data you pass to the --config switch is valid JSON data.");
-                        e.name = "error-invalid-configuration";
-                        console.error(e);
-                        if (typeof document !== "undefined") {
-                            console.log("allume-error");
-                        }
-                        return;
-                    }
-                    request = { "package" : p.selector, "configuration" : json };
-                }
-                requests.push(request);
-
-                if (requests) {
-                    using.apply(using, requests).then(function () {
-                        console.log("allume-hide");
-                    }, function (loader) {
-                        usingFailed(loader);
-                        var e = new Error(err);
-                        e.name = errName;
-                        console.error(e);
-                        if (typeof document !== "undefined") {
-                            console.log("allume-error");
-                        }
-                    });
-                }
+                open(p.selector);
             }
         }
         else {

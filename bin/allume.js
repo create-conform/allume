@@ -1,5 +1,5 @@
 // rough browser polyfill for require
-// allume is going to be overwritten later. This is just not to polute the global scope.
+// allume is going to be overwritten later. This is just not to pollute the global scope.
 var allume = {};
 allume.loadScript = function(source) {
     if (typeof source === "string" && (source.substr(0,2) == "./" && source.lastIndexOf(".js") == source.length - 3)) {
@@ -32,6 +32,9 @@ if (typeof require === "undefined") {
     function getNWJSParameters() {
         try {
             var gui = require("nw.gui");
+            console.log(gui.App.argv);
+            console.log(gui.App.fullArgv);
+            console.log(gui.App.filteredArgv);
             return [ "allume"].concat(gui.App.argv);
         }
         catch(e) {

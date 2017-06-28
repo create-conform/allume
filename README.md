@@ -29,3 +29,5 @@ Options:
 
 Currently stuck on 0.21.6 because of this issue:
 https://github.com/nwjs/npm-installer/issues/56
+
+Broken from 0.22.0 until (latest tested) 0.23.5

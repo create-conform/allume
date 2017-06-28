@@ -1,34 +1,37 @@
 #! /usr/bin/env node
-try {
-    var findpath = require("nw").findpath;
-    var childProcess = require("child_process");
-    var path = require("path");
+(function() {
+    try {
+        // spawn nw.js process for allume with parameters
+        var findpath = require("nw").findpath;
+        var childProcess = require("child_process");
 
-    var PATH_NW = findpath();
-    var PATH_APP = __dirname;//path.join(__dirname, "bin");
+        var PATH_NW = findpath();
+        var PATH_APP = __dirname;
 
-    // spawn nw.js process for allume with parameters
-    process.argv.splice(1, 1);
-    process.argv[0] = PATH_APP;
-    var cmd = PATH_NW;
-    for (var a in process.argv) {
-        cmd += " " + process.argv[a];
-    }
+        process.argv.splice(1, 1);
+        process.argv[0] = PATH_APP;
+        var cmd = PATH_NW;
+        for (var a in process.argv) {
+            cmd += " " + process.argv[a];
+        }
 
-    //var result  = childProcess.execSync(PATH_NW, [ process.argv ], { "cwd" : PATH_APP });
-    var result  = childProcess.execSync(cmd, { "cwd" : PATH_APP });
-    //if (result.status != 0) {
-    //    console.error("Could not start nw.js.");
-    if (result.stderr) {
-        console.error(result.stderr.toString());
+        var ls = childProcess.spawn(PATH_NW, process.argv, {"cwd": PATH_APP});
+
+        ls.stdout.on("data", function(data) {
+            console.log(data.toString().trim());
+        });
+
+        ls.stderr.on("data", function(data) {
+            console.error(data.toString().trim());
+        });
+
+        //ls.on("close", function(code) {
+        //    if (code != 0) {
+        //          throw code;
+        //    }
+        //});
     }
-    if (result.stdout) {
-        console.log(result.stdout.toString());
+    catch (e) {
+        require("./bin/allume.js");
     }
-    //    return;
-    //}
-}
-catch(e) {
-    console.error(e);
-    require("./bin/allume.js");
-}
+})();
