@@ -4,7 +4,7 @@ var fs = require("fs");
 var path = require("path");
 
 var result;
-var includeFile = "include.js";
+var includeFile = "bin/include.js";
 var appcacheFile = "offline.appcache";
 var appcacheFiles = [
     "allume.js",
@@ -15,7 +15,7 @@ var appcacheFiles = [
 ];
 
 // pkx wrap --loader "include.js"
-result  = childProcess.spawnSync("pkx", [ "wrap", "--appcache", appcacheFile ,"--loader", includeFile], { "cwd" : path.join(__dirname, "..") });
+result  = childProcess.spawnSync("pkx", [ "wrap", "--appcache", appcacheFile ,"--loader", includeFile], { "cwd" : path.join(__dirname, "../bin") });
 if (result.status != 0) {
     console.error("Could not wrap the dependencies.");
     console.error(result.stderr.toString());
