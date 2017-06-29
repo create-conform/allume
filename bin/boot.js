@@ -29,8 +29,10 @@
         }
     };
     var MSG_MISSING_FEATURE = "This feature is not yet implemented.";
+    var MSG_UI_UNAVAILABLE = "UI Runtime is unavailable on this host.";
     var MODULE_ID_IO = "cc.io.0";
     var MODULE_ID_CLI = "cc.cli.0";
+    var MODULE_ID_HOST = "cc.host.0";
 
     var err = "";
     var errName = allume.ERROR_UNKNOWN;
@@ -41,7 +43,10 @@
     var firstOpen = true;
 
     var cli;
+    var host;
     var io;
+    var childProcess;
+    var path;
 
     function getDeepestError(e) {
         if (e.innerError) {
@@ -143,10 +148,30 @@
     function boot() {
         // load dependencies
         cli = cli || define.cache.get(MODULE_ID_CLI, "minor").factory();
+        host = host || define.cache.get(MODULE_ID_HOST, "minor").factory();
+
+        var nw;
+        var ui;
+        try {
+            // listen for OS open file event
+            nw = require("nw");
+            ui = require("nw.gui");
+        }
+        catch(e) {
+            // ignore
+        }
 
         // specify cli options
+        if (nw) {
+            cli.option("--ui", "Opens the selector in nw.js.");
+        }
+        else if (!host.isRuntimeBrowserFamily()) {
+            cli.option("--ui", MSG_UI_UNAVAILABLE);
+        }
         cli.option("--repo <url>", "Overrides the main repository for the active profile.");
-        cli.option("--theme <url>", "Loads the specified css theme (only in browser).");
+        if (host.isRuntimeBrowserFamily()) {
+            cli.option("--theme <url>", "Loads the specified css theme.");
+        }
         cli.option("--config <json>", "A JSON object with parameters for the package module loaded.");
         cli.option("--profile <name>", "Overrides the active profile.");
         cli.option("--gh-username <username>", "Overrides the global configuration GitHub username key.");
@@ -179,6 +204,39 @@
         // start the loading process for the specified selector
         //
         function open(selector) {
+            if (p["--ui"] && !ui) {
+                if (!nw) {
+                    console.error(MSG_UI_UNAVAILABLE);
+                    return;
+                }
+
+                // spawn nw.js process for allume with parameters
+                var findpath = nw.findpath;
+                childProcess = childProcess || require("child_process");
+                path = path || require("path");
+
+                var PATH_NW = findpath();
+                var PATH_APP = path.join(__dirname, "..");
+
+                process.argv.splice(1, 1);
+                process.argv[0] = PATH_APP;
+                for (var a in process.argv) {
+                    process.argv[a] = process.argv[a].replace(/"/g, "\"");
+                }
+
+                var ls = childProcess.spawn(PATH_NW, process.argv, {"cwd": PATH_APP});
+
+                ls.stdout.on("data", function(data) {
+                    console.log(data.toString().trim());
+                });
+
+                ls.stderr.on("data", function(data) {
+                    console.error(data.toString().trim());
+                });
+
+                return;
+            }
+
             var requests = [];
             var request = selector;
             if (p["--config"]) {
@@ -219,29 +277,6 @@
                     }
                 });
             }
-        }
-
-        // nw.js feature
-        var gui;
-        try {
-            // listen for OS open file event
-            gui = require("nw.gui");
-            gui.App.on("open", function(cmdline) {
-                cmdline = cmdline.replace(/"([^"]+)"/g, function(a) {
-                    return a.replace(/\s/g, "&nbsp;");
-                }).split(" ");
-                for (var i = 0, length = cmdline.length, arg = "", args = []; i < length; ++i) {
-                    arg = cmdline[i].replace(/&nbsp;/g, " ");
-                    // Filter by exe file and exe args.
-                    if (arg === "\"" + process.execPath + "\"" || arg.search(/^\-\-/) === 0) continue;
-                    args.push(arg);
-                }
-                //console.log("OPEN", args[args.length -1]);
-                open(args[args.length -1]);
-            });
-        }
-        catch(e) {
-            // ignore
         }
 
         if (p) {
@@ -306,6 +341,25 @@
                 }
             }
             else if (p.selector) {
+                if (ui) {
+                    // TODO - load the allume.ui package, when done, continue code below and proceed to open.
+
+                    // listen for OS open file event
+                    ui.App.on("open", function(cmdline) {
+                        cmdline = cmdline.replace(/"([^"]+)"/g, function(a) {
+                            return a.replace(/\s/g, "&nbsp;");
+                        }).split(" ");
+                        for (var i = 0, length = cmdline.length, arg = "", args = []; i < length; ++i) {
+                            arg = cmdline[i].replace(/&nbsp;/g, " ");
+                            // filter by exe file and exe args.
+                            if (arg === "\"" + process.execPath + "\"" || arg.search(/^\-\-/) === 0) continue;
+                            args.push(arg);
+                        }
+                        console.log("OPEN", args);
+                        open(args[args.length -1]);
+                    });
+                }
+
                 open(p.selector);
             }
         }

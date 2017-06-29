@@ -31,11 +31,7 @@ if (typeof require === "undefined") {
     }
     function getNWJSParameters() {
         try {
-            var gui = require("nw.gui");
-            console.log(gui.App.argv);
-            console.log(gui.App.fullArgv);
-            console.log(gui.App.filteredArgv);
-            return [ "allume"].concat(gui.App.argv);
+            return [ "allume"].concat(require("nw.gui").App.argv);
         }
         catch(e) {
             return null;
