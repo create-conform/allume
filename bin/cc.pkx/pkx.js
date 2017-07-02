@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.9/'
+// module 'cc.pkx.0.1.14/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.9/";
+    define.parameters.id = "cc.pkx.0.1.14/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.9",
+        "version": "0.1.14",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "main": "pkx.js",
@@ -345,7 +345,7 @@
                                         // load code
                                         if (host.runtime == host.RUNTIME_NODEJS) {
                                             try {
-                                                require("vm").runInThisContext(require("module").wrap(data), {filename: resource})(exports, require.original, module, __filename, __dirname);
+                                                require("vm").runInThisContext(require("module").wrap(data), {filename: (selector.uri.scheme == "file"? process.cwd() : "") + resource, lineOffset: -1})(exports, require.original, module, __filename, __dirname);
                                             }
                                             catch (e) {
                                                 error(e);
@@ -827,7 +827,7 @@
     
                 // find repository
                 var protocolDetected = selector.package.indexOf("://") != -1;
-                if (protocolDetected || (host.runtime == host.RUNTIME_NODEJS && selector.package.indexOf(".") == 0)) {
+                if (protocolDetected || ((host.runtime == host.RUNTIME_NODEJS || host.runtime == host.RUNTIME_NWJS) && selector.package.indexOf(".") == 0)) {
                     repository = {"namespace": "", "url": ""};
                 }
                 else {
@@ -844,8 +844,16 @@
                 }
     
                 try {
-                    if (host.runtime == host.RUNTIME_NODEJS && !protocolDetected) {
-                        own.uri = require("url").resolve(repository.url != ""? repository.url : "/" + process.cwd() + require("path").sep, selector.package);
+                    if ((host.runtime == host.RUNTIME_NODEJS || host.runtime == host.RUNTIME_NWJS) && !protocolDetected) {
+                        var cwd = process.cwd();
+                        cwd = cwd.indexOf("/") == 0? cwd : ("/" + cwd);
+                        own.uri = require("url").resolve(repository.url != ""? repository.url : cwd + require("path").sep, selector.package);
+                        //overriding the scheme for nw.js
+                        if (own.uri.scheme == "chrome-extension") {
+                            own.uri.scheme = "file";
+                            own.uri.authority.userInfo = null;
+                            own.uri.authority.host = null;
+                        }
                     }
                     else {
                         own.uri = repository.url + selector.package;

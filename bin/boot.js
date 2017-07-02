@@ -30,6 +30,7 @@
     };
     var MSG_MISSING_FEATURE = "This feature is not yet implemented.";
     var MSG_UI_UNAVAILABLE = "UI Runtime is unavailable on this host.";
+    var MSG_DEBUG_UNAVAILABLE = "Debugging is only available in node.js runtime.";
     var MODULE_ID_IO = "cc.io.0";
     var MODULE_ID_CLI = "cc.cli.0";
     var MODULE_ID_HOST = "cc.host.0";
@@ -47,6 +48,11 @@
     var io;
     var childProcess;
     var path;
+
+    // fix nw.js cwd issue
+    if(process.env.PWD) {
+        process.chdir(process.env.PWD);
+    }
 
     function getDeepestError(e) {
         if (e.innerError) {
@@ -168,6 +174,12 @@
         else if (!host.isRuntimeBrowserFamily()) {
             cli.option("--ui", MSG_UI_UNAVAILABLE);
         }
+        if (host.runtime == host.RUNTIME_NODEJS) {
+            cli.option("--debug [port]", "Starts node.js in debug mode.");
+        }
+        else {
+            cli.option("--debug [port]", MSG_DEBUG_UNAVAILABLE);
+        }
         cli.option("--repo <url>", "Overrides the main repository for the active profile.");
         if (host.isRuntimeBrowserFamily()) {
             cli.option("--theme <url>", "Loads the specified css theme.");
@@ -204,6 +216,9 @@
         // start the loading process for the specified selector
         //
         function open(selector) {
+            if (p["--debug"] && host.runtime == host.RUNTIME_NODEJS) {
+                return debug(p);
+            }
             if (p["--ui"] && !ui) {
                 if (!nw) {
                     console.error(MSG_UI_UNAVAILABLE);
@@ -217,6 +232,7 @@
 
                 var PATH_NW = findpath();
                 var PATH_APP = path.join(__dirname, "..");
+                var PATH_CWD = process.cwd();
 
                 process.argv.splice(1, 1);
                 process.argv[0] = PATH_APP;
@@ -224,7 +240,7 @@
                     process.argv[a] = process.argv[a].replace(/"/g, "\"");
                 }
 
-                var ls = childProcess.spawn(PATH_NW, process.argv, {"cwd": PATH_APP});
+                var ls = childProcess.spawn(PATH_NW, process.argv, {"cwd": PATH_CWD});
 
                 ls.stdout.on("data", function(data) {
                     console.log(data.toString().trim());
@@ -371,6 +387,52 @@
                 console.log("allume-error");
             }
         }
+    }
+
+    function debug(cmd) {
+        // start node in debug mode
+        childProcess = childProcess || require("child_process");
+
+        var PATH_CWD = process.cwd();
+
+        // splice out allume command
+        process.argv.splice(0, 1);
+
+        // find debug argument
+        var debugIdx = -1;
+        for (var a in process.argv) {
+            if (process.argv[a] == "--debug") {
+                debugIdx = a;
+            }
+            process.argv[a] = process.argv[a].replace(/"/g, "\"");
+        }
+        if (debugIdx >= 0) {
+            process.argv.splice(debugIdx, 1);
+        }
+        if (!cmd["--debug"].port) {
+            process.argv.splice(0, 0, "--debug-brk");
+            //process.argv.splice(0, 0, "--inspect");
+        }
+        else {
+            if (debugIdx >= 0) {
+                process.argv.splice(debugIdx, 1);
+            }
+            process.argv.splice(0, 0, "--debug-brk=" + cmd["--debug"].port);
+            //process.argv.splice(0, 0, "--inspect=" + cmd["--debug"].port);
+        }
+    
+
+        var ls = childProcess.spawn("node", process.argv, {"cwd": PATH_CWD});
+
+        ls.stdout.on("data", function(data) {
+            console.log(data.toString().trim());
+        });
+
+        ls.stderr.on("data", function(data) {
+            console.error(data.toString().trim());
+        });
+
+        return;
     }
 
     define.Loader.waitFor("pkx", function(loader) {

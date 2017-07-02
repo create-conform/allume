@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.0.1.1/'
+// module 'cc.io.0.1.3/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.0.1.1/";
+    define.parameters.id = "cc.io.0.1.3/";
     define.parameters.pkx = {
         "name": "cc.io",
-        "version": "0.1.1",
+        "version": "0.1.3",
         "title": "IO Library",
         "description": "Library for reading and writing data.",
         "license": "Apache-2.0",
@@ -39,7 +39,7 @@
     //
     // Copyright Nick Verlinden (info@createconform.com)
     //
-    ///////////////////////////////////////////////////////////////////////////////////////////// 
+    /////////////////////////////////////////////////////////////////////////////////////////////
     
     (function() {
         function IO(pkx, module) {
@@ -442,6 +442,8 @@
                 this.query = parts ? parts[7] : query;
                 this.fragment = parts ? parts[9] : fragment;
     
+                var initialScheme = own.scheme;
+    
                 // check if path starts with slash
                 if (this.path && this.path.length > 1 && this.path.substr(0, 1) != "/") {
                     throw new Error(self.ERROR_INVALID_URI, "Path '" + this.path + "' does not start with '/'.");
@@ -456,9 +458,10 @@
     
                 function getModule() {
                     // module is specified from the parse function. this is a fail-safe
-                    if (!module) {
+                    if (!module || own.scheme != initialScheme) {
                         if (protocols[own.scheme]) {
-                            return protocols[own.scheme];
+                            module = protocols[own.scheme];
+                            initialScheme = own.scheme;
                         }
                     }
                     return module;
