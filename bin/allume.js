@@ -106,6 +106,25 @@ if (typeof require === "undefined") {
             if (typeof document !== "undefined" && document.body.attributes[self.ATTR_BOOT_STATUS] && document.body.attributes[self.ATTR_BOOT_STATUS].value != self.MSG_ERROR) {
                 document.body.attributes[self.ATTR_BOOT_ERROR_NAME].value = e.name;
                 document.body.attributes[self.ATTR_BOOT_ERROR_MESSAGE].value = e.message;
+
+                //show window if nw.js
+                try {
+                    var nw = require("nw.gui");
+                    var win = nw.Window.get();
+                    if (e.message.length > 128) {
+                        win.width = 720;
+                        win.height = 480;
+                    }
+                    else {
+                        document.body.attributes[self.ATTR_BOOT_ERROR_MESSAGE].value = e.message.trim();
+                    }
+                    win.show();
+                    win.setShowInTaskbar(true);
+                    document.title = e.name;
+                }
+                catch(e) {
+                    // ignore
+                }
             }
             else {
                 // only show one error

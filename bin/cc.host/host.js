@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.host.0.1.1/'
+// module 'cc.host.0.1.2/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.host.0.1.1/";
+    define.parameters.id = "cc.host.0.1.2/";
     define.parameters.pkx = {
         "name": "cc.host",
-        "version": "0.1.1",
+        "version": "0.1.2",
         "title": "Host Module",
         "description": "Library that provides information about the host environment.",
         "main": "host.js"
@@ -30,7 +30,7 @@
     //
     // Copyright Nick Verlinden (info@createconform.com)
     //
-    ///////////////////////////////////////////////////////////////////////////////////////////// 
+    /////////////////////////////////////////////////////////////////////////////////////////////
     
     (function() {
         function Host() {
@@ -767,6 +767,15 @@
                 return singleton;
             }
             singleton = new (Function.prototype.bind.apply(Host, arguments));
+    
+            if (typeof document !== "undefined") {
+                document.documentElement.setAttribute("data-runtime", singleton.runtime);
+                document.documentElement.setAttribute("data-runtime-version", singleton.runtimeVersion);
+                document.documentElement.setAttribute("data-platform", singleton.platform);
+                document.documentElement.setAttribute("data-platform-version", singleton.platformVersion);
+                document.documentElement.setAttribute("data-platform-architecture", singleton.platformArchitecture);
+            }
+    
             return singleton;
         }));
     })();

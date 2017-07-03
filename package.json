@@ -1,7 +1,7 @@
 {
   "name": "allume",
   "main": "index.html",
-  "version": "0.34.0",
+  "version": "0.35.0",
   "description": "A cross-platform package bootloader for javascript.",
   "repository": {
     "type": "git",
@@ -30,5 +30,17 @@
   "webkit": {
     "plugin": true,
     "page-cache": false
+  },
+  "window": {
+    "transparent": false,
+    "always_on_top": false,
+    "frame": true,
+    "position": "center",
+    "show_in_taskbar": false,
+    "show": false,
+    "icon": "res/allume-256.png",
+    "width": 440,
+    "height": 160,
+    "resizable": false
   }
 }
