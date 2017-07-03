@@ -111,19 +111,32 @@ if (typeof require === "undefined") {
                 try {
                     var nw = require("nw.gui");
                     var win = nw.Window.get();
-                    if (e.message.length > 128) {
-                        win.width = 720;
-                        win.height = 480;
-                    }
-                    else {
-                        document.body.attributes[self.ATTR_BOOT_ERROR_MESSAGE].value = e.message.trim();
-                    }
-                    win.show();
-                    win.setShowInTaskbar(true);
-                    document.title = e.name;
+                    var ignoreClose;
+                    //win.show();
+                    //win.setShowInTaskbar(true);
+                    nw.Window.open("error.html", { "resizable" : false, "show" : false, "width" : 440, "height" : 160 }, function(err) {
+                        err.on("loaded", function() {
+                            err.window.setMain({ 
+                                "message" : "The package could not be loaded. For more information click on the 'Show console' below.",
+                                "close" : function() {
+                                    if (ignoreClose) {
+                                        return;
+                                    }
+                                    win.close();
+                                }, 
+                                "show" : function() {
+                                    ignoreClose = true;
+                                    err.close();
+                                    win.show();
+                                }});
+                            err.show();
+                            err.setShowInTaskbar(true);
+                        });
+                    });
                 }
                 catch(e) {
                     // ignore
+                    console.error(e);
                 }
             }
             else {

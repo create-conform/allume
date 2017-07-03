@@ -38,9 +38,9 @@
     "position": "center",
     "show_in_taskbar": false,
     "show": false,
-    "icon": "res/allume-256.png",
-    "width": 440,
-    "height": 160,
+    "icon": "res/allume-icon-256.png",
+    "width": 720,
+    "height": 480,
     "resizable": false
   }
 }

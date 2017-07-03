@@ -342,8 +342,8 @@
                     console.log("allume-error");
                 }
             }
-            else if (!p.selector && !p.profile) {
-                if (typeof document !== "undefined") {
+            else if (!p.selector && !p.profile && (!p["--ui"] || ui)) {
+                if (typeof document !== "undefined" && !ui) {
                     //debug
                     //window.location = "./about.html";
                 }
@@ -356,7 +356,7 @@
                     }
                 }
             }
-            else if (p.selector) {
+            else if (p.selector || p["--ui"]) {
                 if (ui) {
                     // TODO - load the allume.ui package, when done, continue code below and proceed to open.
 

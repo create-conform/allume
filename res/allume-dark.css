@@ -6,22 +6,15 @@ body {
     overflow: hidden;
     background-color: rgb(0,0,0);
 }
-html[data-runtime="nw-js"] body {
-    background-color: rgb(247,247,247);
-}
 body[data-allume-boot-status="allume-error"] {
     overflow: auto;
 }
 /*
-    When the boot message is not empty (meaning it's not finished booting), force it's background color to be black.
+    When the boot message is not empty (meaning it's not finished booting), force it's background color to be grey.
 */
 html:not([data-allume=""]) > body,
 html[data-allume=""] > body:not([data-allume-boot-status=""]) {
     background-color: rgb(0,0,0) !important;
-}
-html[data-runtime="nw-js"]:not([data-allume=""]) > body,
-html[data-runtime="nw-js"][data-allume=""] > body:not([data-allume-boot-status=""]) {
-    background-color: rgb(247,247,247) !important;
 }
 /*
     When the boot message is empty (meaning it's finished booting), reset z-index (required for animation to work).
@@ -61,13 +54,6 @@ body:before {
     height 0s linear 1s,
     top 0s linear 1s;
 }
-html[data-runtime="nw-js"] body:before {
-    font-size: 14px;
-    font-weight: bold;
-    color: rgb(9,8,7);
-    background-color: rgb(247,247,247);
-    /*border-top: 1px solid rgb(185, 183, 185);*/
-}
 /*
     Div that will overlay the masking div.
 */
@@ -81,9 +67,6 @@ body:after {
     color: rgba(255, 255, 255, 0.9);
     white-space: pre-wrap;
     word-wrap: break-word;
-}
-html[data-runtime="nw-js"] body:after {
-    color: rgb(9,8,7);
 }
 /*
     Progress indicator when not displaying an error message.
@@ -136,10 +119,6 @@ html[data-allume=""] > body[data-allume-boot-status="allume-error"]:before {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
 }
-html[data-runtime="nw-js"][data-allume=""] > body[data-allume-boot-status="allume-error"]:before {
-    background-image: none;
-    padding: 40px;
-}
 html:not([data-allume=""]) > body:after,
 html[data-allume=""] > body[data-allume-boot-status="allume-error"]:after {
     padding: 240px 60px 60px 60px;
@@ -148,11 +127,6 @@ html[data-allume=""] > body[data-allume-boot-status="allume-error"]:after {
     content: attr(data-allume-boot-error-message);
     left: 0px;
     top: 0px;
-}
-html[data-runtime="nw-js"]:not([data-allume=""]) > body:after,
-html[data-runtime="nw-js"][data-allume=""] > body[data-allume-boot-status="allume-error"]:after {
-    font-family: sans-serif;
-    padding: 80px 40px 40px 40px;
 }
 /*
     When the boot message is not empty (meaning it's not finished booting), show the logo and progress indicator.
@@ -205,15 +179,15 @@ html:not([data-allume=""]) > body[data-allume-boot-status=""]:after {
 /*
     Webkit scrollbar.
 */
-html:not([data-runtime="nw-js"])::-webkit-scrollbar {
+::-webkit-scrollbar {
     height: 12px;
     width: 12px;
     background: #000;
 }
-html:not([data-runtime="nw-js"])::-webkit-scrollbar-corner {
+::-webkit-scrollbar-corner {
     background: #000;
 }
-html:not([data-runtime="nw-js"])::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background: #1b1b1b;
     border-radius: 1ex;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);

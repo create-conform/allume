@@ -1,0 +1,47 @@
+body {
+    font: 14px sans-serif;
+    margin: 0px;
+}
+body:after {
+    content: attr(data-message);
+    position: absolute;
+    padding: 24px;
+}
+.button-close {
+    visibility: hidden;
+    display: none;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 28px;
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    border: 1px solid rgb(9,8,7);
+    cursor: default;
+    text-decoration: none;
+    color: initial;
+    left: auto;
+}
+.button-close:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+.button-close:active {
+    background-color: rgba(0,0,0,0.2);
+}
+body[data-console="yes"] .button-close {
+    visibility: visible;
+    display: block;
+}
+
+a {
+    visibility: hidden;
+    display: none;
+    position: absolute;
+    bottom: 28px;
+    left: 24px;
+}
+
+body[data-console="yes"] a {
+    visibility: visible;
+    display: block;
+}
