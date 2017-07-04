@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.volume.config.0.1.1/'
+// module 'cc.io.volume.config.0.1.2/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.volume.config.0.1.1/";
+    define.parameters.id = "cc.io.volume.config.0.1.2/";
     define.parameters.pkx = {
         "name": "cc.io.volume.config",
-        "version": "0.1.1",
+        "version": "0.1.2",
         "title": "IO Configuration Volume Module",
         "description": "Module that will mount a local volume for storing configuration.",
         "license": "Apache-2.0",
@@ -121,7 +121,7 @@
                         path = PATH_CONFIG_USER_MACOS;
                         break;
                     case host.PLATFORM_WINDOWS:
-                        path = PATH_CONFIG_USER_WINDOWS;
+                        path = "/" + PATH_CONFIG_USER_WINDOWS;
                         break;
                 }
                 if (host.isPlatformLinuxFamily()) {
