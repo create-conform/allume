@@ -136,7 +136,6 @@ if (typeof require === "undefined") {
                 }
                 catch(e) {
                     // ignore
-                    console.error(e);
                 }
             }
             else {

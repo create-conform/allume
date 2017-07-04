@@ -21,7 +21,7 @@
                     "allume": {
                         "url": "https://api.github.com/repos/create-conform"
                     },
-                    "cc": {
+                    "cc": { 
                         "url": "https://api.github.com/repos/create-conform"
                     }
                 }
@@ -34,6 +34,7 @@
     var MODULE_ID_IO = "cc.io.0";
     var MODULE_ID_CLI = "cc.cli.0";
     var MODULE_ID_HOST = "cc.host.0";
+    var MODULE_ID_IO_VOLUME_CONFIG = "cc.io.volume.config";
 
     var err = "";
     var errName = allume.ERROR_UNKNOWN;
@@ -50,7 +51,7 @@
     var path;
 
     // fix nw.js cwd issue
-    if(process.env.PWD) {
+    if(typeof process !== "undefined" && process.env.PWD) {
         process.chdir(process.env.PWD);
     }
 
@@ -462,7 +463,7 @@
             // get active profile
             var profile = config.profiles[config.activeProfile];
 
-            //add all repositories from profile
+            // add all repositories from profile
             for (var r in profile.repositories) {
                 if (r == "" && repo) {
                     continue;
@@ -472,9 +473,16 @@
 
             boot();
         }
+
+        // MAYBE SOLVE THIS BY CREATING cc.config
+        // config.open("allume/allume.json", config.LOCAL).then(function(cfg) {
+        //      console.log("GOT CONFIG");   
+        // }, function(e) {
+        //      console.log("CONF ERROR", e);   
+        // })
         var configVolume = io.volumes.get("config");
         if (configVolume.length > 0) {
-            configVolume[0].open("allume.json", io.ACCESS_MODIFY).then(function (stream) {
+            configVolume[0].open("allume/allume.json", io.ACCESS_MODIFY).then(function (stream) {
                 config = stream.readAsJSON().then(success, fail);
             }, fail);
         }

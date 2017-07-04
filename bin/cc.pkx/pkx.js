@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.14/'
+// module 'cc.pkx.0.1.19/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.14/";
+    define.parameters.id = "cc.pkx.0.1.19/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.14",
+        "version": "0.1.19",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "main": "pkx.js",
@@ -69,6 +69,7 @@
             var self = this;
     
             this.repositoryURL = "";
+            this.repositoryResolveLocal = false; // if set to true, dependencies will be resolved relative to root of package (embedded).
             if (!configuration && typeof define != "undefined" && define.parameters.configuration) {
                 configuration = define.parameters.configuration;
             }
@@ -143,7 +144,7 @@
                     catch(e) {
                         if (selector.optional) {
                             // gracefully stop
-                            callback();
+                            callback(null, true);
                             return;
                         }
                         else {
@@ -231,7 +232,7 @@
                                     if (requests[d].package.substr(0, 2) == "./") {
                                         requests[d].package = "pkx:///" + volume.pkx.id + (requests[d].package.length > 2 ? "/" + requests[d].package.substr(2) : "");
                                     }
-                                    else if (volume.localId.lastIndexOf("/") == volume.localId.length - 1) {
+                                    else if (volume.localId.lastIndexOf("/") == volume.localId.length - 1 && self.repositoryResolveLocal) {
                                         requests[d].package = "pkx:///" + volume.pkx.id + "/" + requests[d].package;
                                     }
     
@@ -257,6 +258,20 @@
                                 return;
                             }
                             using.apply(this, requests).then(getResourceFromVolume, function(loader) {
+                                var halt;
+                                var mods = [];
+                                for (var r in loader.requests) {
+                                    if (loader.requests[r].err.length > 0 && !loader.requests[r].request.optional) {
+                                        halt = true;
+                                    }
+                                    else {
+                                        mods.push(loader.requests[r].module);
+                                    }
+                                }
+                                if (!halt) {                                  
+                                    getResourceFromVolume.apply(this, mods);
+                                    return;
+                                }
                                 error(new Error(self.ERROR_DEPENDENCY, "", loader));
                             }, true);
                         }

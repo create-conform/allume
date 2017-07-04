@@ -1,23 +1,23 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.file-system.0.1.1/'
+// module 'cc.io.file-system.0.1.3/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.file-system.0.1.1/";
+    define.parameters.id = "cc.io.file-system.0.1.3/";
     define.parameters.pkx = {
         "name": "cc.io.file-system",
-        "version": "0.1.1",
+        "version": "0.1.3",
         "title": "IO File system Module",
         "description": "IO module that implements file protocol support.",
         "license": "Apache-2.0",
         "main": "file-system.js",
-        "dependencies": [
-            "drivelist"
-        ],
+        "dependencies": {
+            "drivelist": "5.0.22"
+        },
         "pkxDependencies": [
             "cc.event.0.1",
             "cc.host.0.1",
@@ -46,7 +46,7 @@
     //
     // Copyright Nick Verlinden (info@createconform.com)
     //
-    ///////////////////////////////////////////////////////////////////////////////////////////// 
+    /////////////////////////////////////////////////////////////////////////////////////////////
     
     (function() {
         function FileSystem(pkx, module) {
@@ -69,7 +69,7 @@
                 nodePath = require("path");
             }
             else {
-                throw "The runtime does not support file system access.";
+                return "The runtime does not support file system access.";
             }
     
             this.PROTOCOL_FILESYSTEM = "file";
@@ -366,7 +366,7 @@
                 this.scope = io.VOLUME_SCOPE_LOCAL;
                 this.class = io.VOLUME_CLASS_PERSISTENT;
                 this.readOnly = driveInfo.protected;
-                this.localId = //crypt.guid(crypt.md5(this.name + "/" + this.description + "/" + this.device + "/" + drivePath));
+                this.localId = "";//crypt.guid(crypt.md5(this.name + "/" + this.description + "/" + this.device + "/" + drivePath));
     
                 this.query = function(path) {
                     //show refuse with a file not found error if the path does not exist, and a file object if it does.
