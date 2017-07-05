@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.19/'
+// module 'cc.pkx.0.1.20/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.19/";
+    define.parameters.id = "cc.pkx.0.1.20/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.19",
+        "version": "0.1.20",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "main": "pkx.js",
@@ -360,7 +360,7 @@
                                         // load code
                                         if (host.runtime == host.RUNTIME_NODEJS) {
                                             try {
-                                                require("vm").runInThisContext(require("module").wrap(data), {filename: (selector.uri.scheme == "file"? process.cwd() : "") + resource, lineOffset: -1})(exports, require.original, module, __filename, __dirname);
+                                                require("vm").runInThisContext(data, {filename: (selector.uri.scheme == "file"? process.cwd() : "") + resource, lineOffset: -1});
                                             }
                                             catch (e) {
                                                 error(e);
