@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.host.0.1.3/'
+// module 'cc.host.0.1.5/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.host.0.1.3/";
+    define.parameters.id = "cc.host.0.1.5/";
     define.parameters.pkx = {
         "name": "cc.host",
-        "version": "0.1.3",
+        "version": "0.1.5",
         "title": "Host Module",
         "description": "Library that provides information about the host environment.",
         "main": "host.js"
@@ -159,6 +159,20 @@
                     case singleton.RUNTIME_BROWSER_INTERNET_EXPLORER:
                     case singleton.RUNTIME_BROWSER_OPERA:
                     case singleton.RUNTIME_BROWSER_SAFARI:
+                    case singleton.RUNTIME_NWJS:
+                    case singleton.RUNTIME_ELECTRON:
+                    case singleton.RUNTIME_ADOBECEP:
+                        return true;
+                    default:
+                        return false;
+                }
+            };
+            this.isRuntimeNodeFamily = function () {
+                switch (singleton.runtime) {
+                    case singleton.RUNTIME_NODE:
+                    case singleton.RUNTIME_NWJS:
+                    case singleton.RUNTIME_ELECTRON:
+                    case singleton.RUNTIME_ADOBECEP:
                         return true;
                     default:
                         return false;
