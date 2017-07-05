@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.20/'
+// module 'cc.pkx.0.1.21/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.20/";
+    define.parameters.id = "cc.pkx.0.1.21/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.20",
+        "version": "0.1.21",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "main": "pkx.js",
@@ -358,7 +358,7 @@
     
                                     if (ext == "js") {
                                         // load code
-                                        if (host.runtime == host.RUNTIME_NODEJS) {
+                                        if (host.isRuntimeNodeFamily() && !host.isRuntimeBrowserFamily()) {
                                             try {
                                                 require("vm").runInThisContext(data, {filename: (selector.uri.scheme == "file"? process.cwd() : "") + resource, lineOffset: -1});
                                             }
@@ -368,7 +368,7 @@
                                             }
                                             complete(null, null, true);
                                         }
-                                        else if (host.isRuntimeBrowserFamily() || host.runtime == host.RUNTIME_NWJS) {
+                                        else if (host.isRuntimeBrowserFamily()) {
                                             var script = document.createElement("script");
                                             script.language = "javascript";
                                             script.type = "text/javascript";
