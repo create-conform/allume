@@ -234,6 +234,8 @@
                 var PATH_NW = findpath();
                 var PATH_APP = path.join(__dirname, "..");
                 var PATH_CWD = process.cwd();
+                var env = Object.create(process.env);
+                env.PWD = process.cwd();
 
                 process.argv.splice(1, 1);
                 process.argv[0] = PATH_APP;
@@ -241,7 +243,7 @@
                     process.argv[a] = process.argv[a].replace(/"/g, "\"");
                 }
 
-                var ls = childProcess.spawn(PATH_NW, process.argv, {"cwd": PATH_CWD});
+                var ls = childProcess.spawn(PATH_NW, process.argv, {"cwd": PATH_CWD, "env" : env});
 
                 ls.stdout.on("data", function(data) {
                     console.log(data.toString().trim());

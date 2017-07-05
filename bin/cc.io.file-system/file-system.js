@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.file-system.0.1.3/'
+// module 'cc.io.file-system.0.1.4/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.file-system.0.1.3/";
+    define.parameters.id = "cc.io.file-system.0.1.4/";
     define.parameters.pkx = {
         "name": "cc.io.file-system",
-        "version": "0.1.3",
+        "version": "0.1.4",
         "title": "IO File system Module",
         "description": "IO module that implements file protocol support.",
         "license": "Apache-2.0",
@@ -458,7 +458,7 @@
                     }
                     else if (type.isString(uri)) {// && host.features.includes(host.FEATURE_IO_FILE_SYSTEM)) {
                         if (process && process.cwd) {
-                            var path = process.cwd().replace(/\\/g, "/");
+                            var path = "/" + process.cwd().replace(/\\/g, "/");
                             if (path.lastIndexOf("/") != path.length - 1) {
                                 path += "/";
                             }

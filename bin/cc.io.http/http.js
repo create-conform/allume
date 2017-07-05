@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.http.0.1.3/'
+// module 'cc.io.http.0.1.4/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.http.0.1.3/";
+    define.parameters.id = "cc.io.http.0.1.4/";
     define.parameters.pkx = {
         "name": "cc.io.http",
-        "version": "0.1.3",
+        "version": "0.1.4",
         "title": "IO HTTP Module",
         "description": "IO module that implements HTTP & HTTPS protocol support.",
         "license": "Apache-2.0",
@@ -529,7 +529,7 @@
                     }
                 }
                 else if (type.isString(uri)) {
-                    if ((host.isRuntimeBrowserFamily() || host.runtime == host.RUNTIME_NWJS) && typeof location != "undefined" && location.protocol && location.host && location.pathname) {
+                    if (host.isRuntimeBrowserFamily() && typeof location != "undefined" && location.protocol && location.host && location.pathname) {
                         var idxLastSlash = location.pathname.lastIndexOf("/");
                         var path = "/";
                         if (idxLastSlash >= 0) {
