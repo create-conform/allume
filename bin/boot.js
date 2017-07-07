@@ -142,7 +142,7 @@
         }
     }
     function profileAdd(args) {
-        if (!profileExists(args.name)) {
+        if (profileExists(args.name)) {
             console.error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' already exist.");
             return;
         }
@@ -156,7 +156,7 @@
         });
     }
     function profileCopy(args) {
-        if (!profileExists(args.name)) {
+        if (profileExists(args.name)) {
             console.error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' already exist.");
             return;
         }
