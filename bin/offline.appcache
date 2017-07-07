@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# unique stamp: 0.036939864384017311499289604759
+# unique stamp: 0.51807491644988121499419026463
 cc.error/error.js
 cc.host/host.js
 cc.type/type.js
@@ -21,7 +21,7 @@ allume.request.file-system/file-system.js
 cc.io.http/http.js
 cc.io.file-system/file-system.js
 cc.io.local-storage/local-storage.js
-cc.io.volume.config/config.js
+cc.config/config.js
 cc.cli/cli.js
 include.js
 

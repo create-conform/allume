@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.local-storage.0.1.3/'
+// module 'cc.io.local-storage.0.1.4/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.local-storage.0.1.3/";
+    define.parameters.id = "cc.io.local-storage.0.1.4/";
     define.parameters.pkx = {
         "name": "cc.io.local-storage",
-        "version": "0.1.3",
+        "version": "0.1.4",
         "title": "IO Local Storage Module",
         "description": "IO module that implements local storage protocol support.",
         "license": "Apache-2.0",
@@ -228,7 +228,7 @@
                     });
                 };
             };
-            this.LocalStorageStream.open = function(uri, opt_access) {
+            this.LocalStorageStream.open = function(uri, opt_access, opt_create) {
                 return new Promise(function(resolve, reject) {
                     var buffer;
                     var data = getItem(uri.toString());
@@ -273,8 +273,8 @@
                     return new Promise(function(resolve, refuse) { refuse("Not implemented"); }); //TODO - To Implement
                 };
     
-                this.open = function(path, opt_access) {
-                    return self.uri.open(path, opt_access);
+                this.open = function(path, opt_access, opt_create) {
+                    return self.uri.open(path, opt_access, opt_create);
                 };
     
                 this.events = new event.Emitter(this);
@@ -289,7 +289,7 @@
                     }
                 }
             };
-            this.uri.open = function(uri, opt_access) {
+            this.uri.open = function(uri, opt_access, opt_create) {
                 if (uri && type.isString(uri)) {
                     uri = self.uri.parse(uri);
                 }
@@ -299,7 +299,7 @@
                 if (!uri) {
                     throw new Error(io.ERROR_URI_PARSE, "");
                 }
-                return self.LocalStorageStream.open(uri.path, opt_access);
+                return self.LocalStorageStream.open(uri.path, opt_access, opt_create);
             };
             this.uri.exists = function(uri) {
                 return new Promise(function(resolve, refuse) {

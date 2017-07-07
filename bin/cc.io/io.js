@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.0.1.3/'
+// module 'cc.io.0.1.4/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.0.1.3/";
+    define.parameters.id = "cc.io.0.1.4/";
     define.parameters.pkx = {
         "name": "cc.io",
-        "version": "0.1.3",
+        "version": "0.1.4",
         "title": "IO Library",
         "description": "Library for reading and writing data.",
         "license": "Apache-2.0",
@@ -468,18 +468,16 @@
                 }
     
                 // returns promise with first parameter stream object when fulfilled
-                this.open = function (opt_access, opt_context) {
+                this.open = function (opt_access, opt_create) {
                     var module = getModule();
                     if (!module) {
                         throw new Error(self.ERROR_UNKNOWN_PROTOCOL, UNKNOWN_PROTOCOL_ERROR);
                     }
                     return new Promise(function (resolve, reject) {
                         try {
-                            module.uri.open(own, opt_access, opt_context).then(function (stream) {
+                            module.uri.open(own, opt_access, opt_create).then(function (stream) {
                                 resolve(stream);
-                            }, function (err) {
-                                reject(err);
-                            });
+                            }, reject);
                         }
                         catch (e) {
                             reject(e);
@@ -487,18 +485,16 @@
                     });
                 };
     
-                this.exists = function (opt_context) {
+                this.exists = function () {
                     var module = getModule();
                     if (!module) {
                         throw new Error(self.ERROR_UNKNOWN_PROTOCOL, UNKNOWN_PROTOCOL_ERROR);
                     }
                     return new Promise(function (resolve, reject) {
                         try {
-                            module.uri.exists(own, opt_context).then(function (type) {
+                            module.uri.exists(own).then(function (type) {
                                 resolve(type);
-                            }, function (err) {
-                                reject(err);
-                            });
+                            }, reject);
                         }
                         catch (e) {
                             reject(e);
@@ -506,18 +502,16 @@
                     });
                 };
     
-                this.delete = function (opt_context) {
+                this.delete = function () {
                     var module = getModule();
                     if (!module) {
                         throw new Error(self.ERROR_UNKNOWN_PROTOCOL, UNKNOWN_PROTOCOL_ERROR);
                     }
                     return new Promise(function (resolve, reject) {
                         try {
-                            module.uri.delete(own, opt_context).then(function (type) {
+                            module.uri.delete(own).then(function (type) {
                                 resolve(type);
-                            }, function (err) {
-                                reject(err);
-                            });
+                            }, reject);
                         }
                         catch (e) {
                             reject(e);
@@ -597,14 +591,14 @@
     
                 throw new Error(self.ERROR_UNSUPPORTED_URI_FORMAT, "Unsupported URI format '" + uri + "', no parser was found.");
             };
-            this.URI.open = function (uri, opt_access, opt_context) {
-                return self.URI.parse(uri).open(opt_access, opt_context);
+            this.URI.open = function (uri, opt_access, opt_create) {
+                return self.URI.parse(uri).open(opt_access, opt_create);
             };
-            this.URI.exists = function (uri, opt_context) {
-                return self.URI.parse(uri).exists(opt_context);
+            this.URI.exists = function (uri) {
+                return self.URI.parse(uri).exists();
             };
-            this.URI.delete = function (uri, opt_context) {
-                return self.URI.parse(uri).delete(opt_context);
+            this.URI.delete = function (uri) {
+                return self.URI.parse(uri).delete();
             };
     
             this.Volume = {

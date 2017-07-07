@@ -31,19 +31,20 @@
     var MSG_MISSING_FEATURE = "This feature is not yet implemented.";
     var MSG_UI_UNAVAILABLE = "UI Runtime is unavailable on this host.";
     var MSG_DEBUG_UNAVAILABLE = "Debugging is only available in node.js runtime.";
-    var MODULE_ID_IO = "cc.io.0";
+    var MODULE_ID_CONFIG = "cc.config.0";
     var MODULE_ID_CLI = "cc.cli.0";
     var MODULE_ID_HOST = "cc.host.0";
-    var MODULE_ID_IO_VOLUME_CONFIG = "cc.io.volume.config";
+    var PATH_CONFIG = "allume/allume.json";
 
     var err = "";
     var errName = allume.ERROR_UNKNOWN;
 
-    var config;
+    var cfg;
     var repo;
     var profile;
     var firstOpen = true;
 
+    var config;
     var cli;
     var host;
     var io;
@@ -440,7 +441,7 @@
 
     define.Loader.waitFor("pkx", function(loader) {
         // load dependencies
-        io = io || define.cache.get(MODULE_ID_IO, "minor").factory();
+        cfg = cfg || define.cache.get(MODULE_ID_CONFIG, "minor").factory();
 
         // reset require polyfill
         if (allume.require) {
@@ -453,15 +454,32 @@
         }
 
         // get configuration, then boot
-        function success(c) {
+        function configSuccess(c) {
             config = c;
-            done();
+            configDone();
         }
-        function fail() {
-            config = CONFIG_DEFAULT;
-            done();
+        function configFail(e) {
+            console.error(e);
+            configDone();
         }
-        function done() {
+        function configDone() {
+            // if empty object, set to default
+            if (!config || Object.keys(config).length === 0) {
+                config = CONFIG_DEFAULT;
+
+                console.log("TRYING TO SAVE DEFAULT CONFIG");
+
+                // attempt to save default config
+                cfg.save(PATH_CONFIG).then(function() {
+                    console.log("SAVED DEFAULT CONFIG");
+                    startBoot();
+                }, startBoot);
+            }
+            else {
+                startBoot();
+            }
+        }
+        function startBoot() {
             // get active profile
             var profile = config.profiles[config.activeProfile];
 
@@ -476,20 +494,9 @@
             boot();
         }
 
-        // MAYBE SOLVE THIS BY CREATING cc.config
-        // config.open("allume/allume.json", config.LOCAL).then(function(cfg) {
-        //      console.log("GOT CONFIG");   
-        // }, function(e) {
-        //      console.log("CONF ERROR", e);   
-        // })
-        var configVolume = io.volumes.get("config");
-        if (configVolume.length > 0) {
-            configVolume[0].open("allume/allume.json", io.ACCESS_MODIFY).then(function (stream) {
-                config = stream.readAsJSON().then(success, fail);
-            }, fail);
-        }
-        else {
-            fail();
-        }
+        cfg.load(PATH_CONFIG).then(function(cfg) {
+            console.log("GOT CONFIG", cfg);
+            configSuccess(cfg);   
+        }, configFail);
     });
 })(typeof global !== "undefined"? global.allume : allume);

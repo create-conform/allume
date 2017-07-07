@@ -19,5 +19,5 @@ require("./allume.request.file-system/file-system.js");
 require("./cc.io.http/http.js");
 require("./cc.io.file-system/file-system.js");
 require("./cc.io.local-storage/local-storage.js");
-require("./cc.io.volume.config/config.js");
+require("./cc.config/config.js");
 require("./cc.cli/cli.js");

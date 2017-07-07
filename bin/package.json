@@ -8,7 +8,7 @@
     "allume.request.file-system.0.1",
     "cc.io.http.0.1",
     "cc.io.file-system.0.1",
-    "cc.io.volume.config.0.1",
+    "cc.config.0.1",
     "cc.cli.0.1"
   ]
 }
