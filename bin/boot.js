@@ -11,6 +11,7 @@
 (function(allume) {
     var BOOT_SCREEN_DURATION = 3000;
     var CONFIG_DEFAULT = {
+        "allume" : true,
         "activeProfile": "local",
         "profiles": {
             "local": {
@@ -464,7 +465,7 @@
         }
         function configDone() {
             // if empty object, set to default
-            if (!config || Object.keys(config).length === 0) {
+            if (!config || Object.keys(config).length === 0 || !config.allume) {
                 config = CONFIG_DEFAULT;
 
                 console.log("TRYING TO SAVE DEFAULT CONFIG");

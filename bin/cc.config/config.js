@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.config.0.1.5/'
+// module 'cc.config.0.1.6/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.config.0.1.5/";
+    define.parameters.id = "cc.config.0.1.6/";
     define.parameters.pkx = {
         "name": "cc.config",
-        "version": "0.1.5",
+        "version": "0.1.6",
         "title": "Configuration Module",
         "description": "Library for loading and saving configuration data.",
         "license": "Apache-2.0",
@@ -71,7 +71,7 @@
         var PATH_CONFIG_USER_WINDOWS = typeof process != "undefined"? process.env.APPDATA + "\\" : null;
         var PATH_CONFIG_USER_MACOS = typeof process != "undefined"? process.env.HOME + "/Library/Preferences/" : null;
         this.ERROR_FILE_SIZE_EXEEDS_LIMIT = "config-error-file-size-exeeds-limit";
-        this.MAX_SIZE = ls? ls.MAX_SIZE : "5242880";
+        this.MAX_SIZE = ls && ls.MAX_SIZE? ls.MAX_SIZE : "5242880";
     
         //
         // private
@@ -195,7 +195,6 @@
                                 stream.close();
                                 resolve();
                             }, function(e) {
-                                 console.error(e);
                                 stream.close();
                                 reject(e);
                             });
@@ -203,7 +202,10 @@
                     }, reject);
                 }
     
-                if (!volume) {
+                if (!path) {
+                    reject(new Error(self.ERROR_INVALID_PATH, "There is no path specified to save the config."));
+                }
+                else if (!volume) {
                     mountConfigVolume(success, reject);
                 }
                 else {
