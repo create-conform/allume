@@ -471,7 +471,7 @@
                 console.log("TRYING TO SAVE DEFAULT CONFIG");
 
                 // attempt to save default config
-                cfg.save(PATH_CONFIG).then(function() {
+                cfg.save(config, PATH_CONFIG).then(function() {
                     console.log("SAVED DEFAULT CONFIG");
                     startBoot();
                 }, startBoot);
