@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.config.0.1.6/'
+// module 'cc.config.0.1.7/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.config.0.1.6/";
+    define.parameters.id = "cc.config.0.1.7/";
     define.parameters.pkx = {
         "name": "cc.config",
-        "version": "0.1.6",
+        "version": "0.1.7",
         "title": "Configuration Module",
         "description": "Library for loading and saving configuration data.",
         "license": "Apache-2.0",

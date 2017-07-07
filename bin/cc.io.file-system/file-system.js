@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.file-system.0.1.7/'
+// module 'cc.io.file-system.0.1.8/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.file-system.0.1.7/";
+    define.parameters.id = "cc.io.file-system.0.1.8/";
     define.parameters.pkx = {
         "name": "cc.io.file-system",
-        "version": "0.1.7",
+        "version": "0.1.8",
         "title": "IO File system Module",
         "description": "IO module that implements file protocol support.",
         "license": "Apache-2.0",
