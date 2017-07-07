@@ -285,7 +285,7 @@
             this.uri.parse = function(uri) {
                 if(uri && type.isString(uri)) {
                     if (uri.length >= 5 && uri.substr(0,5) == self.PROTOCOL_LOCAL_STORAGE + "://") {
-                        return new io.URI(uri);
+                        return new io.URI(uri, self);
                     }
                 }
             };

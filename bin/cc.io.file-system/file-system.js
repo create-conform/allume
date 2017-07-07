@@ -499,7 +499,7 @@
                         return new io.URI(self.PROTOCOL_FILESYSTEM, null, uri.replace(/\\/g, "/"), null, null, self);
                     }
                     if (uri.length >= 7 && uri.substr(0,7) == self.PROTOCOL_FILESYSTEM + "://") {
-                        return new io.URI(uri);
+                        return new io.URI(uri, self);
                     }
                     else if (type.isString(uri)) {// && host.features.includes(host.FEATURE_IO_FILE_SYSTEM)) {
                         if (process && process.cwd) {
