@@ -142,7 +142,11 @@
                         }
                     });
                 };
-                this.write = function(data) {
+                this.write = function(data, position) {
+                    if (!position) {
+                        position = 0;
+                    }
+
                     return new Promise(function(resolve, refuse) {
                         if (closed) {
                             refuse(new Error(io.ERROR_STREAM_CLOSED, ""));
