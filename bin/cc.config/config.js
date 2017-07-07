@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.config.0.1.7/'
+// module 'cc.config.0.1.8/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.config.0.1.7/";
+    define.parameters.id = "cc.config.0.1.8/";
     define.parameters.pkx = {
         "name": "cc.config",
-        "version": "0.1.7",
+        "version": "0.1.8",
         "title": "Configuration Module",
         "description": "Library for loading and saving configuration data.",
         "license": "Apache-2.0",
@@ -185,7 +185,7 @@
             return new Promise(function(resolve, reject) {
                 function success() {
                     // save file to volume (and create folders)
-                    volume.open(path, io.ACCESS_MODIFY, true).then(function(stream) {
+                    volume.open(path, io.ACCESS_OVERWRITE, true).then(function(stream) {
                         var data = JSON.stringify(obj);
                         if (data.length > self.MAX_SIZE) {
                             reject(new Error(self.ERROR_FILE_SIZE_EXEEDS_LIMIT, "The configuration file is too big. There is a size limit of " + self.MAX_SIZE + " bytes per file for storing local configuration data."));
