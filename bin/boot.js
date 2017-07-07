@@ -29,6 +29,10 @@
             }
         }
     };
+    var CONFIG_PROFILE_TEMPLATE = {
+         "repositories": {
+         }
+    };
     var MSG_MISSING_FEATURE = "This feature is not yet implemented.";
     var MSG_UI_UNAVAILABLE = "UI Runtime is unavailable on this host.";
     var MSG_DEBUG_UNAVAILABLE = "Debugging is only available in node.js runtime.";
@@ -36,6 +40,9 @@
     var MODULE_ID_CLI = "cc.cli.0";
     var MODULE_ID_HOST = "cc.host.0";
     var PATH_CONFIG = "allume/allume.json";
+    var ERROR_INVALID_PROFILE = "allume-error-invalid-profile";
+    var ERROR_INVALID_SECTION = "allume-error-invalid-section";
+    var ERROR_SAVE_CONFIG = "allume-error-save-config";
 
     var err = "";
     var errName = allume.ERROR_UNKNOWN;
@@ -130,28 +137,93 @@
     }
 
     function profileList(args) {
-        //TODO
-        console.log(MSG_MISSING_FEATURE);
+         for (var p in config.profiles) {
+            profilePrint(p);
+        }
     }
     function profileAdd(args) {
-        //TODO
-        console.log(MSG_MISSING_FEATURE);
+        if (!profileExists(args.name)) {
+            console.error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' already exist.");
+            return;
+        }
+
+        config.profiles[args.name] = CONFIG_PROFILE_TEMPLATE;
+
+        cfg.save(config, PATH_CONFIG).then(function() {
+            // success!
+        }, function(e) {
+            console.error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e);
+        });
+    }
+    function profileCopy(args) {
+        if (!profileExists(args.name)) {
+            console.error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' already exist.");
+            return;
+        }
+
+        config.profiles[args.name] = config.profiles[config.activeProfile];
+
+        cfg.save(config, PATH_CONFIG).then(function() {
+            // success!
+        }, function(e) {
+            console.error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e);
+        });
     }
     function profileRemove(args) {
-        //TODO
-        console.log(MSG_MISSING_FEATURE);
+        if (!profileExists(args.name)) {
+            console.error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' does not exist.");
+            return;
+        }
+
+        delete config.profiles[args.name];
+
+        cfg.save(config, PATH_CONFIG).then(function() {
+            // success!
+        }, function(e) {
+            console.error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e);
+        });
     }
     function profileCurrent(args) {
-        //TODO
-        console.log(MSG_MISSING_FEATURE);
+        profilePrint(config.activeProfile);
     }
     function profileSwitch(args) {
-        //TODO
-        console.log(MSG_MISSING_FEATURE);
+        if (!profileExists(args.name)) {
+            console.error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' does not exist.");
+            return;
+        }
+        config.activeProfile = args.name;
+
+        cfg.save(config, PATH_CONFIG).then(function() {
+            // success!
+        }, function(e) {
+            console.error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e);
+        });
     }
     function profileSet(args) {
-        //TODO
-        console.log(MSG_MISSING_FEATURE);
+        if (!config.profiles[config.activeProfile][args.section]) {
+            console.error(ERROR_INVALID_SECTION, "Profile '" + config.activeProfile + "' does not have configuration section '" + args.section + "'.");
+            return;
+        }
+        config.profiles[config.activeProfile][args.section][args.key] = args.value;
+
+        cfg.save(config, PATH_CONFIG).then(function() {
+            // success!
+        }, function(e) {
+            console.error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e);
+        });
+    }
+
+    function profileExists(name) {
+        for (var p in config.profiles) {
+            if (p == name) {
+                return true;
+            }
+        }
+        return false;
+    }
+    function profilePrint(name) {
+        console.log("'" + name + "':");
+        console.log(JSON.stringify(config.profiles[name], null, "  "));
     }
 
     function boot() {
@@ -201,6 +273,9 @@
             .command("add <name>", "Add a new profile.")
             .action(profileAdd);
         cli.command("profile")
+            .command("copy <name>", "Creates a copy of the current profile with the given name.")
+            .action(profileCopy);
+        cli.command("profile")
             .command("remove <name>", "Removes the profile with the given name.")
             .action(profileRemove);
         cli.command("profile")
@@ -210,7 +285,7 @@
             .command("switch <name>", "Activates the profile with the given name.")
             .action(profileSwitch);
         cli.command("profile")
-            .command("set <key> <value>", "Sets the key value combination in the active profile.")
+            .command("set <section> <key> <value>", "Sets the key value combination in the active profile.")
             .action(profileSet);
         cli.parameter("allume <selector>");
         var p = cli.parse(allume.parameters);
@@ -468,11 +543,8 @@
             if (!config || Object.keys(config).length === 0 || !config.allume) {
                 config = CONFIG_DEFAULT;
 
-                console.log("TRYING TO SAVE DEFAULT CONFIG");
-
                 // attempt to save default config
                 cfg.save(config, PATH_CONFIG).then(function() {
-                    console.log("SAVED DEFAULT CONFIG");
                     startBoot();
                 }, startBoot);
             }
@@ -496,7 +568,6 @@
         }
 
         cfg.load(PATH_CONFIG).then(function(cfg) {
-            console.log("GOT CONFIG", cfg);
             configSuccess(cfg);   
         }, configFail);
     });
