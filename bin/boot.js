@@ -423,9 +423,9 @@
                 }
             }
             else if (!p.selector && !p.profile && (!p["--ui"] || ui)) {
-                if (typeof document !== "undefined" && !ui) {
+                if (host.isRuntimeBrowserFamily() && !isRuntimeNodeFamily()) {
                     //debug
-                    //window.location = "./about.html";
+                    window.location = "./about.html";
                 }
                 else {
                     var e = new Error("The boot sequence can't start because no package was specified. If you are the developer of the app using allume, then please make sure you specify the package to load.");

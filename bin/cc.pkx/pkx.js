@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.21/'
+// module 'cc.pkx.0.1.22/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.21/";
+    define.parameters.id = "cc.pkx.0.1.22/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.21",
+        "version": "0.1.22",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "main": "pkx.js",
@@ -618,7 +618,7 @@
                                 if (Object.prototype.toString.call(dep) === "[object Object]") {
                                     resName = dep.package + (dep.resource ? dep.resource : "/");
                                 }
-                                depStr += "\ndefine.parameters.dependencies.push(define.cache.get(\"" + resName +  "\", \"" + using.UPGRADABLE_PATCH + "\"));";
+                                depStr += "\ndefine.parameters.dependencies.push(define.cache.get(\"" + resName +  "\", \"" + using.UPGRADABLE_NONE + "\"));";
                             }
                         }
                     }
@@ -820,7 +820,7 @@
                 this.wrap = selector.wrap || false;
                 this.system = selector.system;
                 this.optional = selector.optional || false;
-                this.upgradable = selector.upgradable || (using? using.UPGRADABLE_PATCH : null);
+                this.upgradable = selector.upgradable || (using? using.UPGRADABLE_NONE : null);
                 this.ignoreDependencies = selector.ignoreDependencies || false;
                 this.configuration = selector.configuration || null;
     
