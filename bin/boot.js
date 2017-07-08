@@ -423,7 +423,7 @@
                 }
             }
             else if (!p.selector && !p.profile && (!p["--ui"] || ui)) {
-                if (host.isRuntimeBrowserFamily() && !isRuntimeNodeFamily()) {
+                if (host.isRuntimeBrowserFamily() && !host.isRuntimeNodeFamily()) {
                     //debug
                     window.location = "./about.html";
                 }
