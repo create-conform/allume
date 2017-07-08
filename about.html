@@ -34,13 +34,17 @@
 
         .feature {
             display: inline-block;
-            margin: 0px 20px 20px 20px;
+            margin: 0px 20px 20px 0px;
             padding: 40px;
             font: 15px sans-serif;
             letter-spacing: 0.02em;
             background-color: rgba(0,0,0,0.02);
-            border-radius: 20px;
+            border-radius: 6px;
             vertical-align: top;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(255,255,255,.2) 18px, rgba(255,255,255,.2) 35px);
+            border: 1px solid rgb(171, 171, 171);
+            height: 150px;
+            width: 340px;
         }
         .feature > img {
             width: 32px;
@@ -69,7 +73,7 @@
 </head>
 <body>
     <div id="header">
-        <img id="logo" src="allume-36.png" />
+        <img id="logo" src="./res/allume-36.png" />
     </div>
     <div id="banner">
         <h1>A cross-runtime<br/>
@@ -96,11 +100,15 @@
                 </div>
                 <div class="feature">
                     <img src="res/repository.svg" /> <h4>Custom Repositories</h4>
-                    <span>You can specify custom public repositories. At this point, we are investigating how to implement private, secure repositories. Help welcome!</span>
+                    <span>You can add custom repositories, and load packages straight from your file system (in supported runtimes) or any http(s) source. Your apps are also cached for offline availability!</span>
+                </div>
+                <div class="feature">
+                    <img src="res/github-logo.svg" /> <h4>GitHub Integration</h4>
+                    <span>Thanks to our GitHub integration, you can easily load your apps straight from your public or private GitHub repository!</span>
                 </div>
                 <div class="feature">
                     <img id="cross-platform-icon" src="res/cross-platform.svg" /> <h4>Cross-Runtime</h4>
-                    <span>Allume is designed to run inside browsers and node.js. It should work on any browser that supports HTML5 features or any runtime that supports the node.js api.</span>
+                    <span>Allume is designed to run inside browsers, node.js, nw.js and many more! It should work on any runtime that supports ECMAScript 5 features.</span>
                 </div>
             </div>
         </div>
@@ -117,6 +125,7 @@
         <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
         <div>Icons made by <a href="http://www.flaticon.com/authors/pixel-buddha" title="Pixel Buddha">Pixel Buddha</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
         <div>Icons made by <a href="http://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+        <div>Icons made by <a href="http://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
     </div>
     <script>hljs.initHighlightingOnLoad();</script>
 </body>
