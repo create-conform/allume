@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.local-storage.0.1.8/'
+// module 'cc.io.local-storage.0.1.9/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.local-storage.0.1.8/";
+    define.parameters.id = "cc.io.local-storage.0.1.9/";
     define.parameters.pkx = {
         "name": "cc.io.local-storage",
-        "version": "0.1.8",
+        "version": "0.1.9",
         "title": "IO Local Storage Module",
         "description": "IO module that implements local storage protocol support.",
         "license": "Apache-2.0",
@@ -280,7 +280,7 @@
                             uri = null;
                         }
     
-                        if (!uri || uri.scheme != PROTOCOL_LOCAL_STORAGE) {
+                        if (!uri || uri.scheme != self.PROTOCOL_LOCAL_STORAGE) {
                             reject("Invalid scheme.");
                             return;
                         }
