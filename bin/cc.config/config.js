@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.config.0.1.12/'
+// module 'cc.config.0.1.13/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.config.0.1.12/";
+    define.parameters.id = "cc.config.0.1.13/";
     define.parameters.pkx = {
         "name": "cc.config",
-        "version": "0.1.12",
+        "version": "0.1.13",
         "title": "Configuration Module",
         "description": "Library for loading and saving configuration data.",
         "license": "Apache-2.0",
@@ -104,13 +104,8 @@
                 return mod.uri.exists(root + (path.indexOf("/") == 0? path.substr(1) : path));
             };
     
-            this.query = function() {
-                //TODO
-                // UNFINISHED
-                //return mod.uri.query(root + (path.indexOf("/") == 0? path.substr(1) : path));
-                return new Promise(function(resolve, reject) {
-                    resolve([]);
-                });
+            this.query = function(path) {
+                return mod.uri.query(root + (path.indexOf("/") == 0? path.substr(1) : path));
             };
     
             this.events = new event.Emitter(this);

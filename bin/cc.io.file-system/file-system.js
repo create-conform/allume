@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.file-system.0.1.8/'
+// module 'cc.io.file-system.0.1.9/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.file-system.0.1.8/";
+    define.parameters.id = "cc.io.file-system.0.1.9/";
     define.parameters.pkx = {
         "name": "cc.io.file-system",
-        "version": "0.1.8",
+        "version": "0.1.9",
         "title": "IO File system Module",
         "description": "IO module that implements file protocol support.",
         "license": "Apache-2.0",
@@ -587,6 +587,59 @@
                             return;
                         }
                         resolve();
+                    });
+                });
+            };
+            this.uri.query = function(uri) {
+                return new Promise(function(resolve, reject) {
+                    if (uri && type.isString(uri)) {
+                        uri = self.uri.parse(uri);
+                    }
+                    else if (uri && (typeof uri.scheme == "undefined" || typeof uri.path == "undefined")) {
+                        uri = null;
+                    }
+                    if (!uri) {
+                        reject(new Error(io.ERROR_URI_PARSE, ""));
+                        return;
+                    }
+                    
+                    //find volume of uri
+                    var entries = [];
+                    var errCount = 0;
+                    var dir = uri.path.substr(1);
+                    var lastIdx = dir.lastIndexOf("/");
+                    if (lastIdx != dir.length - 1) {
+                        dir = dir.substr(0, lastIdx);
+                    }
+                    fs.readdir(dir, function(err, files) {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+    
+                        files.map(function (file) {
+                            return nodePath.join(dir, file);
+                        }).map(function (file) {
+                            fs.stat(file, function(err, stats) {
+                                if (err) {
+                                    errCount++;
+                                    return;
+                                }
+    
+                                try {
+                                    entries.push(io.URI.parse("/" + file + (stats.isFile()? "" : "/")));
+                                }
+                                catch(e) {
+                                    console.error(e);
+                                    errCount++;
+                                    return;
+                                }
+    
+                                if (entries.length == (files.length - errCount)) {
+                                    resolve(entries);
+                                }
+                            });
+                        });
                     });
                 });
             };

@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.local-storage.0.1.6/'
+// module 'cc.io.local-storage.0.1.8/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.local-storage.0.1.6/";
+    define.parameters.id = "cc.io.local-storage.0.1.8/";
     define.parameters.pkx = {
         "name": "cc.io.local-storage",
-        "version": "0.1.6",
+        "version": "0.1.8",
         "title": "IO Local Storage Module",
         "description": "IO module that implements local storage protocol support.",
         "license": "Apache-2.0",
@@ -271,10 +271,33 @@
                 var deviceId = "NOT IMPLEMENTED";
                 this.localId = ""; //crypt.guid(crypt.md5(this.name + "/" + this.description + "/" + deviceId)); //TODO - deviceId from host library, but that would cause circular dependency
                 
-                this.query = function(path) {
-                    // key
+                this.query = function(uri) {  
+                    return new Promise(function(resolve, refuse) { 
+                        if (uri && type.isString(uri)) {
+                            uri = self.uri.parse(uri);
+                        }
+                        else if (uri && (typeof uri.scheme == "undefined" || typeof uri.path == "undefined")) {
+                            uri = null;
+                        }
     
-                    return new Promise(function(resolve, refuse) { refuse("Not implemented"); }); //TODO - To Implement
+                        if (!uri || uri.scheme != PROTOCOL_LOCAL_STORAGE) {
+                            reject("Invalid scheme.");
+                            return;
+                        }
+                        var dir = uri.toString();
+                        var lastIdx = dir.lastIndexOf("/");
+                        if (lastIdx != dir.length - 1) {
+                            dir = dir.substr(0, lastIdx + 1);
+                        }
+    
+                        var items = [];
+                        for (var key in localStorage) {
+                            if (key.indexOf(dir) == 0 && key.substr(dir.length).indexOf("/") == -1) {
+                                items.push(io.URI.parse(key));
+                            }
+                        }
+                        resolve(items);
+                    });
                 };
     
                 this.open = function(path, opt_access, opt_create) {
@@ -347,6 +370,9 @@
                 });
     
             };
+            this.uri.query = function(uri) {
+                return volume.query(uri);
+            };
             this.uri.toString = function(uri, opt_format) {
                 if (uri && type.isString(uri)) {
                     uri = self.uri.parse(uri);
@@ -373,7 +399,8 @@
             });
     
             // register root
-            io.volumes.register(new self.LocalStorageVolume("/"));
+            var volume = new self.LocalStorageVolume("/");
+            io.volumes.register(volume);
         }
     
         var singleton;
