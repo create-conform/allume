@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.6/'
+// module 'allume.request.github.0.1.7/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.6/";
+    define.parameters.id = "allume.request.github.0.1.7/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.6",
+        "version": "0.1.7",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
         "main": "github.js",
@@ -101,7 +101,6 @@
                             //var cacheVolume = config.getVolume();
                             config.getVolume().then(function(cacheVolume) {
                                 cacheVolume.query(PATH_CACHE + selector.package + "*." + EXT_PKX).then(function(uriList) {
-                                    console.log("DEBUG", uriList);
                                     var cache = {};
                                     for (var u in uriList) {
                                         if (uriList[u].path.lastIndexOf("/") != uriList[u].path.length - 1) {

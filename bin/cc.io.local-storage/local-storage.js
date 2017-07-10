@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.local-storage.0.1.9/'
+// module 'cc.io.local-storage.0.1.10/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.local-storage.0.1.9/";
+    define.parameters.id = "cc.io.local-storage.0.1.10/";
     define.parameters.pkx = {
         "name": "cc.io.local-storage",
-        "version": "0.1.9",
+        "version": "0.1.10",
         "title": "IO Local Storage Module",
         "description": "IO module that implements local storage protocol support.",
         "license": "Apache-2.0",
@@ -69,13 +69,13 @@
             // private functions
             //
             function getItem(path) {
-                return localStorage.getItem(self.PROTOCOL_LOCAL_STORAGE + ":///" + path);
+                return localStorage.getItem(self.PROTOCOL_LOCAL_STORAGE + ":///" + (path.indexOf("/") == 0? path.substr(1) : path));
             }
             function setItem(path, value) {
-                return localStorage.setItem(self.PROTOCOL_LOCAL_STORAGE + ":///" + path, value);
+                return localStorage.setItem(self.PROTOCOL_LOCAL_STORAGE + ":///" + (path.indexOf("/") == 0? path.substr(1) : path), value);
             }
             function removeItem(path) {
-                return localStorage.removeItem(self.PROTOCOL_LOCAL_STORAGE + ":///" + path);
+                return localStorage.removeItem(self.PROTOCOL_LOCAL_STORAGE + ":///" + (path.indexOf("/") == 0? path.substr(1) : path));
             }
     
             //
