@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.config.0.1.11/'
+// module 'cc.config.0.1.12/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.config.0.1.11/";
+    define.parameters.id = "cc.config.0.1.12/";
     define.parameters.pkx = {
         "name": "cc.config",
-        "version": "0.1.11",
+        "version": "0.1.12",
         "title": "Configuration Module",
         "description": "Library for loading and saving configuration data.",
         "license": "Apache-2.0",
@@ -89,6 +89,8 @@
             this.class = io.VOLUME_CLASS_PERSISTENT;
             this.readOnly = false;
             this.localId = "config";
+    
+            this.then = null;
     
             this.getURI = function(path) {
                 return mod.uri.parse(root + (path.indexOf("/") == 0? path.substr(1) : path));
