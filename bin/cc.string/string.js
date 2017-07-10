@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.string.0.1.1/'
+// module 'cc.string.0.1.2/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.string.0.1.1/";
+    define.parameters.id = "cc.string.0.1.2/";
     define.parameters.pkx = {
         "name": "cc.string",
-        "version": "0.1.1",
+        "version": "0.1.2",
         "title": "String Processing And Validation Module",
         "description": "Library for processing and validating strings.",
         "license": "Apache-2.0",
@@ -175,6 +175,9 @@
                 return str && str === str.toLowerCase();
             };
             this.isURL = function(str, type) {
+                if (typeof str !== "string") {
+                    return false;
+                }
                 switch(type) {
                     case "public":
                         return str && RE_URL_PUBLIC.test(str);

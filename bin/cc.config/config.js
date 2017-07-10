@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.config.0.1.9/'
+// module 'cc.config.0.1.11/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.config.0.1.9/";
+    define.parameters.id = "cc.config.0.1.11/";
     define.parameters.pkx = {
         "name": "cc.config",
-        "version": "0.1.9",
+        "version": "0.1.11",
         "title": "Configuration Module",
         "description": "Library for loading and saving configuration data.",
         "license": "Apache-2.0",
@@ -96,6 +96,10 @@
     
             this.open = function(path, opt_access, create_path) {
                 return mod.uri.open(root + (path.indexOf("/") == 0? path.substr(1) : path), opt_access, create_path);
+            };
+    
+            this.exists = function(path) {
+                return mod.uri.exists(root + (path.indexOf("/") == 0? path.substr(1) : path));
             };
     
             this.query = function() {
@@ -228,19 +232,20 @@
         };
     
         this.getVolume = function() {
-            return new Promise(function(resolve, reject) {
-                function success() {
-                    resolve(volume);
-                }
-    
-                if (!volume) {
-                    mountConfigVolume(success, reject);
-                }
-                else {
-                    success();
-                }
-            });
-        };
+                //return volume;
+                return new Promise(function(resolve, reject) {
+                    function success() {
+                        resolve(volume);
+                    }
+        
+                    if (!volume) {
+                        mountConfigVolume(success, reject);
+                    }
+                    else {
+                        success();
+                    }
+                });
+            };
     }
     
     var singleton;

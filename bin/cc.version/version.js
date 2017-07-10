@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.version.0.1.1/'
+// module 'cc.version.0.1.2/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.version.0.1.1/";
+    define.parameters.id = "cc.version.0.1.2/";
     define.parameters.pkx = {
         "name": "cc.version",
-        "version": "0.1.1",
+        "version": "0.1.2",
         "title": "Semantic Version String Processing And Validation Module",
         "description": "Library for processing and validating semantic version strings.",
         "license": "Apache-2.0",
@@ -157,9 +157,9 @@
                         groups = 3;
                         break;
                 }
-                if (groups === 0) {
-                    return str == search;
-                }
+                //if (groups === 0) {
+                //    return str == search;
+                //}
                 var parts = search.split(".");
                 var numbers = 0;
                 for (var p = parts.length; p > 0; p--) {

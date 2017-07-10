@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.0.1.5/'
+// module 'cc.io.0.1.6/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.0.1.5/";
+    define.parameters.id = "cc.io.0.1.6/";
     define.parameters.pkx = {
         "name": "cc.io",
-        "version": "0.1.5",
+        "version": "0.1.6",
         "title": "IO Library",
         "description": "Library for reading and writing data.",
         "license": "Apache-2.0",
@@ -639,6 +639,7 @@
     
                 open : unsupported,
                 delete : unsupported,
+                exists : unsupported,
                 query : unsupported,
                 getBytesUsed : unsupported,
                 getBytesAvailable : unsupported,
