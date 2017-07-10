@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.0.1.4/'
+// module 'cc.io.0.1.5/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.0.1.4/";
+    define.parameters.id = "cc.io.0.1.5/";
     define.parameters.pkx = {
         "name": "cc.io",
-        "version": "0.1.4",
+        "version": "0.1.5",
         "title": "IO Library",
         "description": "Library for reading and writing data.",
         "license": "Apache-2.0",
@@ -157,6 +157,14 @@
                             catch (e) {
                                 refuse(new Error(self.ERROR_INVALID_JSON_DATA, e));
                             }
+                        }, refuse);
+                    });
+                },
+                copyTo : function (stream) {
+                    var own = this;
+                    return new Promise(function (resolve, refuse) {
+                        own.read(null, 0).then(function (bytes) {
+                            stream.write(bytes, 0).then(resolve, refuse);
                         }, refuse);
                     });
                 },

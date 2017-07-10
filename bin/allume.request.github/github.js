@@ -1,28 +1,30 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.3/'
+// module 'allume.request.github.0.1.4/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.3/";
+    define.parameters.id = "allume.request.github.0.1.4/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.3",
+        "version": "0.1.4",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
         "main": "github.js",
         "pkxDependencies": [
             "cc.version.0.1",
-            "cc.string.0.1"
+            "cc.string.0.1",
+            "cc.config.0.1"
         ]
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
     define.parameters.dependencies.push(define.cache.get("cc.version.0.1/", "patch"));
     define.parameters.dependencies.push(define.cache.get("cc.string.0.1/", "patch"));
+    define.parameters.dependencies.push(define.cache.get("cc.config.0.1/", "patch"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,6 +45,8 @@
         var HOST_GITHUBAPI = "api.github.com";
         var URI_PATH_GITHUBAPI_RELEASES_TEMPLATE = "$NAME/releases";
         var URI_PATH_GITHUBAPI_BRANCH_TEMPLATE = "$NAME/tarball/";
+        var PATH_CACHE = "allume.request.github/cache/";
+        var EXT_PKX = "pkx";
     
         function AllumeRequestGitHub() {
             var self = this;
@@ -75,6 +79,7 @@
                     var ghToken = ghConf? ghConf.token : null;
                     var ghBranch = ghConf? ghConf.branch : null;
                     var ghEnablePreRelease = ghConf? ghConf.enablePreRelease : null;
+                    var ghEnableCache = ghConf && ghConf.enableCache != null? ghConf.enableCache : true;
     
                     if (ghToken) {
                         headers["Authorization"] = "token " + ghToken;
@@ -118,13 +123,83 @@
                                 return;
                             }
     
-                            var release = version.find(versions, selector.package, selector.upgradable || version.UPGRADABLE_PATCH);
-                            if (!release) {
-                                reject(new Error("Couldn't find any suitable release for package '" + selector.package + "' in the GitHub repository."));
+                            var release = version.find(versions, selector.package, selector.upgradable || version.UPGRADABLE_NONE);
+                            if (ghConf.enableCache) {
+                                config.query(PATH_CACHE + selector.package + "*." + EXT_PKX).then(function(uriList) {
+                                    var cache = version.sort(uriList);
+    
+                                    // get highest version from cache
+                                    var highestCache = version.find(cache, selector.package, selector.upgradable || version.UPGRADABLE_NONE);
+    
+                                    if (!release) {
+                                        // resolve highest cache version
+                                        resolveURI(highestCache);
+                                    }
+                                    else {
+                                        var found;
+                                        for (var u in uriList) {
+                                            var lastIdx = u.lastIndexOf("/");
+                                            if (lastIdx < 0) {
+                                                continue;
+                                            }
+                                            var fileName = u.substr(lastIdx + 1);
+                                            if (fileName == id + "." + EXT_PKX) {
+                                                found = u;
+                                                break;
+                                            }
+                                        }
+                                        if (found) {
+                                            // release version from github is present in cache
+                                            resolveURI(found);
+                                        }
+                                        else {
+                                            // download new uri and save to cache
+                                            io.URI.open(release.tarball_url).then(function(repoStream) {
+                                                function repoFail() {
+                                                    repoStream.close().then(repoResolve, repoResolve);
+                                                }
+                                                function repoResolve() {
+                                                     resolveURI(release.tarball_url);
+                                                };
+                                                config.getVolume().then(function(cacheVolume) {
+                                                    cacheURI = cacheVolume.getURI(PATH_CACHE + id + "." + EXT_PKX);
+                                                    io.URI.open(cacheURI, io.ACCESS_OVERWRITE, true).then(function(cacheStream) {
+                                                        function cacheFail() {
+                                                            cacheStream.close().then(repoFail, repoFail);
+                                                        }
+                                                        function cacheResolve() {
+                                                            resolveURI(cacheURI);
+                                                        }
+                                                        repoStream.copyTo(cacheStream).then(function() {
+                                                            cacheStream.close().then(function() {
+                                                                repoStream.close().then(cacheResolve, cacheResolve);
+                                                            }, cacheFail);
+                                                        }, cacheFail);
+                                                    }, repoFail);
+                                                }, resolveURI);
+                                            }, resolveURI);
+                                        }
+                                    }
+                                }, function() {
+                                    // cache path error
+                                    resolveURI(release? release.tarball_url : null);
+                                });
                             }
                             else {
+                                resolveURI(release? release.tarball_url : null);
+                            }
+    
+                            function resolveURI(uri) {
+                                if (uri && uri.name) {
+                                    reject(new Error("An error occured while trying to fetch '" + selector.package + "' from the GitHub repository."));
+                                    return;
+                                }
+                                else if (!uri) {
+                                    reject(new Error("Couldn't find any suitable release for package '" + selector.package + "' in the GitHub repository."));
+                                    return;
+                                }
                                 try {
-                                    selector.uri = release.tarball_url;
+                                    selector.uri = uri;
                                     resolve({"strip": 1, "headers" : headers});
                                 }
                                 catch (e) {
@@ -149,5 +224,6 @@
     
         var version = require("./cc.version");
         var string = require("./cc.string");
+        var config = require("./cc.config");
     })();
 })(typeof using != "undefined"? using : null, typeof require != "undefined"? require : null);
