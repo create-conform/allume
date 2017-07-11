@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.local-storage.0.1.10/'
+// module 'cc.io.local-storage.0.1.11/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.local-storage.0.1.10/";
+    define.parameters.id = "cc.io.local-storage.0.1.11/";
     define.parameters.pkx = {
         "name": "cc.io.local-storage",
-        "version": "0.1.10",
+        "version": "0.1.11",
         "title": "IO Local Storage Module",
         "description": "IO module that implements local storage protocol support.",
         "license": "Apache-2.0",
@@ -217,7 +217,7 @@
                         }
                     });
                 };
-                this.close = function ()
+                this.close = function (remove)
                 {
                     return new Promise(function(resolve, refuse) {
                         if (closed) {
@@ -227,6 +227,10 @@
     
                         buffer = null;
                         closed = true;
+    
+                        if (remove) {
+                            removeItem(key);
+                        }
     
                         resolve();
                     });

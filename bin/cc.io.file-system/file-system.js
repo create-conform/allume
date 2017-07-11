@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.file-system.0.1.9/'
+// module 'cc.io.file-system.0.1.11/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.file-system.0.1.9/";
+    define.parameters.id = "cc.io.file-system.0.1.11/";
     define.parameters.pkx = {
         "name": "cc.io.file-system",
-        "version": "0.1.9",
+        "version": "0.1.11",
         "title": "IO File system Module",
         "description": "IO module that implements file protocol support.",
         "license": "Apache-2.0",
@@ -279,7 +279,7 @@
                         }
                     });
                 };
-                this.close = function ()
+                this.close = function (remove)
                 {
                     return new Promise(function(resolve, reject) {
                         if (closed) {
@@ -301,6 +301,17 @@
                                 return;
                             }
                             closed = true;
+    
+                            if (remove) {
+                                fs.unlink(path, function(err) {
+                                    if (err) {
+                                        reject(err);
+                                        return;
+                                    }
+                                    resolve();
+                                })
+                                return;
+                            }
                             resolve();
                         });
                     });

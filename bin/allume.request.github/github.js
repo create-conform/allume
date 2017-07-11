@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.11/'
+// module 'allume.request.github.0.1.12/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.11/";
+    define.parameters.id = "allume.request.github.0.1.12/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.11",
+        "version": "0.1.12",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
         "main": "github.js",
@@ -101,6 +101,10 @@
                             //console.error(release);
                             release = null;
                         }
+    
+                        // variable will contain error message when download of tarball url fails.
+                        var releaseErr;
+    
                         if (ghEnableCache) {
                             config.getVolume().then(function(cacheVolume) {
                                 cacheVolume.query(PATH_CACHE).then(function(uriList) {
@@ -142,14 +146,13 @@
                                                     resolveURI(release.tarball_url);
                                                 };
                                                 
-                                                var releaseErr;
                                                 var cacheURI = cacheVolume.getURI(PATH_CACHE + id + "." + EXT_PKX);
                                                 cacheURI.open(io.ACCESS_OVERWRITE, true).then(function(cacheStream) {
                                                     function cacheDone(e) {
                                                         if (e instanceof Error) {
                                                             releaseErr = e;
                                                         }
-                                                        cacheStream.close().then(function() {
+                                                        cacheStream.close(releaseErr).then(function() {
                                                             repoStream.close().then(cacheResolve, cacheResolve);
                                                         }, cacheFail);
                                                     }
@@ -188,8 +191,12 @@
                                 reject(new Error("An error occured while trying to fetch '" + selector.package + "' from the GitHub repository."));
                                 return;
                             }
-                            else if (!uri) {
+                            else if (!uri && !releaseErr) {
                                 reject(new Error("Couldn't find any suitable release for package '" + selector.package + "' in the GitHub repository."));
+                                return;
+                            }
+                            else if (!uri && releaseErr) {
+                                reject(new Error("Downloading of package '" + selector.package + "' from GitHub failed. If you are running this in a browser, CORS might be the problem."));
                                 return;
                             }
                             try {
