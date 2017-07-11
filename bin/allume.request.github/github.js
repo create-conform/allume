@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.13/'
+// module 'allume.request.github.0.1.15/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.13/";
+    define.parameters.id = "allume.request.github.0.1.15/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.13",
+        "version": "0.1.15",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
         "main": "github.js",
@@ -111,7 +111,7 @@
                                     if (uriList && uriList.code == "ENOENT") {
                                         uriList = [];
                                     }
-                                    else {
+                                    else if (uriList && uriList.code) {
                                         console.error("Cache disk error.", uriList);
                                         resolveURI(release? release.tarball_url : null);
                                     }

@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.file-system.0.1.11/'
+// module 'cc.io.file-system.0.1.13/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.file-system.0.1.11/";
+    define.parameters.id = "cc.io.file-system.0.1.13/";
     define.parameters.pkx = {
         "name": "cc.io.file-system",
-        "version": "0.1.11",
+        "version": "0.1.13",
         "title": "IO File system Module",
         "description": "IO module that implements file protocol support.",
         "license": "Apache-2.0",
@@ -617,7 +617,7 @@
                     //find volume of uri
                     var entries = [];
                     var errCount = 0;
-                    var dir = uri.path.substr(1);
+                    var dir = host.platform == host.PLATFORM_WINDOWS? uri.path.substr(1) : uri.path;
                     var lastIdx = dir.lastIndexOf("/");
                     if (lastIdx != dir.length - 1) {
                         dir = dir.substr(0, lastIdx);
@@ -638,7 +638,7 @@
                                 }
     
                                 try {
-                                    entries.push(io.URI.parse("/" + file + (stats.isFile()? "" : "/")));
+                                    entries.push(io.URI.parse((host.platform == host.PLATFORM_WINDOWS? "/" : "") + file + (stats.isFile()? "" : "/")));
                                 }
                                 catch(e) {
                                     console.error(e);
