@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.7/'
+// module 'allume.request.github.0.1.10/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.7/";
+    define.parameters.id = "allume.request.github.0.1.10/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.7",
+        "version": "0.1.10",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
         "main": "github.js",
@@ -97,8 +97,11 @@
                     }
     
                     function ghDone(release) {
+                        if (release instanceof Error) {
+                            //console.error(release);
+                            release = null;
+                        }
                         if (ghEnableCache) {
-                            //var cacheVolume = config.getVolume();
                             config.getVolume().then(function(cacheVolume) {
                                 cacheVolume.query(PATH_CACHE + selector.package + "*." + EXT_PKX).then(function(uriList) {
                                     var cache = {};
@@ -111,9 +114,6 @@
     
                                     // get highest version from cache
                                     var highestCache = version.find(cache, selector.package, selector.upgradable || version.UPGRADABLE_NONE);
-                                    if (highestCache) {
-                                        highestCache = highestCache.path;
-                                    }
     
                                     if (!release) {
                                         // resolve highest cache version
@@ -142,22 +142,25 @@
                                                     resolveURI(release.tarball_url);
                                                 };
                                                 
-                                                    cacheURI = cacheVolume.getURI(PATH_CACHE + id + "." + EXT_PKX);
-                                                    cacheURI.open(io.ACCESS_OVERWRITE, true).then(function(cacheStream) {
-                                                        function cacheFail() {
-                                                            cacheStream.close().then(repoFail, repoFail);
-                                                        }
-                                                        function cacheResolve() {
-                                                            resolveURI(cacheURI);
-                                                        }
-                                                        repoStream.headers = headers;
-                                                        repoStream.copyTo(cacheStream).then(function() {
-                                                            cacheStream.close().then(function() {
-                                                                repoStream.close().then(cacheResolve, cacheResolve);
-                                                            }, cacheFail);
+                                                var cacheURI = cacheVolume.getURI(PATH_CACHE + id + "." + EXT_PKX);
+                                                cacheURI.open(io.ACCESS_OVERWRITE, true).then(function(cacheStream) {
+                                                    function cacheFail() {
+                                                        cacheStream.close().then(repoFail, repoFail);
+                                                    }
+                                                    function cacheResolve() {
+                                                        resolveURI(cacheURI);
+                                                    }
+                                                    repoStream.headers = headers;
+                                                    repoStream.copyTo(cacheStream).then(function() {
+                                                        cacheStream.close().then(function() {
+                                                            repoStream.close().then(cacheResolve, cacheResolve);
                                                         }, cacheFail);
-                                                    }, repoFail);
-                                            }, resolveURI);
+                                                    }, cacheFail);
+                                                }, repoFail);
+                                            }, function(e) {
+                                                // an error occurred while downloading the tarrball (could be CORS), fallback to highest cached version.
+                                                resolveURI(highestCache);
+                                            });
                                         }
                                     }
                                 }, function() {
