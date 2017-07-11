@@ -25,8 +25,8 @@
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/", "undefined"));
-    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

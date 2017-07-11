@@ -34,11 +34,11 @@
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.io.file-system.0.1/", "undefined"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.local-storage.0.1/", "undefined"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/", "undefined"));
-    define.parameters.dependencies.push(define.cache.get("cc.host.0.1/", "undefined"));
-    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.file-system.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.local-storage.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.host.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////
