@@ -13,6 +13,9 @@
         "version": "0.1.1",
         "title": "Log Module",
         "description": "Library that helps with logging messages, warnings and errors.",
+        "bugs": null,
+        "author": null,
+        "contributors": null,
         "main": "log.js"
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];

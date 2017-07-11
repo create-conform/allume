@@ -13,6 +13,9 @@
         "version": "0.1.1",
         "title": "Inflate Module",
         "description": "Library for unzipping data buffers.",
+        "bugs": null,
+        "author": null,
+        "contributors": null,
         "main": "inflate.js"
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];

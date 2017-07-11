@@ -13,7 +13,10 @@
         "version": "0.1.1",
         "title": "Event Module",
         "description": "Library for emitting events.",
+        "bugs": null,
         "license": "Apache-2.0",
+        "author": null,
+        "contributors": null,
         "main": "event.js"
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];

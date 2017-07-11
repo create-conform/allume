@@ -7,11 +7,15 @@ var result;
 var includeFile = "bin/include.js";
 var appcacheFile = "offline.appcache";
 var appcacheFiles = [
-    "allume.js",
-    "allume-dark.css",
-    "allume-dark-progress.css",
-    "allume-36.png",
-    "using.js/using.js"
+    "index.html",
+    "run.js",
+    "package.json",
+    "bin/allume.js",
+    "bin/boot.js",
+    "bin/using.js/using.js",
+    "res/allume-dark.css",
+    "res/allume-dark-progress.css",
+    "res/allume-36.png"
 ];
 
 // pkx wrap --loader "include.js"

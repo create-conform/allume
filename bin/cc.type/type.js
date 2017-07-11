@@ -13,6 +13,9 @@
         "version": "0.1.1",
         "title": "Type Module",
         "description": "Library for working with primitives.",
+        "bugs": null,
+        "author": null,
+        "contributors": null,
         "main": "type.js"
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];

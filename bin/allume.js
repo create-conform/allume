@@ -1,3 +1,22 @@
+// application cache
+if (typeof window !== "undefined" && window.applicationCache) {
+    // add event listener for cache update
+    window.addEventListener("load", function(e) {
+        window.applicationCache.addEventListener("updateready", function(e) {
+            if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+                // cache updated. Next reload will feature new version.
+            } else {
+                // manifest did not change.
+            }
+        }, false);
+    }, false);
+
+    // check cache every five minutes
+    setTimeout(function() {
+        window.applicationCache.update();
+    }, 1000 * 60 * 5);
+}
+
 // rough browser polyfill for require
 // allume is going to be overwritten later. This is just not to pollute the global scope.
 var allume = {};

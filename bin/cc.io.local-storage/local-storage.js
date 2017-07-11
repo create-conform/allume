@@ -13,7 +13,10 @@
         "version": "0.1.11",
         "title": "IO Local Storage Module",
         "description": "IO module that implements local storage protocol support.",
+        "bugs": null,
         "license": "Apache-2.0",
+        "author": null,
+        "contributors": null,
         "main": "local-storage.js",
         "pkxDependencies": [
             "cc.event.0.1",
@@ -23,9 +26,9 @@
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/", "patch"));
+    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/", "undefined"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

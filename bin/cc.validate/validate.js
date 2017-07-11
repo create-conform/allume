@@ -13,7 +13,10 @@
         "version": "0.1.1",
         "title": "Data Validation Module",
         "description": "Library for validating data.",
+        "bugs": null,
         "license": "Apache-2.0",
+        "author": null,
+        "contributors": null,
         "main": "validate.js"
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];

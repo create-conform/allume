@@ -13,7 +13,10 @@
         "version": "0.1.13",
         "title": "Configuration Module",
         "description": "Library for loading and saving configuration data.",
+        "bugs": null,
         "license": "Apache-2.0",
+        "author": null,
+        "contributors": null,
         "main": "config.js",
         "pkxDependencies": [
             {
@@ -31,11 +34,11 @@
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.io.file-system.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.local-storage.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.host.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/", "patch"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.file-system.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.local-storage.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.host.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/", "undefined"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

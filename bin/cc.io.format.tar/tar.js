@@ -13,7 +13,10 @@
         "version": "0.1.1",
         "title": "IO TAR Format Module",
         "description": "IO module that implements TAR stream support.",
+        "bugs": null,
         "license": "Apache-2.0",
+        "author": null,
+        "contributors": null,
         "main": "tar.js",
         "pkxDependencies": [
             "cc.type.0.1",
@@ -24,10 +27,10 @@
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/", "patch"));
+    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/", "undefined"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

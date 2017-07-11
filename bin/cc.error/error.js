@@ -13,7 +13,10 @@
         "version": "0.1.1",
         "title": "Error Module",
         "description": "Library for standardizing error throwing.",
+        "bugs": null,
         "license": "Apache-2.0",
+        "author": null,
+        "contributors": null,
         "main": "error.js"
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];

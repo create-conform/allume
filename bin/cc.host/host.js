@@ -13,6 +13,9 @@
         "version": "0.1.6",
         "title": "Host Module",
         "description": "Library that provides information about the host environment.",
+        "bugs": null,
+        "author": null,
+        "contributors": null,
         "main": "host.js"
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];

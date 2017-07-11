@@ -1,5 +1,6 @@
 {
   "name": "allume",
+  "version": "0.0.0",
   "main": "allume.js",
   "pkxDependencies": [
     "cc.error.0.1",

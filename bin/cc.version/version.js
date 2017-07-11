@@ -13,7 +13,10 @@
         "version": "0.1.2",
         "title": "Semantic Version String Processing And Validation Module",
         "description": "Library for processing and validating semantic version strings.",
+        "bugs": null,
         "license": "Apache-2.0",
+        "author": null,
+        "contributors": null,
         "main": "version.js",
         "pkxDependencies": [
             {
@@ -24,7 +27,7 @@
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.validate.0.1/", "patch"));
+    define.parameters.dependencies.push(define.cache.get("cc.validate.0.1/", "undefined"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

@@ -13,7 +13,10 @@
         "version": "0.1.1",
         "title": "Array Processing And Validation Module",
         "description": "Library for processing and validating arrays.",
+        "bugs": null,
         "license": "Apache-2.0",
+        "author": null,
+        "contributors": null,
         "main": "array.js",
         "pkxDependencies": [
             "cc.type.0.1",
@@ -25,8 +28,8 @@
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.validate.0.1/", "patch"));
+    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.validate.0.1/", "undefined"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

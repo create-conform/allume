@@ -13,6 +13,9 @@
         "version": "0.1.3",
         "title": "Allume Request File System Library",
         "description": "Allume request module for fetching releases from file system locations.",
+        "bugs": null,
+        "author": null,
+        "contributors": null,
         "main": "file-system.js",
         "pkxDependencies": [
             "cc.version.0.1",
@@ -21,8 +24,8 @@
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.version.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/", "patch"));
+    define.parameters.dependencies.push(define.cache.get("cc.version.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/", "undefined"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

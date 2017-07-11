@@ -1,18 +1,21 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.22/'
+// module 'cc.pkx.0.1.26/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.22/";
+    define.parameters.id = "cc.pkx.0.1.26/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.22",
+        "version": "0.1.26",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
+        "bugs": null,
+        "author": null,
+        "contributors": null,
         "main": "pkx.js",
         "pkxDependencies": [
             "cc.host.0.1",
@@ -32,19 +35,19 @@
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.host.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.format.tar.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.format.gzip.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.log.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.object.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.boolean.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.array.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.version.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/", "patch"));
-    define.parameters.dependencies.push(define.cache.get("cc.validate.0.1/", "patch"));
+    define.parameters.dependencies.push(define.cache.get("cc.host.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.format.tar.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.format.gzip.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.log.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.object.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.boolean.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.array.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.version.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/", "undefined"));
+    define.parameters.dependencies.push(define.cache.get("cc.validate.0.1/", "undefined"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,6 +237,10 @@
                                     }
                                     else if (volume.localId.lastIndexOf("/") == volume.localId.length - 1 && self.repositoryResolveLocal) {
                                         requests[d].package = "pkx:///" + volume.pkx.id + "/" + requests[d].package;
+                                    }
+    
+                                    if (requests[d].wrap) {
+                                        requests[d].ignoreCache = true;
                                     }
     
                                     // modify package url if parent is not an archive (for debugging)
@@ -618,7 +625,7 @@
                                 if (Object.prototype.toString.call(dep) === "[object Object]") {
                                     resName = dep.package + (dep.resource ? dep.resource : "/");
                                 }
-                                depStr += "\ndefine.parameters.dependencies.push(define.cache.get(\"" + resName +  "\", \"" + using.UPGRADABLE_NONE + "\"));";
+                                depStr += "\ndefine.parameters.dependencies.push(define.cache.get(\"" + resName +  "\"));";
                             }
                         }
                     }
@@ -1202,9 +1209,9 @@
                     }
                     else {
                         volumes[own.pkx.id + " <" + volumes.length + ">"] = own;
-                        if (console) {
-                            console.warn("A PKXVolume with id '" + own.pkx.id + "' was already mounted and still present in cache.");
-                        }
+                        //if (console) {
+                        //    console.warn("A PKXVolume with id '" + own.pkx.id + "' was already mounted and still present in cache.");
+                        //}
                     }
                 }
     
