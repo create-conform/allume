@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.host.0.1.6/'
+// module 'cc.host.0.1.7/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.host.0.1.6/";
+    define.parameters.id = "cc.host.0.1.7/";
     define.parameters.pkx = {
         "name": "cc.host",
-        "version": "0.1.6",
+        "version": "0.1.7",
         "title": "Host Module",
         "description": "Library that provides information about the host environment.",
         "bugs": null,
@@ -284,6 +284,11 @@
                         return process.versions["node-webkit"];
                     case singleton.RUNTIME_ELECTRON:
                         return process.versions["electron"];
+                    case singleton.RUNTIME_ADOBECEP:
+                        if (typeof window.__adobe_cep__.getHostEnvironment == "function") {
+                            var env = window.__adobe_cep__.getHostEnvironment();
+                            return env.appId + " " + env.appVersion;
+                        }
                 }
     
                 return singleton.VERSION_UNKNOWN;
