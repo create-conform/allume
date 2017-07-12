@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.type.0.1.2/'
+// module 'cc.type.0.1.3/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.type.0.1.2/";
+    define.parameters.id = "cc.type.0.1.3/";
     define.parameters.pkx = {
         "name": "cc.type",
-        "version": "0.1.2",
+        "version": "0.1.3",
         "title": "Type Module",
         "description": "Library for working with primitives.",
         "bugs": null,
@@ -129,7 +129,7 @@
                     for (var i = 0; i < this.length; ++i) { 
                         view[i] = this[i];
                     } 
-                    return ab;
+                    return view;
                 } 
             }
         }
