@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.file-system.0.1.14/'
+// module 'cc.io.file-system.0.1.15/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.file-system.0.1.14/";
+    define.parameters.id = "cc.io.file-system.0.1.15/";
     define.parameters.pkx = {
         "name": "cc.io.file-system",
-        "version": "0.1.14",
+        "version": "0.1.15",
         "title": "IO File system Module",
         "description": "IO module that implements file protocol support.",
         "bugs": null,
@@ -628,6 +628,11 @@
                     fs.readdir(dir, function(err, files) {
                         if (err) {
                             reject(err);
+                            return;
+                        }
+    
+                        if (!files || files.length == 0) {
+                            resolve([]);
                             return;
                         }
     

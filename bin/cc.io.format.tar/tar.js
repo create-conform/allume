@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.format.tar.0.1.1/'
+// module 'cc.io.format.tar.0.1.2/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.format.tar.0.1.1/";
+    define.parameters.id = "cc.io.format.tar.0.1.2/";
     define.parameters.pkx = {
         "name": "cc.io.format.tar",
-        "version": "0.1.1",
+        "version": "0.1.2",
         "title": "IO TAR Format Module",
         "description": "IO module that implements TAR stream support.",
         "bugs": null,
@@ -83,7 +83,7 @@
                 }
                 this.size = readLong(header, 124, 12);
                 this.checksum = readInt(header, 148, 8);
-                this.isValid = validateChecksum(header);
+                this.isValid = header && header.length > 0? validateChecksum(header) : false;
     
                 if (this.name.substr(this.name.length - 1) == "/") {
                     this.name = this.name.substr(0, this.name.length - 1);
