@@ -1,15 +1,5 @@
 {
   "name": "allume",
   "version": "0.0.0",
-  "main": "allume.js",
-  "pkxDependencies": [
-    "cc.error.0.1",
-    "cc.pkx.0.1",
-    "allume.request.github.0.1",
-    "allume.request.file-system.0.1",
-    "cc.io.http.0.1",
-    "cc.io.file-system.0.1",
-    "cc.config.0.1",
-    "cc.cli.0.1"
-  ]
+  "main": "allume.js"
 }

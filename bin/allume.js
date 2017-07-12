@@ -12,13 +12,14 @@ if (typeof window !== "undefined" && window.applicationCache) {
     }, false);
 
     // check cache every five minutes
-    setTimeout(function() {
+    setInterval(function() {
         window.applicationCache.update();
     }, 1000 * 60 * 5);
 }
 
 // rough browser polyfill for require
 // allume is going to be overwritten later. This is just not to pollute the global scope.
+// the document.write method of script injection is used to guarantee the correct load order of the scripts.
 var allume = {};
 allume.loadScript = function(source) {
     if (typeof source === "string" && (source.substr(0,2) == "./" && source.lastIndexOf(".js") == source.length - 3)) {
