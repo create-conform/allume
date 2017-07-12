@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.host.0.1.7/'
+// module 'cc.host.0.1.8/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.host.0.1.7/";
+    define.parameters.id = "cc.host.0.1.8/";
     define.parameters.pkx = {
         "name": "cc.host",
-        "version": "0.1.7",
+        "version": "0.1.8",
         "title": "Host Module",
         "description": "Library that provides information about the host environment.",
         "bugs": null,
@@ -286,7 +286,7 @@
                         return process.versions["electron"];
                     case singleton.RUNTIME_ADOBECEP:
                         if (typeof window.__adobe_cep__.getHostEnvironment == "function") {
-                            var env = window.__adobe_cep__.getHostEnvironment();
+                            var env = JSON.parse(window.__adobe_cep__.getHostEnvironment());
                             return env.appId + " " + env.appVersion;
                         }
                 }
