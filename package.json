@@ -1,7 +1,7 @@
 {
   "name": "allume",
   "main": "index.html",
-  "version": "0.37.27",
+  "version": "0.37.28",
   "description": "A cross-platform package bootloader for javascript.",
   "repository": {
     "type": "git",
