@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.17/'
+// module 'allume.request.github.0.1.18/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.17/";
+    define.parameters.id = "allume.request.github.0.1.18/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.17",
+        "version": "0.1.18",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
         "bugs": null,
@@ -231,7 +231,14 @@
                         }
                     }
     
-                    var uriReleases = direct? selector.uri.toString() + "/releases" : selector.parseURI(selector.repository.url + URI_PATH_GITHUBAPI_RELEASES_TEMPLATE);
+                    var uriReleases;
+                    if (direct) {
+                        selector.uri.path += "/releases";
+                        uriReleases = selector.uri;
+                    }
+                    else {
+                        uriReleases = selector.parseURI(selector.repository.url + URI_PATH_GITHUBAPI_RELEASES_TEMPLATE);
+                    }
     
                     uriReleases.open().then(function (stream) {
                         stream.headers = headers;
