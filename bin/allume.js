@@ -58,7 +58,7 @@ if (typeof require === "undefined") {
         }
     }
     function getNodeParameters() {
-        return typeof process !== "undefined" && process.argv? process.argv.slice(1) : null;
+        return typeof process !== "undefined" && process.argv && process.argv.length > 1 ? process.argv.slice(1) : null;
     }
 
     function Allume(parameters) {
