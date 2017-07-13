@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.20/'
+// module 'allume.request.github.0.1.21/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.20/";
+    define.parameters.id = "allume.request.github.0.1.21/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.20",
+        "version": "0.1.21",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
         "bugs": null,
@@ -143,17 +143,17 @@
                                     }
     
                                     // get highest version from cache
-                                    var highestCache = version.find(cache, selector.package, selector.upgradable || version.UPGRADABLE_NONE);
+                                    var highestCache = version.find(cache, direct? direct : selector.package, selector.upgradable || version.UPGRADABLE_NONE);
     
                                     if (!release) {
                                         // resolve highest cache version
                                         resolveURI(highestCache);
                                     }
                                     else {
-                                        var id = (direct? directRepo + "/" + direct : selector.package) + "." + release.tag_name;
+                                        var id = (direct? directRepo + "/" + direct : (selector.repository.namespace + (selector.repository.namespace != ""? "/" : "") + selector.package)) + "." + release.tag_name;
                                         var found;
                                         for (var u in cache) {
-                                            if (u == id) {
+                                            if (u == direct? direct : (selector.package + "." + release.tag_name)) {
                                                 found = u;
                                                 break;
                                             }
@@ -201,7 +201,7 @@
                                     }
                                 }
     
-                                cacheVolume.query(PATH_CACHE + (direct? (directRepo + "/") : "")).then(cacheQueryDone, cacheQueryDone);
+                                cacheVolume.query(PATH_CACHE + (direct? (directRepo + "/") : (selector.repository.namespace + (selector.repository.namespace != ""? "/" : "")))).then(cacheQueryDone, cacheQueryDone);
                             }, function() {
                                 // cache path error
                                 resolveURI(release? release.tarball_url : null);
@@ -288,7 +288,7 @@
                 loader.addRequestProcessor(REQUEST_PROC_NAME, self.process);
             });
         }
-    
+        
         var processor = new AllumeRequestGitHub();
         define(function () {
             return processor;
