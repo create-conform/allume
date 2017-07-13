@@ -1,5 +1,7 @@
 CACHE MANIFEST
-# unique stamp: 0.87603345212661441499948243794
+# unique stamp:0.028166809047055041499956321304
+
+CACHE:
 cc.error/error.js
 cc.host/host.js
 cc.type/type.js
