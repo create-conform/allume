@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.21/'
+// module 'allume.request.github.0.1.22/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.21/";
+    define.parameters.id = "allume.request.github.0.1.22/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.21",
+        "version": "0.1.22",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
         "bugs": null,
@@ -153,7 +153,7 @@
                                         var id = (direct? directRepo + "/" + direct : (selector.repository.namespace + (selector.repository.namespace != ""? "/" : "") + selector.package)) + "." + release.tag_name;
                                         var found;
                                         for (var u in cache) {
-                                            if (u == direct? direct : (selector.package + "." + release.tag_name)) {
+                                            if (u == (direct? direct : (selector.package + "." + release.tag_name))) {
                                                 found = u;
                                                 break;
                                             }
