@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.23/'
+// module 'allume.request.github.0.1.24/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.23/";
+    define.parameters.id = "allume.request.github.0.1.24/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.23",
+        "version": "0.1.24",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
         "bugs": null,
@@ -150,10 +150,10 @@
                                         resolveURI(highestCache);
                                     }
                                     else {
-                                        var id = (direct? directRepo + "/" + direct : (selector.repository.namespace + (selector.repository.namespace != ""? "/" : "") + selector.package)) + "." + release.tag_name;
+                                        var id = (direct? directRepo + "/" + direct : (selector.repository.namespace + (selector.repository.namespace != ""? "/" : "") + selector.package)) + "." + (release.tag_name.indexOf("v") == 0? release.tag_name.substr(1) : release.tag_name);
                                         var found;
                                         for (var u in cache) {
-                                            if (u == ((direct? direct : selector.package) + "." + release.tag_name)) {
+                                            if (u == ((direct? direct : selector.package) + "." + (release.tag_name.indexOf("v") == 0? release.tag_name.substr(1) : release.tag_name))) {
                                                 found = u;
                                                 break;
                                             }
