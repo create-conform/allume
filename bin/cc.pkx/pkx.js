@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.26/'
+// module 'cc.pkx.0.1.33/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.26/";
+    define.parameters.id = "cc.pkx.0.1.33/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.26",
+        "version": "0.1.33",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "bugs": null,
@@ -87,6 +87,7 @@
             var processors = {};
             var repositories = [];
             var volumes = [];
+            var requested = {};
     
             var host;
             var event;
@@ -121,6 +122,15 @@
             this.ERROR_DEPENDENCY = "pkx-error-dependency";
     
             var INDENT_OFFSET = 4;
+    
+            function findVolume(selector) {
+                var id = selector.package + "/" + (selector.resource? selector.resource : "");
+                for (var v in volumes) {
+                    if (version.compare(id, v, selector.upgradable) || id == v) {
+                        return volumes[v];
+                    }
+                }
+            }
     
             this.load = function(request, handler) {
                 var loader = null;
@@ -175,23 +185,35 @@
                         if (selector.uri.scheme == "pkx") {
                             for (var v in volumes) {
                                 if (selector.uri.path && volumes[v].pkx.id == selector.uri.path.substr(1)) {
-                                    // skip to the good part (no dependency loading)
                                     pkxVolume = volumes[v];
-                                    getResourceFromVolume();
+    
+                                    getPackageDependencies(pkxVolume);
                                     return;
                                 }
                             }
                         }
     
                         // get existing volume for package
-                        pkxVolume = io.volumes.get(selector.uri);
-    
+                        var packageId = selector.package + "/" + (selector.resource? selector.resource : "");
+                        pkxVolume = findVolume(selector);
     
                         // create new volume
-                        if (pkxVolume.length == 0) {
+                        if (!pkxVolume) {
                             pkxVolume = new self.PKXVolume(selector.uri, options);
                             pkxVolume.events.addEventListener(io.EVENT_VOLUME_INITIALIZATION_PROGRESS, progress);
+                            
+                            // add the volume already (during initialisation)
+                            var volAlreadyExists = volumes[packageId]? true : false;
+                            if (!volAlreadyExists) {
+                                volumes[packageId] = pkxVolume;
+                            }
+    
                             pkxVolume.then(function (volume) {
+                                // delete temp vol
+                                if (volume.pkx.id != packageId && !volAlreadyExists) {
+                                    delete volumes[packageId];
+                                }
+    
                                 // register volume
                                 io.volumes.register(volume);
     
@@ -199,8 +221,7 @@
                             }, error);
                         }
                         else {
-                            pkxVolume = pkxVolume[0];
-                            getPackageDependencies(pkxVolume);
+                            pkxVolume.ready().then(getPackageDependencies).catch(error);
                         }
     
                         function getPackageDependencies(volume) {
@@ -232,15 +253,23 @@
                                     }
     
                                     // modify relative uri for embedded packages
+                                    var embedded;
                                     if (requests[d].package.substr(0, 2) == "./") {
                                         requests[d].package = "pkx:///" + volume.pkx.id + (requests[d].package.length > 2 ? "/" + requests[d].package.substr(2) : "");
+                                        embedded = true;
                                     }
                                     else if (volume.localId.lastIndexOf("/") == volume.localId.length - 1 && self.repositoryResolveLocal) {
                                         requests[d].package = "pkx:///" + volume.pkx.id + "/" + requests[d].package;
+                                        embedded = true;
                                     }
     
                                     if (requests[d].wrap) {
                                         requests[d].ignoreCache = true;
+                                    }
+    
+                                    // skip circular, embedded dependencies
+                                    if (embedded && selector.uri.scheme == "pkx") {
+                                        requests[d] = null;
                                     }
     
                                     // modify package url if parent is not an archive (for debugging)
@@ -259,6 +288,15 @@
                                     }*/
                                 }
                             }
+    
+                            // filter out removed dependencies
+                            var filtered = [];
+                            for (var r in requests) {
+                                if (requests[r]) {
+                                    filtered.push(requests[r]);
+                                }
+                            }
+                            requests = filtered;
     
                             if (typeof using === "undefined") {
                                 error(new Error("It seems that using.js is missing. Please make sure it is loaded."));
@@ -326,6 +364,14 @@
                             for (var a=0;a<arguments.length;a++) {
                                 // dependency module
                                 dependencies[a] = arguments[a];
+                            }
+    
+                            if (!requested[pkxVolume.pkx.id + resource]) {
+                                requested[pkxVolume.pkx.id + resource] = true;
+                            }
+                            else {
+                                define.cache.waitFor(pkxVolume.pkx.id + (selector.resource || pkxVolume.pkx.id.substr(pkxVolume.pkx.id.length - 1) == "/"? selector.resource : "/"), complete);
+                                return;
                             }
     
                             pkxVolume.open(resource).then(function readDataFromResourceStream(stream) {
@@ -405,18 +451,26 @@
                                         complete(json, dependencies);
                                     }
                                     if (ext == "css") {
-                                        var style = document.createElement("style");
-                                        style.rel = "stylesheet";
-                                        style.type = "text/css";
-                                        style.text = data;
-                                        try {
-                                            document.head.appendChild(style);
+                                        if (typeof document !== "undefined") {
+                                            data += "\r\n/*# sourceURL=http://" + (pkxVolume.pkx.id + resource) + "*/";
+                                            var style = document.createElement("style");
+                                            style.rel = "stylesheet";
+                                            style.type = "text/css";
+                                            if (style.styleSheet) {
+                                                style.styleSheet.cssText = data;
+                                            }
+                                            else {
+                                                style.appendChild(document.createTextNode(data));
+                                            }
+                                            try {
+                                                document.head.appendChild(style);
+                                            }
+                                            catch (e) {
+                                                error(e);
+                                                return;
+                                            }
                                         }
-                                        catch (e) {
-                                            error(e);
-                                            return;
-                                        }
-                                        complete(null, null);
+                                        complete(data, dependencies);
                                     }
                                 }, error);
                             }, error);
@@ -1066,7 +1120,11 @@
                                 error(new Error(self.ERROR_INVALID_PKX_VOLUME, "The gzip stream does not seem to contain a file."));
                             }, openTar);
     
-                            function openTar() {
+                            function openTar(err) {
+                                    if (err && err.name != io.ERROR_UNSUPPORTED_STREAM) {
+                                    error(err);
+                                    return;
+                                }
                                 // what is returned here is a stream that is in the tar format.
                                 tarVolume = new tar.TarVolume(stream, packageId, options.strip? { "strip" : options.strip } : null);
                                 tarVolume.events.addEventListener(io.EVENT_VOLUME_INITIALIZATION_PROGRESS, progress);
@@ -1218,6 +1276,21 @@
                 function notReady() {
                     return new Promise(function(resolve, refuse) { refuse(io.ERROR_VOLUME_NOT_READY); });
                 }
+    
+                this.ready = function() {
+                    return new Promise(function(resolve, refuse) { 
+                        own.events.addEventListener(io.EVENT_VOLUME_STATE_CHANGED, function(sender, state) {
+                            if (state == io.VOLUME_STATE_READY) { 
+                                var origThen = own.then;
+                                own.then = null;
+                                resolve(own);
+                                own.then = origThen;
+                            } else { 
+                                    refuse(io.ERROR_VOLUME_NOT_READY);
+                            }
+                        })
+                    });
+                }
             };
     
             this.uri = {};
@@ -1344,7 +1417,7 @@
                 "module": self
             });
         }
-    
+        
         var singleton;
         (function (obj, factory) {
             var supported = false;

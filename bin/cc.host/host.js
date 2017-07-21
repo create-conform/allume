@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.host.0.1.8/'
+// module 'cc.host.0.1.9/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.host.0.1.8/";
+    define.parameters.id = "cc.host.0.1.9/";
     define.parameters.pkx = {
         "name": "cc.host",
-        "version": "0.1.8",
+        "version": "0.1.9",
         "title": "Host Module",
         "description": "Library that provides information about the host environment.",
         "bugs": null,
@@ -795,11 +795,11 @@
             singleton = new (Function.prototype.bind.apply(Host, arguments));
     
             if (typeof document !== "undefined") {
-                document.documentElement.setAttribute("data-runtime", singleton.runtime);
-                document.documentElement.setAttribute("data-runtime-version", singleton.runtimeVersion);
-                document.documentElement.setAttribute("data-platform", singleton.platform);
-                document.documentElement.setAttribute("data-platform-version", singleton.platformVersion);
-                document.documentElement.setAttribute("data-platform-architecture", singleton.platformArchitecture);
+                document.documentElement.setAttribute("data-host-runtime", singleton.runtime);
+                document.documentElement.setAttribute("data-host-runtime-version", singleton.runtimeVersion);
+                document.documentElement.setAttribute("data-host-platform", singleton.platform);
+                document.documentElement.setAttribute("data-host-platform-version", singleton.platformVersion);
+                document.documentElement.setAttribute("data-host-platform-architecture", singleton.platformArchitecture);
             }
     
             return singleton;

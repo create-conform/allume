@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.file-system.0.1.15/'
+// module 'cc.io.file-system.0.1.16/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.file-system.0.1.15/";
+    define.parameters.id = "cc.io.file-system.0.1.16/";
     define.parameters.pkx = {
         "name": "cc.io.file-system",
-        "version": "0.1.15",
+        "version": "0.1.16",
         "title": "IO File system Module",
         "description": "IO module that implements file protocol support.",
         "bugs": null,
@@ -387,15 +387,13 @@
     
                     function handleError(err) {
                         if (err) {
-                            if (err.code == "ENOENT") {
-                                if (opt_create && !attemptCreate) {
-                                    attemptCreate = true;
-                                    createPath(path).then(function() {
-                                        openFile();
-                                    }, function() {
-                                        reject(new Error(io.ERROR_FILE_NOT_FOUND, ""));
-                                    });
-                                }
+                            if (err.code == "ENOENT" && opt_create && !attemptCreate) {
+                                attemptCreate = true;
+                                createPath(path).then(function() {
+                                    openFile();
+                                }, function() {
+                                    reject(new Error(io.ERROR_FILE_NOT_FOUND, ""));
+                                });
                             }
                             else if (err.code == "EACCES") {
                                 reject(new Error(io.ERROR_ACCESS_DENIED, ""));
