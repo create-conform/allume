@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.33/'
+// module 'cc.pkx.0.1.35/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.33/";
+    define.parameters.id = "cc.pkx.0.1.35/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.33",
+        "version": "0.1.35",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "bugs": null,
@@ -268,7 +268,9 @@
                                     }
     
                                     // skip circular, embedded dependencies
-                                    if (embedded && selector.uri.scheme == "pkx") {
+                                    var selUri = selector.uri.toString();
+                                    selUri = selUri.substr(0, selUri.indexOf("/",7)) || selector.uri.toString();
+                                    if (embedded && selector.uri.scheme == "pkx" && selUri == "pkx:///" + volume.pkx.id) {
                                         requests[d] = null;
                                     }
     
