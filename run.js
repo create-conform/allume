@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+
 // fix nw.js cwd issue
 /*if(process.env.PWD) {
     process.chdir(process.env.PWD);
