@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.35/'
+// module 'cc.pkx.0.1.38/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.35/";
+    define.parameters.id = "cc.pkx.0.1.38/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.35",
+        "version": "0.1.38",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "bugs": null,
@@ -67,6 +67,7 @@
         var PKX_SYSTEM = "pkx";
         var DEPENDENCY_PKX = PKX_SYSTEM;
         var DEPENDENCY_CONFIG = "configuration";
+        var DEPENDENCY_REQUIRER = "requirer";
     
         function PKX(pkx, module, configuration) {
             var self = this;
@@ -368,7 +369,7 @@
                                 dependencies[a] = arguments[a];
                             }
     
-                            if (!requested[pkxVolume.pkx.id + resource]) {
+                            if (!requested[pkxVolume.pkx.id + resource] || selector.raw) {
                                 requested[pkxVolume.pkx.id + resource] = true;
                             }
                             else {
@@ -605,7 +606,7 @@
                     });
                 }
             };
-            this.load.factory = function(module, factory, request) {
+            this.load.factory = function(module, factory, request, requirer) {
                 // decorate dependencies
                 var dependencies = module.dependencies.slice(0);
                 var args = [];
@@ -640,6 +641,9 @@
                     if (!isNaN(d) && dependencies[d] == DEPENDENCY_CONFIG) {
                         dependencies[d] = request && request.configuration? request.configuration : (module.parameters.configuration? module.parameters.configuration : {});
                     }
+                    if (!isNaN(d) && dependencies[d] == DEPENDENCY_REQUIRER) {
+                        dependencies[d] = requirer;
+                    }
                 }
     
                 // add other dependencies (only numbered index)
@@ -670,7 +674,7 @@
                     configuration = configuration? "\ndefine.parameters.configuration = " + JSON.stringify(configuration, null, Array(INDENT_OFFSET + 1).join(" ")) + ";" : "";
     
                     // add package dependency
-                    depStr += "\ndefine.parameters.dependencies = [ \"" + DEPENDENCY_PKX + "\", \"module\", \"" + DEPENDENCY_CONFIG + "\" ];";
+                    depStr += "\ndefine.parameters.dependencies = [ \"" + DEPENDENCY_PKX + "\", \"module\", \"" + DEPENDENCY_CONFIG + "\", \"" + DEPENDENCY_REQUIRER + "\" ];";
                     depStr += "\ndefine.parameters.dependencies[0] = define.parameters.pkx;";
     
                     if (dependencies) {
@@ -1059,6 +1063,7 @@
                 }
     
                 var initializing = false;
+                var initialized = false;
                 var idxLastSlash = uri.path.lastIndexOf("/");
                 var isArchive = idxLastSlash != uri.path.length - 1;
                 var tarVolume = null;
@@ -1094,9 +1099,13 @@
                 this.events = new event.Emitter(this);
     
                 this.then = function(resolve, refuse) {
-                    if (initializing) {
+                    if (initializing && !initialized) {
                         refuse(new Error(io.ERROR_VOLUME_NOT_READY, "Volume initialization already started."));
                         return;
+                    }
+                    else if (initialized) {
+                        resolve();
+                        return null;
                     }
                     initializing = true;
     
@@ -1283,10 +1292,11 @@
                     return new Promise(function(resolve, refuse) { 
                         own.events.addEventListener(io.EVENT_VOLUME_STATE_CHANGED, function(sender, state) {
                             if (state == io.VOLUME_STATE_READY) { 
+                                initialized = true;
                                 var origThen = own.then;
                                 own.then = null;
                                 resolve(own);
-                                own.then = origThen;
+                                //own.then = origThen;
                             } else { 
                                     refuse(io.ERROR_VOLUME_NOT_READY);
                             }
