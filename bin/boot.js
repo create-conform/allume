@@ -1,14 +1,17 @@
 //////////////////////////////////////////////////////////////////////////////////
 //
-// bootloader
+// boot
 //
-//    allume bootloader script.
+//    allume boot sequence.
 //
 //
 // Copyright Nick Verlinden (info@createconform.com)
 //
 //////////////////////////////////////////////////////////////////////////////////
 (function(allume) {
+    //
+    // CONSTANTS
+    //
     var BOOT_SCREEN_DURATION = 3000;
     var CONFIG_DEFAULT = {
         "allume" : true,
@@ -44,6 +47,9 @@
     var ERROR_INVALID_SECTION = "allume-error-invalid-section";
     var ERROR_SAVE_CONFIG = "allume-error-save-config";
 
+    //
+    // PRIVATES
+    //
     var err = "";
     var errName = allume.ERROR_UNKNOWN;
 
@@ -136,6 +142,9 @@
         }
     }
 
+    //
+    // CLI -> PROFILE COMMANDS
+    //
     function profileList(args) {
          for (var p in config.profiles) {
             profilePrint(p);
@@ -143,7 +152,7 @@
     }
     function profileAdd(args) {
         if (profileExists(args.name)) {
-            console.error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' already exist.");
+            allume.update(new Error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' already exist."));
             return;
         }
 
@@ -152,12 +161,12 @@
         cfg.save(config, PATH_CONFIG).then(function() {
             // success!
         }, function(e) {
-            console.error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e);
+            allume.update(new Error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e));
         });
     }
     function profileCopy(args) {
         if (profileExists(args.name)) {
-            console.error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' already exist.");
+            allume.update(new Error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' already exist."));
             return;
         }
 
@@ -166,12 +175,12 @@
         cfg.save(config, PATH_CONFIG).then(function() {
             // success!
         }, function(e) {
-            console.error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e);
+            allume.update(new Error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e));
         });
     }
     function profileRemove(args) {
         if (!profileExists(args.name)) {
-            console.error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' does not exist.");
+            allume.update(new Error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' does not exist."));
             return;
         }
 
@@ -180,7 +189,7 @@
         cfg.save(config, PATH_CONFIG).then(function() {
             // success!
         }, function(e) {
-            console.error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e);
+            allume.update(new Error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e));
         });
     }
     function profileCurrent(args) {
@@ -188,7 +197,7 @@
     }
     function profileSwitch(args) {
         if (!profileExists(args.name)) {
-            console.error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' does not exist.");
+            allume.update(new Error(ERROR_INVALID_PROFILE, "Profile '" + args.name + "' does not exist."));
             return;
         }
         config.activeProfile = args.name;
@@ -196,12 +205,12 @@
         cfg.save(config, PATH_CONFIG).then(function() {
             // success!
         }, function(e) {
-            console.error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e);
+            allume.update(new Error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e));
         });
     }
     function profileSet(args) {
         if (!config.profiles[config.activeProfile][args.section]) {
-            console.error(ERROR_INVALID_SECTION, "Profile '" + config.activeProfile + "' does not have configuration section '" + args.section + "'.");
+            allume.update(new Error(ERROR_INVALID_SECTION, "Profile '" + config.activeProfile + "' does not have configuration section '" + args.section + "'."));
             return;
         }
         config.profiles[config.activeProfile][args.section][args.key] = args.value;
@@ -209,7 +218,7 @@
         cfg.save(config, PATH_CONFIG).then(function() {
             // success!
         }, function(e) {
-            console.error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e);
+            allume.update(new Error(ERROR_SAVE_CONFIG, "An error occurred while trying to save the configuration.", e));
         });
     }
 
@@ -222,10 +231,12 @@
         return false;
     }
     function profilePrint(name) {
-        console.log("'" + name + "':");
-        console.log(JSON.stringify(config.profiles[name], null, "  "));
+        allume.update(allume.STATUS_DONE, "'" + name + "':" + "\n" + JSON.stringify(config.profiles[name], null, "  "));
     }
 
+    //
+    // CLI -> LOAD PACKAGE
+    //
     function boot() {
         // load dependencies
         cli = cli || define.cache.get(MODULE_ID_CLI, "minor").factory();
@@ -299,7 +310,7 @@
             }
             if (p["--ui"] && !ui) {
                 if (!nw) {
-                    console.error(MSG_UI_UNAVAILABLE);
+                    allume.update(allume.STATUS_ERROR, MSG_UI_UNAVAILABLE);
                     return;
                 }
 
@@ -343,9 +354,11 @@
                 catch(e) {
                     var e = new Error("Make sure the data you pass to the --config switch is valid JSON data.");
                     e.name = "error-invalid-configuration";
-                    console.error(e);
                     if (typeof document !== "undefined" && firstOpen) {
-                        console.log("allume-error");
+                        allume.update(e);
+                    }
+                    else {
+                        console.error(e);
                     }
                     firstOpen = false;
                     return;
@@ -357,19 +370,19 @@
             if (requests) {
                 using.apply(using, requests).then(function () {
                     if (firstOpen) {
-                        console.log("allume-hide");
+                        allume.hide();
                         firstOpen = false;
                     }
                 }, function (loader) {
                     usingFailed(loader);
                     var e = new Error(err);
                     e.name = errName;
-                    console.error(e);
-                    if (typeof document !== "undefined") {
-                        if (firstOpen) {
-                            console.log("allume-error");
-                            firstOpen = false;
-                        }
+                    if (typeof document !== "undefined" && firstOpen) {
+                        allume.update(e);
+                        firstOpen = false;
+                    }
+                    else {
+                        console.error(e);
                     }
                 });
             }
@@ -384,7 +397,7 @@
                 repo = p.repo;
             }
             if (p["--profile"]) {
-                console.log(MSG_MISSING_FEATURE);
+                allume.update(allume.STATUS_ERROR, MSG_MISSING_FEATURE);
                 profile = p.profile;
             }
             if (p["--theme"] && typeof document !== "undefined") {
@@ -418,8 +431,7 @@
                 if (typeof document !== "undefined") {
                     var e = new Error(p["--help"]);
                     e.name = "help";
-                    console.error(e);
-                    console.log("allume-error");
+                    allume.update(e);
                 }
             }
             else if (!p.selector && !p.profile && (!p["--ui"] || ui)) {
@@ -430,16 +442,16 @@
                 else {
                     var e = new Error("The boot sequence can't start because no package was specified. If you are the developer of the app using allume, then please make sure you specify the package to load.");
                     e.name = "error-invalid-package";
-                    console.error(e);
                     if (typeof document !== "undefined") {
-                        console.log("allume-error");
+                        allume.update(e);
+                    }
+                    else {
+                        console.error(e);
                     }
                 }
             }
             else if (p.selector || p["--ui"]) {
                 if (ui) {
-                    // TODO - load the allume.ui package, when done, continue code below and proceed to open.
-
                     // listen for OS open file event
                     ui.App.on("open", function(cmdline) {
                         cmdline = cmdline.replace(/"([^"]+)"/g, function(a) {
@@ -463,12 +475,14 @@
             if (typeof document !== "undefined") {
                 var e = new Error("Parameters where missing or invalid. Please check your browser javascript console.");
                 e.name = "error-invalid-parameter";
-                console.error(e);
-                console.log("allume-error");
+                allume.update(e);
             }
         }
     }
 
+    //
+    // CLI -> DEBUG COMMAND
+    //
     function debug(cmd) {
         // start node in debug mode
         childProcess = childProcess || require("child_process");
@@ -515,6 +529,12 @@
         return;
     }
 
+    //
+    // Wait for pkx loader to be ready
+    //
+    // Once the pkx loader is ready, we can read configuration and
+    // load the repositories and profiles.
+    //
     define.Loader.waitFor("pkx", function(loader) {
         // load dependencies
         cfg = cfg || define.cache.get(MODULE_ID_CONFIG, "minor").factory();

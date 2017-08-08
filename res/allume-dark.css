@@ -6,20 +6,20 @@ body {
     overflow: hidden;
     background-color: rgb(0,0,0);
 }
-body[data-allume-boot-status="allume-error"] {
+html[data-allume-boot-status="allume-error"] > body {
     overflow: auto;
 }
 /*
     When the boot message is not empty (meaning it's not finished booting), force it's background color to be grey.
 */
 html:not([data-allume=""]) > body,
-html[data-allume=""] > body:not([data-allume-boot-status=""]) {
+html[data-allume=""]:not([data-allume-boot-status=""]) > body {
     background-color: rgb(0,0,0) !important;
 }
 /*
     When the boot message is empty (meaning it's finished booting), reset z-index (required for animation to work).
 */
-html[data-allume=""] > body[data-allume-boot-status=""] {
+html[data-allume=""][data-allume-boot-status=""] > body {
     z-index: initial;
 }
 /*
@@ -71,7 +71,7 @@ body:after {
 /*
     Progress indicator when not displaying an error message.
 */
-html[data-allume=""] > body:not([data-allume-boot-status="allume-error"]):after {
+html[data-allume=""]:not([data-allume-boot-status="allume-error"]) > body:after {
     top: calc(50% + 80px);
     left: 50%;
     -webkit-transform: translateY(-50%) translateX(-50%);
@@ -79,7 +79,7 @@ html[data-allume=""] > body:not([data-allume-boot-status="allume-error"]):after 
     -ms-transform: translateY(-50%) translateX(-50%);
     transform: translateY(-50%) translateX(-50%);
     opacity: 0;
-    content: '\00000a\00000a' attr(data-allume-boot-status);
+    content: '\00000a\00000a' attr(data-allume-boot-message);
     text-align: center;
     width: calc(100% - 80px);
     max-width: 300px;
@@ -94,7 +94,7 @@ html[data-allume=""] > body:not([data-allume-boot-status="allume-error"]):after 
     height 0s linear 0.3s,
     top 0s linear 0.3s;
 }
-html[data-allume=""] > body[data-allume-boot-progress=""]:not([data-allume-boot-status="allume-error"]):after {
+html[data-allume=""][data-allume-boot-progress=""]:not([data-allume-boot-status="allume-error"]) > body:after {
     background-color: rgba(0,0,0,0.1);
     background-size: 400% 200%;
     background-position: 0px -2px;
@@ -102,7 +102,7 @@ html[data-allume=""] > body[data-allume-boot-progress=""]:not([data-allume-boot-
     animation: animations-boot-progress-slide 0.75s linear infinite;
 }
 html:not([data-allume=""]) > body:before,
-html[data-allume=""] > body[data-allume-boot-status="allume-error"]:before {
+html[data-allume=""][data-allume-boot-status="allume-error"] > body:before {
     width: calc(100% - 120px);
     height: calc(100% - 120px);
     padding: 60px;
@@ -120,7 +120,7 @@ html[data-allume=""] > body[data-allume-boot-status="allume-error"]:before {
     -webkit-filter: grayscale(100%);
 }
 html:not([data-allume=""]) > body:after,
-html[data-allume=""] > body[data-allume-boot-status="allume-error"]:after {
+html[data-allume=""][data-allume-boot-status="allume-error"] > body:after {
     padding: 240px 60px 60px 60px;
     font-size: 14px;
     font-family: monospace;
@@ -131,7 +131,7 @@ html[data-allume=""] > body[data-allume-boot-status="allume-error"]:after {
 /*
     When the boot message is not empty (meaning it's not finished booting), show the logo and progress indicator.
 */
-html[data-allume=""] > body:not([data-allume-boot-status=""]):not([data-allume-boot-status="alume-error"]):not([data-allume-boot-status="Initializing..."]):before {
+html[data-allume=""]:not([data-allume-boot-status=""]):not([data-allume-boot-status="alume-error"]):not([data-allume-boot-status="Initializing..."]) > body:before {
     background-size: 60px 60px;
 
     /* transition when the logo is shown */
@@ -144,7 +144,7 @@ html[data-allume=""] > body:not([data-allume-boot-status=""]):not([data-allume-b
     When the boot message is not empty (meaning it's not finished booting) and not displaying an error,
     set the transition for showing the boot splash.
 */
-html[data-allume=""] > body:not([data-allume-boot-status=""]):not([data-allume-boot-status="allume-error"]):after {
+html[data-allume=""]:not([data-allume-boot-status=""]):not([data-allume-boot-status="allume-error"]) > body:after {
     /* transition when the progress indicator is shown */
     transition: opacity 0.5s ease-in 4s,
     height 0s linear 0s,
@@ -153,28 +153,56 @@ html[data-allume=""] > body:not([data-allume-boot-status=""]):not([data-allume-b
 /*
     When the boot message is not empty (meaning it's not finished booting), set the opacity.
 */
-html:not([data-allume=""]) > body:not([data-allume-boot-status=""]):before,
-body:not([data-allume-boot-status=""]):before,
-html:not([data-allume=""]) > body:not([data-allume-boot-status=""]):after,
-body:not([data-allume-boot-status=""]):after {
+html:not([data-allume=""]):not([data-allume-boot-status=""]) > body:before,
+html:not([data-allume-boot-status=""]) > body:before,
+html:not([data-allume=""]):not([data-allume-boot-status=""]) > body:after,
+html:not([data-allume-boot-status=""]) > body:after {
     opacity: 0.9 !important;
 }
 /*
     When the boot message is empty (meaning it's finished booting), hide
     the progress indicator.
 */
-html[data-allume=""] > body[data-allume-boot-status=""]:after {
+html[data-allume=""][data-allume-boot-status=""] > body:after {
     opacity: 0;
 }
 /*
     When the boot message is empty (meaning it's finished booting), hide the logo and progress-indicator.
 */
-html[data-allume=""] > body[data-allume-boot-status=""]:before,
-html[data-allume=""] > body[data-allume-boot-status=""]:after,
-html:not([data-allume=""]) > body[data-allume-boot-status=""]:before,
-html:not([data-allume=""]) > body[data-allume-boot-status=""]:after {
+html[data-allume=""][data-allume-boot-status=""] > body:before,
+html[data-allume=""][data-allume-boot-status=""] > body:after,
+html:not([data-allume=""]):not([data-allume-boot-status=""]) > body:before,
+html:not([data-allume=""]):not([data-allume-boot-status=""]) > body:after {
     height: 0px;
     top: -30px;
+}
+/*
+    Display allume notifications.
+*/
+html:after {
+    transition: top 0.3s ease-out 5s;
+    background-color: rgba(64,182,255,0.6);
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding: 10px 60px;
+
+    content: '';
+    position: absolute;
+    top: -100%;
+    right: 0px;
+    left: 0px;
+    z-index: 2147483647;
+}
+html[data-allume-boot-status=""]:after {
+    transition: top 0.3s ease-out 0s;
+}
+html[data-allume-notify="updated"]:not([data-allume-boot-status=""]):after {
+    content: 'allume has been updated!      -- Reload to apply changes --';
+    cursor: pointer;
+    top: 0px;
 }
 /*
     Webkit scrollbar.
