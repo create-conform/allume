@@ -25,7 +25,7 @@
             }
         ]
     };
-    define.parameters.dependencies = [ "pkx", "module", "configuration" ];
+    define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
     define.parameters.dependencies.push(define.cache.get("cc.validate.0.1/"));
     using = define.getUsing(define.parameters.id);

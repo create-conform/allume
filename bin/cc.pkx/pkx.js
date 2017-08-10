@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.38/'
+// module 'cc.pkx.0.1.39/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.38/";
+    define.parameters.id = "cc.pkx.0.1.39/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.38",
+        "version": "0.1.39",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "bugs": null,
@@ -33,7 +33,7 @@
             "cc.validate.0.1"
         ]
     };
-    define.parameters.dependencies = [ "pkx", "module", "configuration" ];
+    define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
     define.parameters.dependencies.push(define.cache.get("cc.host.0.1/"));
     define.parameters.dependencies.push(define.cache.get("cc.io.0.1/"));
@@ -369,10 +369,10 @@
                                 dependencies[a] = arguments[a];
                             }
     
-                            if (!requested[pkxVolume.pkx.id + resource] || selector.raw) {
+                            if (!requested[pkxVolume.pkx.id + resource] && !selector.raw) {
                                 requested[pkxVolume.pkx.id + resource] = true;
                             }
-                            else {
+                            else if (!selector.raw) {
                                 define.cache.waitFor(pkxVolume.pkx.id + (selector.resource || pkxVolume.pkx.id.substr(pkxVolume.pkx.id.length - 1) == "/"? selector.resource : "/"), complete);
                                 return;
                             }

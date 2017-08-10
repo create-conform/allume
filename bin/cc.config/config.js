@@ -32,7 +32,7 @@
             "cc.event.0.1"
         ]
     };
-    define.parameters.dependencies = [ "pkx", "module", "configuration" ];
+    define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
     define.parameters.dependencies.push(define.cache.get("cc.io.file-system.0.1/"));
     define.parameters.dependencies.push(define.cache.get("cc.io.local-storage.0.1/"));

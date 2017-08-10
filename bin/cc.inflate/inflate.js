@@ -18,7 +18,7 @@
         "contributors": null,
         "main": "inflate.js"
     };
-    define.parameters.dependencies = [ "pkx", "module", "configuration" ];
+    define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);

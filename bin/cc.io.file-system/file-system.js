@@ -29,7 +29,7 @@
             "cc.io.0.1"
         ]
     };
-    define.parameters.dependencies = [ "pkx", "module", "configuration" ];
+    define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
     define.parameters.dependencies.push(define.cache.get("cc.event.0.1/"));
     define.parameters.dependencies.push(define.cache.get("cc.host.0.1/"));
