@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.25/'
+// module 'allume.request.github.0.1.26/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.25/";
+    define.parameters.id = "allume.request.github.0.1.26/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.25",
+        "version": "0.1.26",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
         "bugs": null,
@@ -61,6 +61,7 @@
             this.process = function(selector) {
                 var direct;
                 var directRepo;
+                var triedCORSProxy;
     
                 if (selector.uri.authority.host == HOST_GITHUB) {
                     selector.uri.authority.host = HOST_GITHUBAPI;
@@ -124,7 +125,6 @@
     
                         // variable will contain error message when download of tarball url fails.
                         var releaseErr;
-                        var triedCORSProxy;
     
                         if (ghEnableCache) {
                             config.getVolume().then(function(cacheVolume) {
