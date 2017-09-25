@@ -1,7 +1,7 @@
 {
   "name": "allume",
   "main": "index.html",
-  "version": "0.40.1",
+  "version": "0.41.0",
   "description": "A cross-platform package bootloader for javascript.",
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "cc.error.0.1",
     "cc.pkx.0.1",
     "allume.request.github.0.1",
+    "allume.request.bitbucket.0.1",
     "allume.request.file-system.0.1",
     "cc.io.http.0.1",
     "cc.io.file-system.0.1",

@@ -18,6 +18,7 @@ require("./cc.io.file-system/file-system.js");
 require("./cc.io.local-storage/local-storage.js");
 require("./cc.config/config.js");
 require("./allume.request.github/github.js");
+require("./allume.request.bitbucket/bitbucket.js");
 require("./allume.request.file-system/file-system.js");
 require("./cc.io.http/http.js");
 require("./cc.cli/cli.js");

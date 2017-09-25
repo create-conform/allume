@@ -1,7 +1,8 @@
 CACHE MANIFEST
-# unique stamp:0.60662123993119571502390488096
+# unique stamp:0.47704644213315041506371414229
 
 CACHE:
+allume.request.bitbucket/bitbucket.js
 cc.error/error.js
 cc.host/host.js
 cc.type/type.js
