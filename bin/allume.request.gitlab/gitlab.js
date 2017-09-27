@@ -1,22 +1,22 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.bitbucket.0.1.3/'
+// module 'allume.request.gitlab.0.1.3/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.bitbucket.0.1.3/";
+    define.parameters.id = "allume.request.gitlab.0.1.3/";
     define.parameters.pkx = {
-        "name": "allume.request.bitbucket",
+        "name": "allume.request.gitlab",
         "version": "0.1.3",
-        "title": "Allume Request BitBucket Library",
-        "description": "Allume request module for fetching releases from BitBucket.",
+        "title": "Allume Request GitLab Library",
+        "description": "Allume request module for fetching releases from GitLab.",
         "bugs": null,
         "author": null,
         "contributors": null,
-        "main": "bitbucket.js",
+        "main": "gitlab.js",
         "pkxDependencies": [
             "cc.version.0.1",
             "cc.string.0.1",
@@ -34,9 +34,9 @@
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////
     //
-    // allume.request.bitbucket
+    // allume.request.gitlab
     //
-    //    PKX request module for fetching releases from BitBucket.
+    //    PKX request module for fetching releases from GitLab.
     //
     // License
     //    Apache License Version 2.0
@@ -46,31 +46,36 @@
     ///////////////////////////////////////////////////////////////////////////////////////////// 
     
     (function() {
-        var REQUEST_PROC_NAME = "bitbucket";
-        var HOST_BITBUCKETAPI = "api.bitbucket.org";
-        var HOST_BITBUCKET = "bitbucket.org";
-        var URI_PATH_CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
-        var URI_PATH_BITBUCKETAPI_TAGS_TEMPLATE = "$NAME/refs/tags";
-        var URI_PATH_BITBUCKETAPI_BRANCH_TEMPLATE = "$NAME/get/";
-        var PATH_CACHE = "allume.request.bitbucket/cache/";
+        var REQUEST_PROC_NAME = "gitlab";
+        var HOST_GITLAB = "gitlab.com";
+        var URI_PATH_GITLABAPI_TAGS_TEMPLATE = "%2F$NAME/repository/tags";
+        var URI_PATH_GITLABAPI_BRANCH_TEMPLATE = "%2F$NAME/repository/archive?sha=";
+        var PATH_CACHE = "allume.request.gitlab/cache/";
         var EXT_PKX = "pkx";
     
-        function AllumeRequestBitBucket() {
+        // user url expected:
+        //   https://gitlab.com/create-conform/
+        // direct:
+        //   https://gitlab.com/create-conform/cc_demo
+        // 
+    
+        // https://gitlab.com/api/v4/projects/create-conform%2Fcc_demo/repository/tags
+        // https://gitlab.com/api/v4/projects/create-conform%2Fcc_demo/repository/archive?sha=v1.0.0
+    
+        function AllumeRequestGitLab() {
             var self = this;
     
             this.process = function(selector) {
                 var direct;
                 var directRepo;
-                var triedCORSProxy;
     
-                if (selector.uri.authority.host == HOST_BITBUCKET) {
-                    selector.uri.authority.host = HOST_BITBUCKETAPI;
+                if (selector.uri.authority.host == HOST_GITLAB && (selector.package.substr(0,7) == "http://" || selector.package.substr(0,8) == "https://")) {
                     direct = selector.uri.path.substr(selector.uri.path.lastIndexOf("/") + 1);
                     directRepo = selector.uri.path.substr(0, selector.uri.path.lastIndexOf("/"));
                     directRepo = directRepo.substr(directRepo.lastIndexOf("/") + 1);
-                    selector.uri.path = "/repos" + (selector.uri.path.lastIndexOf("/") == selector.uri.path.length - 1? selector.uri.path.substr(0, selector.uri.path.length - 2) : selector.uri.path);
+                    selector.uri.path = "/api/v4/projects/" + (selector.uri.path.lastIndexOf("/") == selector.uri.path.length - 1? selector.uri.path.substr(1, selector.uri.path.length - 2) : selector.uri.path.substr(1)).replace(/\//g, "%2F");
                 }
-                if (selector.uri.authority.host != HOST_BITBUCKETAPI) {
+                if (selector.uri.authority.host != HOST_GITLAB) {
                     return;
                 }
     
@@ -80,44 +85,53 @@
                     // get active profile from config
                     var profile = typeof allume != "undefined"? allume.config.profiles[allume.config.activeProfile] : {};
     
-                    var bbConf;
-                    if (profile.repositories[selector.repository.namespace] && profile.repositories[selector.repository.namespace].bitbucket) {
-                        bbConf = profile.repositories[selector.repository.namespace].bitbucket;
+                    var glConf;
+                    if (profile.repositories[selector.repository.namespace] && profile.repositories[selector.repository.namespace].gitlab) {
+                        glConf = profile.repositories[selector.repository.namespace].gitlab;
                     }
-                    else if (profile.bitbucket) {
-                        bbConf = profile.bitbucket;
+                    else if (profile.gitlab) {
+                        glConf = profile.gitlab;
                     }
-                    else if (typeof allume != "undefined" && allume.config && allume.config.bitbucket) {
-                        bbConf = allume.config.bitbucket;
-                    }
-    
-                    // setup bitbucket data
-                    var bbUsername = bbConf? bbConf.username : null;
-                    var bbPassword = bbConf? bbConf.password : null;
-                    var bbToken = bbConf? bbConf.token : null;
-                    var bbBranch = bbConf? bbConf.branch : null;
-                    var bbEnableCORSProxy = bbConf && bbConf.enableCORSProxy != null? bbConf.enableCORSProxy : false;
-                    var bbEnableCache = bbConf && bbConf.enableCache != null? bbConf.enableCache : true;
-    
-                    if (bbToken) {
-                        headers["Authorization"] = "Bearer " + bbToken;
-                    }
-                    else if (bbUsername) {
-                        headers["Authorization"] = "Basic " + string.toBase64((bbUsername + ":" + (bbPassword ? bbPassword : "")));
+                    else if (typeof allume != "undefined" && allume.config && allume.config.gitlab) {
+                        glConf = allume.config.gitlab;
                     }
     
-                    if (bbBranch) {
+                    // setup gitlab data
+                    var glToken = glConf? glConf.token : null;
+                    var glBranch = glConf? glConf.branch : null;
+                    var glURLNamespaceSeperator = glConf? glConf.urlNamespaceSeperator : null;
+                    var glEnableCache = glConf && glConf.enableCache != null? glConf.enableCache : true;
+    
+                    var repoName;
+                    var userName;
+    
+                    if (glToken) {
+                        headers["PRIVATE-TOKEN"] = glToken;
+                    }
+    
+                    if (direct) {
+                        repoName = selector.uri.path.substr(selector.uri.path.lastIndexOf("/", selector.uri.path.length - 2)).split("%2F");
+                        userName = repoName[0].substr(1);
+                        repoName = repoName[1];
+                    }
+                    else {
+                        repoName = selector.uri.path.split("/");
+                        userName = repoName[1];
+                        repoName = repoName[2];
+                    }
+    
+                    if (glBranch) {
                         if (!direct) {
-                            selector.uri = selector.parseURI("https://" + HOST_BITBUCKET + selector.repository.url.substr(selector.repository.url.lastIndexOf("/", selector.repository.url.length - 2)) + URI_PATH_BITBUCKETAPI_BRANCH_TEMPLATE + bbBranch + ".tar.gz").toString();
+                            selector.uri = selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + URI_PATH_GITLABAPI_BRANCH_TEMPLATE + glBranch, glURLNamespaceSeperator).toString();
                         }
-                        else {
-                            selector.uri.path += "/get/" + bbBranch + ".tar.gz";
+                        else {                            
+                            selector.uri = selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + "%2F" + repoName + "/repository/archive?sha=" + glBranch, glURLNamespaceSeperator).toString();
                         }
                         resolve({"strip": 1, "headers": headers});
                         return;
                     }
     
-                    function bbDone(tag) {
+                    function glDone(tag) {
                         if (tag instanceof Error) {
                             //console.error(release);
                             tag = null;
@@ -126,7 +140,18 @@
                         // variable will contain error message when download of tarball url fails.
                         var tagErr;
     
-                        if (bbEnableCache) {
+                        if (!repoName) {
+                            repoName = selector.uri.path.substr(selector.uri.path.lastIndexOf("/", selector.uri.path.length - 2));
+                            userName = selector.uri.path.substr(selector.uri.path.lastIndexOf("/", selector.uri.path.length - repoName.length - 2) + 1);
+                            userName = userName.substr(0, userName.length - 1);
+                            repoName = repoName.substr(0, repoName.length - 1);
+                        }
+    
+                        if (tag) {
+                            var archiveURL = archiveURL || selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + "%2F" + (glURLNamespaceSeperator? repoName.replace(/\./g,glURLNamespaceSeperator) : repoName) + "/repository/archive?sha=" + tag.name, glURLNamespaceSeperator).toString();
+                        }
+    
+                        if (glEnableCache) {
                             config.getVolume().then(function(cacheVolume) {
                                 function cacheQueryDone(uriList) {
                                     if (uriList && uriList.code == "ENOENT") {
@@ -134,7 +159,8 @@
                                     }
                                     else if (uriList && uriList.code) {
                                         console.error("Cache disk error.", uriList);
-                                        resolveURI(tag? (tag.target.hash.substr(0,4) == "http"? tag.target.hash : selector.parseURI("https://" + HOST_BITBUCKET + selector.repository.url.substr(selector.repository.url.lastIndexOf("/", selector.repository.url.length - 2)) + URI_PATH_BITBUCKETAPI_BRANCH_TEMPLATE + tag.target.hash + ".tar.gz").toString()) : null);
+    
+                                        resolveURI(tag? archiveURL : null);
                                     }
                                     var cache = {};
                                     for (var u in uriList) {
@@ -161,17 +187,17 @@
                                             }
                                         }
                                         if (found) {
-                                            // release version from bitbucket is present in cache
+                                            // release version from GitLab is present in cache
                                             resolveURI(cache[found]);
                                         }
                                         else {
                                             // download new uri and save to cache
-                                            io.URI.open((tag.target.hash.substr(0,4) == "http"? tag.target.hash : selector.parseURI("https://" + HOST_BITBUCKET + selector.repository.url.substr(selector.repository.url.lastIndexOf("/", selector.repository.url.length - 2)) + URI_PATH_BITBUCKETAPI_BRANCH_TEMPLATE + tag.target.hash + ".tar.gz").toString())).then(function(repoStream) {
+                                            io.URI.open(archiveURL).then(function(repoStream) {
                                                 function repoFail() {
                                                     repoStream.close().then(repoResolve, repoResolve);
                                                 }
                                                 function repoResolve() {
-                                                    resolveURI((tag.target.hash.substr(0,4) == "http"? tag.target.hash : selector.parseURI("https://" + HOST_BITBUCKET + selector.repository.url.substr(selector.repository.url.lastIndexOf("/", selector.repository.url.length - 2)) + URI_PATH_BITBUCKETAPI_BRANCH_TEMPLATE + tag.target.hash + ".tar.gz").toString()));
+                                                    resolveURI(archiveURL);
                                                 };
                                                 
                                                 var cacheURI = cacheVolume.getURI(PATH_CACHE + id + "." + EXT_PKX);
@@ -206,31 +232,28 @@
                                 cacheVolume.query(PATH_CACHE + (direct? (directRepo + "/") : (selector.repository.namespace + (selector.repository.namespace != ""? "/" : "")))).then(cacheQueryDone, cacheQueryDone);
                             }, function() {
                                 // cache path error
-                                resolveURI(tag? (tag.target.hash.substr(0,4) == "http"? tag.target.hash : selector.parseURI("https://" + HOST_BITBUCKET + selector.repository.url.substr(selector.repository.url.lastIndexOf("/", selector.repository.url.length - 2)) + URI_PATH_BITBUCKETAPI_BRANCH_TEMPLATE + tag.target.hash + ".tar.gz").toString()) : null);
+                                resolveURI(tag? archiveURL : null);
                             });
                         }
                         else {
-                            resolveURI(tag? (tag.target.hash.substr(0,4) == "http"? tag.target.hash : selector.parseURI("https://" + HOST_BITBUCKET + selector.repository.url.substr(selector.repository.url.lastIndexOf("/", selector.repository.url.length - 2)) + URI_PATH_BITBUCKETAPI_BRANCH_TEMPLATE + tag.target.hash + ".tar.gz").toString()) : null);
+                            resolveURI(tag? archiveURL : null);
                         }
+    
+                        //TODO
+                        //   I WAS HERE
     
                         function resolveURI(uri) {
                             if (uri && uri.name) {
-                                reject(new Error("An error occured while trying to fetch '" + selector.package + "' from the BitBucket repository."));
+                                reject(new Error("An error occured while trying to fetch '" + selector.package + "' from the GitLab repository."));
                                 return;
                             }
                             else if (!uri && !tagErr) {
-                                reject(new Error("Couldn't find any suitable tag for package '" + selector.package + "' in the BitBucket repository."));
+                                reject(new Error("Couldn't find any suitable tag for package '" + selector.package + "' in the GitLab repository."));
                                 return;
                             }
                             else if (!uri && tagErr) {
-                                if (!tag || triedCORSProxy || !enableCORSProxy) {
-                                    reject(new Error("Downloading of package '" + selector.package + "' from BitBucket failed. If you are running this in a browser, CORS might be the problem."));
-                                }
-                                else if (tag) {
-                                    tag.target.hash = selector.parseURI(URI_PATH_CORS_PROXY + selector.parseURI("https://" + HOST_BITBUCKET + selector.repository.url.substr(selector.repository.url.lastIndexOf("/", selector.repository.url.length - 2)) + URI_PATH_BITBUCKETAPI_BRANCH_TEMPLATE + tag.target.hash + ".tar.gz").toString()).toString();
-                                    triedCORSProxy = true;
-    
-                                    bbDone(tag);
+                                if (!tag) {
+                                    reject(new Error("Downloading of package '" + selector.package + "' from GitLab failed. If you are running this in a browser, CORS might be the problem."));
                                 }
                                 return;
                             }
@@ -246,21 +269,24 @@
     
                     var uriTags;
                     if (direct) {
-                        selector.uri.path += "/refs/tags";
-                        uriTags = selector.uri;
+                        //selector.uri.path += "repository/tags";
+                        //uriTags = selector.uri;
+                        repoName = selector.uri.path.substr(selector.uri.path.lastIndexOf("/", selector.uri.path.length - 2)).split("%2F");
+                        userName = repoName[0].substr(1);
+                        repoName = repoName[1];
+    
+                        selector.uri.path = "/api/v4/projects/" + userName + (URI_PATH_GITLABAPI_TAGS_TEMPLATE).replace(/\$NAME/g,repoName);
                     }
                     else {
-                        uriTags = selector.parseURI(selector.repository.url + URI_PATH_BITBUCKETAPI_TAGS_TEMPLATE);
+                        selector.uri = selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + URI_PATH_GITLABAPI_TAGS_TEMPLATE, glURLNamespaceSeperator).toString();
                     }
+                    uriTags = selector.uri;
     
                     uriTags.open().then(function (stream) {
                         stream.headers = headers;
                         stream.readAsJSON().then(function (tags) {
-                            if (tags) {
-                                tags = tags.values;
-                            }
                             if (!tags || tags.length == 0) {
-                                reject(new Error("Package '" + selector.package + "' does not have any tags in the BitBucket repository."));
+                                reject(new Error("Package '" + selector.package + "' does not have any tags in the GitLab repository."));
                             }
                             var versions = [];
                             var count = 0;
@@ -288,15 +314,15 @@
                                 count++;
                             }
                             if (count == 0) {
-                                reject(new Error("Package '" + selector.package + "' does not contain one or more valid tags in the BitBucket repository."));
+                                reject(new Error("Package '" + selector.package + "' does not contain one or more valid tags in the GitLab repository."));
                                 return;
                             }
     
                             var tag = version.find(versions, direct? "" : selector.package, selector.upgradable || version.UPGRADABLE_NONE);
                             
-                            bbDone(tag);
-                        }, bbDone);
-                    }, bbDone);
+                            glDone(tag);
+                        }, glDone);
+                    }, glDone);
                 });
             };
     
@@ -306,7 +332,7 @@
             });
         }
         
-        var processor = new AllumeRequestBitBucket();
+        var processor = new AllumeRequestGitLab();
         define(function () {
             return processor;
         });

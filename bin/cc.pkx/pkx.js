@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.39/'
+// module 'cc.pkx.0.1.40/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.39/";
+    define.parameters.id = "cc.pkx.0.1.40/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.39",
+        "version": "0.1.40",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "bugs": null,
@@ -891,20 +891,20 @@
                 this.ignoreDependencies = selector.ignoreDependencies || false;
                 this.configuration = selector.configuration || null;
     
-                this.parseURI = function(u) {
-                    return io.URI.parse(replaceVariables(u));
+                this.parseURI = function(u, namespaceSeperator) {
+                    return io.URI.parse(replaceVariables(u, namespaceSeperator));
                 };
     
-                function replaceVariables(u) {
+                function replaceVariables(u, namespaceSeperator) {
                     // add .pkx extension
-                    var uriPKXName = own.package + (own.package.lastIndexOf(self.PKX_FILE_EXTENSION) != own.package.length - self.PKX_FILE_EXTENSION.length && own.isArchive ? self.PKX_FILE_EXTENSION : "");
+                    var uriPKXName = (namespaceSeperator? own.package.replace(/\./g,namespaceSeperator) : own.package) + (own.package.lastIndexOf(self.PKX_FILE_EXTENSION) != own.package.length - self.PKX_FILE_EXTENSION.length && own.isArchive ? self.PKX_FILE_EXTENSION : "");
                     // replace variables
-                    return u.replace(/\$NAME/g, own.name)
+                    return u.replace(/\$NAME/g, (namespaceSeperator? own.name.replace(/\./g,namespaceSeperator) : own.name))
                         .replace(/\$PATCH/g, patchVersion)
                         .replace(/\$MINOR/g, minorVersion)
                         .replace(/\$MAJOR/g, majorVersion)
                         .replace(/\$PACKAGE/g, uriPKXName)
-                        .replace(/\$ID/g, own.package);
+                        .replace(/\$ID/g, (namespaceSeperator? own.package.replace(/\./g,namespaceSeperator) : own.package));
                 }
     
                 // find repository

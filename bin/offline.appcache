@@ -1,7 +1,8 @@
 CACHE MANIFEST
-# unique stamp:0.47704644213315041506371414229
+# unique stamp:0.0385211815153039261506541474531
 
 CACHE:
+allume.request.gitlab/gitlab.js
 allume.request.bitbucket/bitbucket.js
 cc.error/error.js
 cc.host/host.js
