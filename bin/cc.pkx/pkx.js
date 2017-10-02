@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.pkx.0.1.40/'
+// module 'cc.pkx.0.1.42/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.pkx.0.1.40/";
+    define.parameters.id = "cc.pkx.0.1.42/";
     define.parameters.pkx = {
         "name": "cc.pkx",
-        "version": "0.1.40",
+        "version": "0.1.42",
         "title": "PKX Module Library",
         "description": "Library for loading PKX modules, and working with PKX packages.",
         "bugs": null,
@@ -899,7 +899,8 @@
                     // add .pkx extension
                     var uriPKXName = (namespaceSeperator? own.package.replace(/\./g,namespaceSeperator) : own.package) + (own.package.lastIndexOf(self.PKX_FILE_EXTENSION) != own.package.length - self.PKX_FILE_EXTENSION.length && own.isArchive ? self.PKX_FILE_EXTENSION : "");
                     // replace variables
-                    return u.replace(/\$NAME/g, (namespaceSeperator? own.name.replace(/\./g,namespaceSeperator) : own.name))
+                    return u.replace(/\$NAME_NO_NS/g, (namespaceSeperator? own.name.replace(/\./g,namespaceSeperator) : own.name).substr(own.repository && own.repository.namespace && own.repository.namespace.length > 0? own.repository.namespace.length + 1 : 0))
+                        .replace(/\$NAME/g, (namespaceSeperator? own.name.replace(/\./g,namespaceSeperator) : own.name))
                         .replace(/\$PATCH/g, patchVersion)
                         .replace(/\$MINOR/g, minorVersion)
                         .replace(/\$MAJOR/g, majorVersion)

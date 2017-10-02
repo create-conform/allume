@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.gitlab.0.1.3/'
+// module 'allume.request.gitlab.0.1.6/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.gitlab.0.1.3/";
+    define.parameters.id = "allume.request.gitlab.0.1.6/";
     define.parameters.pkx = {
         "name": "allume.request.gitlab",
-        "version": "0.1.3",
+        "version": "0.1.6",
         "title": "Allume Request GitLab Library",
         "description": "Allume request module for fetching releases from GitLab.",
         "bugs": null,
@@ -101,6 +101,7 @@
                     var glBranch = glConf? glConf.branch : null;
                     var glURLNamespaceSeperator = glConf? glConf.urlNamespaceSeperator : null;
                     var glEnableCache = glConf && glConf.enableCache != null? glConf.enableCache : true;
+                    var glEnableNamespaceStripping = glConf && glConf.enableNamespaceStripping != null? glConf.enableNamespaceStripping : true;
     
                     var repoName;
                     var userName;
@@ -122,7 +123,7 @@
     
                     if (glBranch) {
                         if (!direct) {
-                            selector.uri = selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + URI_PATH_GITLABAPI_BRANCH_TEMPLATE + glBranch, glURLNamespaceSeperator).toString();
+                            selector.uri = selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + (glEnableNamespaceStripping? URI_PATH_GITLABAPI_BRANCH_TEMPLATE.replace("%2F$NAME/", "%2F$NAME_NO_NS/") : URI_PATH_GITLABAPI_BRANCH_TEMPLATE) + glBranch, glURLNamespaceSeperator).toString();
                         }
                         else {                            
                             selector.uri = selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + "%2F" + repoName + "/repository/archive?sha=" + glBranch, glURLNamespaceSeperator).toString();
@@ -148,7 +149,7 @@
                         }
     
                         if (tag) {
-                            var archiveURL = archiveURL || selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + "%2F" + (glURLNamespaceSeperator? repoName.replace(/\./g,glURLNamespaceSeperator) : repoName) + "/repository/archive?sha=" + tag.name, glURLNamespaceSeperator).toString();
+                            var archiveURL = archiveURL || selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + "%2F" + (direct? repoName : (glEnableNamespaceStripping? "$NAME_NO_NS" : "$NAME")) + "/repository/archive?sha=" + tag.name, glURLNamespaceSeperator).toString();
                         }
     
                         if (glEnableCache) {
@@ -278,7 +279,7 @@
                         selector.uri.path = "/api/v4/projects/" + userName + (URI_PATH_GITLABAPI_TAGS_TEMPLATE).replace(/\$NAME/g,repoName);
                     }
                     else {
-                        selector.uri = selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + URI_PATH_GITLABAPI_TAGS_TEMPLATE, glURLNamespaceSeperator).toString();
+                        selector.uri = selector.parseURI("https://" + HOST_GITLAB + "/api/v4/projects/" + userName + (glEnableNamespaceStripping? URI_PATH_GITLABAPI_TAGS_TEMPLATE.replace("%2F$NAME/", "%2F$NAME_NO_NS/") : URI_PATH_GITLABAPI_TAGS_TEMPLATE), glURLNamespaceSeperator).toString();
                     }
                     uriTags = selector.uri;
     
