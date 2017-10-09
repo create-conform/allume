@@ -42,10 +42,13 @@
     var MODULE_ID_CONFIG = "cc.config.0";
     var MODULE_ID_CLI = "cc.cli.0";
     var MODULE_ID_HOST = "cc.host.0";
+    var MODULE_ID_TYPE = "cc.type.0";
     var PATH_CONFIG = "allume/allume.json";
+    var PATH_OVERRIDE_CONFIG = "default.json";
     var ERROR_INVALID_PROFILE = "allume-error-invalid-profile";
     var ERROR_INVALID_SECTION = "allume-error-invalid-section";
     var ERROR_SAVE_CONFIG = "allume-error-save-config";
+    var HTTP_HEADER_CONFIG = "X-Allume-Config";
 
     //
     // PRIVATES
@@ -64,6 +67,7 @@
     var io;
     var childProcess;
     var path;
+    var type;
 
     // fix nw.js cwd issue
     if(typeof process !== "undefined" && process.env.PWD) {
@@ -240,7 +244,6 @@
     function boot() {
         // load dependencies
         cli = cli || define.cache.get(MODULE_ID_CLI, "minor").factory();
-        host = host || define.cache.get(MODULE_ID_HOST, "minor").factory();
 
         var nw;
         var ui;
@@ -538,6 +541,8 @@
     define.Loader.waitFor("pkx", function(loader) {
         // load dependencies
         cfg = cfg || define.cache.get(MODULE_ID_CONFIG, "minor").factory();
+        type = type || define.cache.get(MODULE_ID_TYPE, "minor").factory();
+        host = host || define.cache.get(MODULE_ID_HOST, "minor").factory();
 
         // reset require polyfill
         if (allume.require) {
@@ -555,7 +560,9 @@
             configDone();
         }
         function configFail(e) {
-            console.error(e);
+            if (e && e.name != "io-error-file-not-found") {
+                console.error(e);
+            }
             configDone();
         }
         function configDone() {
@@ -565,8 +572,57 @@
 
                 // attempt to save default config
                 cfg.save(config, PATH_CONFIG).then(function() {
+                    configMerge();
+                }, configMerge);
+            }
+            else {
+                configMerge();
+            }
+        }
+        function getConfigOverride() {
+            return new Promise(function(resolve, reject) {
+                var request = new XMLHttpRequest();
+                request.onreadystatechange = function () {
+                    if (request.readyState === 4) {
+                        resolve(request.status == 200? request.responseText : null);
+                    }
+                };
+    
+                request.open("GET", PATH_OVERRIDE_CONFIG, true);
+                request.send(null);
+            });
+        }
+        function configMerge() {
+            if (host.isRuntimeBrowserFamily() && navigator.onLine) {
+                getConfigOverride().then(function(configOverride) {
+                    if (configOverride) {
+                        try {
+                            configOverride = JSON.parse(configOverride);
+                        }
+                        catch(e) {
+                            console.error("default.json in the web root does not contain valid json data.");
+                            startBoot();
+                            return;
+                        }
+
+                        // if new profiles are added, add the default profile's repositories before merging
+                        for (var p in configOverride.profiles) {
+                            if (!config.profiles[p]) {
+                                config.profiles[p] = CONFIG_DEFAULT.profiles["local"];
+                            }
+                        }
+
+                        // attempt to save config
+                        config = type.merge(configOverride, config);
+                        cfg.save(config, PATH_CONFIG).then(function() {
+                            startBoot();
+                        }, startBoot);
+
+                        return;
+                    }
+
                     startBoot();
-                }, startBoot);
+                }).catch(startBoot);
             }
             else {
                 startBoot();
