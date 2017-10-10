@@ -1,6 +1,6 @@
+require("./cc.type/type.js");
 require("./cc.error/error.js");
 require("./cc.host/host.js");
-require("./cc.type/type.js");
 require("./cc.validate/validate.js");
 require("./cc.string/string.js");
 require("./cc.event/event.js");

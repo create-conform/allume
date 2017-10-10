@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.config.0.1.14/'
+// module 'cc.config.0.1.15/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.config.0.1.14/";
+    define.parameters.id = "cc.config.0.1.15/";
     define.parameters.pkx = {
         "name": "cc.config",
-        "version": "0.1.14",
+        "version": "0.1.15",
         "title": "Configuration Module",
         "description": "Library for loading and saving configuration data.",
         "bugs": null,
@@ -181,11 +181,11 @@
         //
         // public
         //
-        this.load = function(path) {
+        this.load = function(path, ignoreActiveProfile) {
             return new Promise(function(resolve, reject) {
                 function success() {
                     // load file from volume (if not exist, return blanco object)
-                    volume.open(path, io.ACCESS_READ, true).then(function(stream) {
+                    volume.open(path, io.ACCESS_READ, true, ignoreActiveProfile).then(function(stream) {
                         stream.readAsJSON().then(function(obj) {
                             stream.close();
                             resolve(obj);
@@ -205,11 +205,11 @@
             });
         };
     
-        this.save = function(obj, path) {
+        this.save = function(obj, path, ignoreActiveProfile) {
             return new Promise(function(resolve, reject) {
                 function success() {
                     // save file to volume (and create folders)
-                    volume.open(path, io.ACCESS_OVERWRITE, true).then(function(stream) {
+                    volume.open(path, io.ACCESS_OVERWRITE, true, ignoreActiveProfile).then(function(stream) {
                         var data = JSON.stringify(obj);
                         if (data.length > self.MAX_SIZE) {
                             reject(new Error(self.ERROR_FILE_SIZE_EXEEDS_LIMIT, "The configuration file is too big. There is a size limit of " + self.MAX_SIZE + " bytes per file for storing local configuration data."));
