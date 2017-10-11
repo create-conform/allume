@@ -1,35 +1,34 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.github.0.1.26/'
+// module 'allume.request.github.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.github.0.1.26/";
+    define.parameters.id = "allume.request.github.0.2.0/";
     define.parameters.pkx = {
         "name": "allume.request.github",
-        "version": "0.1.26",
+        "version": "0.2.0",
         "title": "Allume Request GitHub Library",
         "description": "Allume request module for fetching releases from GitHub.",
-        "bugs": null,
-        "author": null,
-        "contributors": null,
-        "main": "github.js",
-        "pkxDependencies": [
-            "cc.version.0.1",
-            "cc.string.0.1",
-            "cc.config.0.1",
-            "cc.io.0.1"
-        ]
+        "pkx": {
+            "main": "github.js",
+            "dependencies": [
+                "cc.version.0.2",
+                "cc.string.0.2",
+                "cc.config.0.2",
+                "cc.io.0.2"
+            ]
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.version.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.config.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.version.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.string.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.config.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.0.2/"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

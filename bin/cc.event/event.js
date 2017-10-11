@@ -1,23 +1,22 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.event.0.1.1/'
+// module 'cc.event.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.event.0.1.1/";
+    define.parameters.id = "cc.event.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.event",
-        "version": "0.1.1",
+        "version": "0.2.0",
         "title": "Event Module",
         "description": "Library for emitting events.",
-        "bugs": null,
         "license": "Apache-2.0",
-        "author": null,
-        "contributors": null,
-        "main": "event.js"
+        "pkx": {
+            "main": "event.js"
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;

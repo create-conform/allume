@@ -1,36 +1,35 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.format.tar.0.1.2/'
+// module 'cc.io.format.tar.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.format.tar.0.1.2/";
+    define.parameters.id = "cc.io.format.tar.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.io.format.tar",
-        "version": "0.1.2",
+        "version": "0.2.0",
         "title": "IO TAR Format Module",
         "description": "IO module that implements TAR stream support.",
-        "bugs": null,
         "license": "Apache-2.0",
-        "author": null,
-        "contributors": null,
-        "main": "tar.js",
-        "pkxDependencies": [
-            "cc.type.0.1",
-            "cc.string.0.1",
-            "cc.event.0.1",
-            "cc.io.0.1"
-        ]
+        "pkx": {
+            "main": "tar.js",
+            "dependencies": [
+                "cc.type.0.2",
+                "cc.string.0.2",
+                "cc.event.0.2",
+                "cc.io.0.2"
+            ]
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.type.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.string.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.event.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.0.2/"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

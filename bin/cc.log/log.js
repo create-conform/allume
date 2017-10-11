@@ -1,22 +1,21 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.log.0.1.1/'
+// module 'cc.log.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.log.0.1.1/";
+    define.parameters.id = "cc.log.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.log",
-        "version": "0.1.1",
+        "version": "0.2.0",
         "title": "Log Module",
         "description": "Library that helps with logging messages, warnings and errors.",
-        "bugs": null,
-        "author": null,
-        "contributors": null,
-        "main": "log.js"
+        "pkx": {
+            "main": "log.js"
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;

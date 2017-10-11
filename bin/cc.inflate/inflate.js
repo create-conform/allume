@@ -1,22 +1,21 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.inflate.0.1.1/'
+// module 'cc.inflate.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.inflate.0.1.1/";
+    define.parameters.id = "cc.inflate.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.inflate",
-        "version": "0.1.1",
+        "version": "0.2.0",
         "title": "Inflate Module",
         "description": "Library for unzipping data buffers.",
-        "bugs": null,
-        "author": null,
-        "contributors": null,
-        "main": "inflate.js"
+        "pkx": {
+            "main": "inflate.js"
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;

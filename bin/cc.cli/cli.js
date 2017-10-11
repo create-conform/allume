@@ -1,32 +1,31 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.cli.0.1.12/'
+// module 'cc.cli.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.cli.0.1.12/";
+    define.parameters.id = "cc.cli.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.cli",
-        "version": "0.1.12",
+        "version": "0.2.0",
         "title": "CLI Package",
         "description": "Library for processing command line interface parameters..",
-        "bugs": null,
         "license": "Apache-2.0",
-        "author": null,
-        "contributors": null,
-        "main": "cli.js",
-        "pkxDependencies": [
-            "cc.string.0.1",
-            "cc.type.0.1"
-        ]
+        "pkx": {
+            "main": "cli.js",
+            "dependencies": [
+                "cc.string.0.2",
+                "cc.type.0.2"
+            ]
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.string.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.type.0.2/"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

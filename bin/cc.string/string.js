@@ -1,33 +1,32 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.string.0.1.2/'
+// module 'cc.string.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.string.0.1.2/";
+    define.parameters.id = "cc.string.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.string",
-        "version": "0.1.2",
+        "version": "0.2.0",
         "title": "String Processing And Validation Module",
         "description": "Library for processing and validating strings.",
-        "bugs": null,
         "license": "Apache-2.0",
-        "author": null,
-        "contributors": null,
-        "main": "string.js",
-        "pkxDependencies": [
-            {
-                "package": "cc.validate.0.1",
-                "optional": true
-            }
-        ]
+        "pkx": {
+            "main": "string.js",
+            "dependencies": [
+                {
+                    "package": "cc.validate.0.2",
+                    "optional": true
+                }
+            ]
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.validate.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.validate.0.2/"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

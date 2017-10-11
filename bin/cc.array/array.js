@@ -1,35 +1,34 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.array.0.1.1/'
+// module 'cc.array.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.array.0.1.1/";
+    define.parameters.id = "cc.array.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.array",
-        "version": "0.1.1",
+        "version": "0.2.0",
         "title": "Array Processing And Validation Module",
         "description": "Library for processing and validating arrays.",
-        "bugs": null,
         "license": "Apache-2.0",
-        "author": null,
-        "contributors": null,
-        "main": "array.js",
-        "pkxDependencies": [
-            "cc.type.0.1",
-            {
-                "package": "cc.validate.0.1",
-                "optional": true
-            }
-        ]
+        "pkx": {
+            "main": "array.js",
+            "dependencies": [
+                "cc.type.0.2",
+                {
+                    "package": "cc.validate.0.2",
+                    "optional": true
+                }
+            ]
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.validate.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.type.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.validate.0.2/"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

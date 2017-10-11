@@ -1,41 +1,40 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.file-system.0.1.16/'
+// module 'cc.io.file-system.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.file-system.0.1.16/";
+    define.parameters.id = "cc.io.file-system.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.io.file-system",
-        "version": "0.1.16",
+        "version": "0.2.0",
         "title": "IO File system Module",
         "description": "IO module that implements file protocol support.",
-        "bugs": null,
         "license": "Apache-2.0",
-        "author": null,
-        "contributors": null,
-        "main": "file-system.js",
         "dependencies": {
             "drivelist": "5.0.22"
         },
-        "pkxDependencies": [
-            "cc.event.0.1",
-            "cc.host.0.1",
-            "cc.string.0.1",
-            "cc.type.0.1",
-            "cc.io.0.1"
-        ]
+        "pkx": {
+            "main": "file-system.js",
+            "dependencies": [
+                "cc.event.0.2",
+                "cc.host.0.2",
+                "cc.string.0.2",
+                "cc.type.0.2",
+                "cc.io.0.2"
+            ]
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.host.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.event.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.host.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.string.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.type.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.0.2/"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

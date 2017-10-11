@@ -1,31 +1,30 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.file-system.0.1.3/'
+// module 'allume.request.file-system.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.file-system.0.1.3/";
+    define.parameters.id = "allume.request.file-system.0.2.0/";
     define.parameters.pkx = {
         "name": "allume.request.file-system",
-        "version": "0.1.3",
+        "version": "0.2.0",
         "title": "Allume Request File System Library",
         "description": "Allume request module for fetching releases from file system locations.",
-        "bugs": null,
-        "author": null,
-        "contributors": null,
-        "main": "file-system.js",
-        "pkxDependencies": [
-            "cc.version.0.1",
-            "cc.string.0.1"
-        ]
+        "pkx": {
+            "main": "file-system.js",
+            "dependencies": [
+                "cc.version.0.2",
+                "cc.string.0.2"
+            ]
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.version.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.version.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.string.0.2/"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

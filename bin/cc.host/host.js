@@ -1,22 +1,21 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.host.0.1.9/'
+// module 'cc.host.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.host.0.1.9/";
+    define.parameters.id = "cc.host.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.host",
-        "version": "0.1.9",
+        "version": "0.2.0",
         "title": "Host Module",
         "description": "Library that provides information about the host environment.",
-        "bugs": null,
-        "author": null,
-        "contributors": null,
-        "main": "host.js"
+        "pkx": {
+            "main": "host.js"
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;

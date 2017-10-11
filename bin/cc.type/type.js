@@ -1,22 +1,21 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.type.0.1.4/'
+// module 'cc.type.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.type.0.1.4/";
+    define.parameters.id = "cc.type.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.type",
-        "version": "0.1.4",
+        "version": "0.2.0",
         "title": "Type Module",
         "description": "Library for working with primitives.",
-        "bugs": null,
-        "author": null,
-        "contributors": null,
-        "main": "type.js"
+        "pkx": {
+            "main": "type.js"
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;

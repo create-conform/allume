@@ -1,38 +1,37 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'cc.io.format.gzip.0.1.1/'
+// module 'cc.io.format.gzip.0.2.0/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "cc.io.format.gzip.0.1.1/";
+    define.parameters.id = "cc.io.format.gzip.0.2.0/";
     define.parameters.pkx = {
         "name": "cc.io.format.gzip",
-        "version": "0.1.1",
+        "version": "0.2.0",
         "title": "IO GZIP Format Module",
         "description": "IO module that implements GZIP stream support.",
-        "bugs": null,
         "license": "Apache-2.0",
-        "author": null,
-        "contributors": null,
-        "main": "gzip.js",
-        "pkxDependencies": [
-            "cc.type.0.1",
-            "cc.string.0.1",
-            "cc.event.0.1",
-            "cc.io.0.1",
-            "cc.inflate.0.1"
-        ]
+        "pkx": {
+            "main": "gzip.js",
+            "dependencies": [
+                "cc.type.0.2",
+                "cc.string.0.2",
+                "cc.event.0.2",
+                "cc.io.0.2",
+                "cc.inflate.0.2"
+            ]
+        }
     };
     define.parameters.dependencies = [ "pkx", "module", "configuration", "requirer" ];
     define.parameters.dependencies[0] = define.parameters.pkx;
-    define.parameters.dependencies.push(define.cache.get("cc.type.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.string.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.event.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.io.0.1/"));
-    define.parameters.dependencies.push(define.cache.get("cc.inflate.0.1/"));
+    define.parameters.dependencies.push(define.cache.get("cc.type.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.string.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.event.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.io.0.2/"));
+    define.parameters.dependencies.push(define.cache.get("cc.inflate.0.2/"));
     using = define.getUsing(define.parameters.id);
     require = define.getRequire(define.parameters.id, require);
     /////////////////////////////////////////////////////////////////////////////////////////////

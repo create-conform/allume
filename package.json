@@ -1,7 +1,7 @@
 {
   "name": "allume",
   "main": "index.html",
-  "version": "0.44.2",
+  "version": "0.45.0",
   "description": "A cross-platform package bootloader for javascript.",
   "repository": {
     "type": "git",
@@ -23,19 +23,21 @@
     "url": "https://github.com/create-conform/allume/issues"
   },
   "homepage": "https://github.com/create-conform/allume#readme",
-  "pkxDependencies": [
-    "cc.type.0.1",
-    "cc.error.0.1",
-    "cc.pkx.0.1",
-    "allume.request.github.0.1",
-    "allume.request.gitlab.0.1",
-    "allume.request.bitbucket.0.1",
-    "allume.request.file-system.0.1",
-    "cc.io.http.0.1",
-    "cc.io.file-system.0.1",
-    "cc.config.0.1",
-    "cc.cli.0.1"
-  ],
+  "pkx" : {
+    "dependencies": [
+      "cc.type.0.2",
+      "cc.error.0.2",
+      "cc.pkx.0.2",
+      "allume.request.github.0.2",
+      "allume.request.gitlab.0.2",
+      "allume.request.bitbucket.0.2",
+      "allume.request.file-system.0.2",
+      "cc.io.http.0.2",
+      "cc.io.file-system.0.2",
+      "cc.config.0.2",
+      "cc.cli.0.2"
+    ]
+  },
   "optionalDependencies": {
     "nw": "0.21.6-sdk"
   },
