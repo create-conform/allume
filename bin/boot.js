@@ -593,7 +593,7 @@
             });
         }
         function configMerge() {
-            if (host.isRuntimeBrowserFamily() && navigator.onLine) {
+            if (host.isRuntimeBrowserFamily() && navigator.onLine && document.location.origin != "http://allume.cc" && document.location.origin != "https://allume.cc") {
                 getConfigOverride().then(function(configOverride) {
                     if (configOverride) {
                         try {
