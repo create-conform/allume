@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// module 'allume.request.bitbucket.0.2.0/'
+// module 'allume.request.bitbucket.0.2.1/'
 //
 /////////////////////////////////////////////////////////////////////////////////////
 (function(using, require) {
     define.parameters = {};
     define.parameters.wrapped = true;
     define.parameters.system = "pkx";
-    define.parameters.id = "allume.request.bitbucket.0.2.0/";
+    define.parameters.id = "allume.request.bitbucket.0.2.1/";
     define.parameters.pkx = {
         "name": "allume.request.bitbucket",
-        "version": "0.2.0",
+        "version": "0.2.1",
         "title": "Allume Request BitBucket Library",
         "description": "Allume request module for fetching releases from BitBucket.",
         "pkx": {
@@ -151,10 +151,10 @@
                                         resolveURI(highestCache);
                                     }
                                     else {
-                                        var id = (direct? directRepo + "/" + direct : (selector.repository.namespace + (selector.repository.namespace != ""? "/" : "") + selector.package)) + "." + (tag.name.indexOf("v") == 0? tag.name.substr(1) : tag.name);
+                                        var id = (direct? directRepo + "/" + direct : (selector.repository.namespace + (selector.repository.namespace != ""? "/" : "") + selector.name)) + "." + (tag.name.indexOf("v") == 0? tag.name.substr(1) : tag.name);
                                         var found;
                                         for (var u in cache) {
-                                            if (u == ((direct? direct : selector.package) + "." + (tag.name.indexOf("v") == 0? tag.name.substr(1) : tag.name))) {
+                                            if (u == ((direct? direct : selector.name) + "." + (tag.name.indexOf("v") == 0? tag.name.substr(1) : tag.name))) {
                                                 found = u;
                                                 break;
                                             }
