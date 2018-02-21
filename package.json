@@ -1,15 +1,44 @@
 {
-  "name": "allume",
-  "main": "index.html",
-  "version": "0.45.2",
-  "description": "A cross-platform package bootloader for javascript.",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/create-conform/allume.git"
+  "_from": "allume@>= 0.45.0",
+  "_id": "allume@0.45.2",
+  "_inBundle": false,
+  "_integrity": "sha512-zKioetV5ZPXeVqbltuMG0QXtskaRUPkbwIaKJLIdyC2+dv/tOBZOEpwbfmjyN/NW1sIz4uKczYfKiaT93eXgog==",
+  "_location": "/allume",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "allume@>= 0.45.0",
+    "name": "allume",
+    "escapedName": "allume",
+    "rawSpec": ">= 0.45.0",
+    "saveSpec": null,
+    "fetchSpec": ">= 0.45.0"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/allume/-/allume-0.45.2.tgz",
+  "_shasum": "3acffeaad487bd6dac33d6fa8b028e010a6cd76e",
+  "_spec": "allume@>= 0.45.0",
+  "_where": "C:\\Users\\verlindn\\Documents\\Projects\\Create Conform\\allume\\node_modules\\pkx",
+  "author": {
+    "name": "Nick Verlinden"
   },
   "bin": {
     "allume": "run.js"
   },
+  "bugs": {
+    "url": "https://github.com/create-conform/allume/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "nw": "0.21.6-sdk"
+  },
+  "deprecated": false,
+  "description": "A cross-platform package bootloader for javascript.",
+  "homepage": "https://github.com/create-conform/allume#readme",
   "keywords": [
     "pkx",
     "using",
@@ -17,13 +46,17 @@
     "package",
     "module"
   ],
-  "author": "Nick Verlinden",
   "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/create-conform/allume/issues"
+  "main": "index.html",
+  "name": "allume",
+  "node-remote": [
+    "http://*",
+    "https://*"
+  ],
+  "optionalDependencies": {
+    "nw": "0.21.6-sdk"
   },
-  "homepage": "https://github.com/create-conform/allume#readme",
-  "pkx" : {
+  "pkx": {
     "dependencies": [
       "cc.type.0.2",
       "cc.error.0.2",
@@ -38,10 +71,11 @@
       "cc.cli.0.2"
     ]
   },
-  "optionalDependencies": {
-    "nw": "0.21.6-sdk"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/create-conform/allume.git"
   },
-  "node-remote": ["http://*", "https://*"],
+  "version": "0.45.2",
   "webkit": {
     "plugin": true,
     "page-cache": false

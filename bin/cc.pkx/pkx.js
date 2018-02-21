@@ -136,7 +136,7 @@
             this.load = function(request, handler) {
                 var loader = null;
                 var selector;
-    
+
                 try {
                     selector = new self.PKXSelector(request);
                 }
@@ -196,6 +196,11 @@
     
                         // get existing volume for package
                         var packageId = selector.package + "/" + (selector.resource? selector.resource : "");
+                        //DEBUG
+                        //if (selector.uri.path.indexOf("git+") >= 0) {
+                        //    console.log("DEBUG: REPLACE GIT+");
+                        //    selector.uri.path = selector.uri.path.replace(/\+|\\|\/|\:/gi, "_");
+                        //}
                         pkxVolume = findVolume(selector);
     
                         // create new volume
@@ -234,6 +239,12 @@
                             }
                             else {
                                 for (var d in pkxDeps) {
+                                    //DEBUG OLD STYLE
+                                    //if (pkxDeps[d].substr(0,3) == "cc.") {
+                                    //    console.trace("Old style dependency in package '" + volume.pkx.id + "'!");
+                                    //    process.exit();
+                                    //}
+
                                     switch (type.getType(pkxDeps[d])) {
                                         case type.TYPE_OBJECT:
                                             if (pkxDeps[d].system &&
@@ -252,7 +263,7 @@
                                             // unknown system
                                             requests[d] = pkxDeps[d];
                                     }
-    
+
                                     // modify relative uri for embedded packages
                                     var embedded;
                                     if (requests[d].package.substr(0, 2) == "./") {
@@ -310,6 +321,7 @@
                                 var mods = [];
                                 for (var r in loader.requests) {
                                     if (loader.requests[r].err.length > 0 && !loader.requests[r].request.optional) {
+                                        console.log("DEBUG USING ERROR: " + JSON.stringify(loader.requests[r].err));
                                         halt = true;
                                     }
                                     else {
@@ -325,6 +337,7 @@
                         }
     
                         function getResourceFromVolume() {
+                            console.log("DEBUG GET RESOURCE FROM VOLUME: " + selector.package);
                             // find out which resource to load
                             var resource = null;
                             if (selector.resource) {
@@ -379,6 +392,7 @@
                                     complete(stream, dependencies);
                                     return;
                                 }
+                                console.log("DEBUG VOLUME OPEN: " + selector.package);
                                 stream.events.addEventListener(io.EVENT_STREAM_READ_PROGRESS, progress);
                                 stream.readAsString().then(function processCode(data) {
                                     // remove progress listener
@@ -390,10 +404,11 @@
     
                                     // wrap code for define
                                     if (ext == "js") {
-                                        data = self.load.wrap(data, pkxVolume.pkx, selector.resource, pkxVolume.pkx.pkx.dependencies, selector.configuration, host.runtime != host.RUNTIME_NODEJS, pkxVolume.pkx.id + resource, selector.raw && selector.wrap);
+                                        data = self.load.wrap(data, pkxVolume.pkx, selector.resource, pkxVolume.pkx.pkx.dependencies, selector.configuration, (host.runtime != host.RUNTIME_NODEJS || selector.raw && selector.wrap), pkxVolume.pkx.id + resource, selector.raw && selector.wrap);
                                     }
     
                                     if (selector.raw || raw) {
+                                        console.log("DEBUG RAW COMPLETE: " + selector.package);
                                         complete(new io.BufferedStream(data.toUint8Array()), dependencies);
                                         return;
                                     }
@@ -690,7 +705,7 @@
                 var descriptor = JSON.stringify(pkx, null, Array(INDENT_OFFSET + 1).join(" "));
     
                 // generate module definition code
-                var moduleCode = "(function(using, require) {\n";
+                var moduleCode = "(function(module, using, require) {\n";
                 if (isEmbedded) {
                     // add configuration
                     configuration = configuration? "\ndefine.parameters.configuration = " + JSON.stringify(configuration, null, Array(INDENT_OFFSET + 1).join(" ")) + ";" : "";
@@ -714,9 +729,10 @@
     
                     moduleCode += "define.parameters = {};\n" + (isEmbedded? "define.parameters.wrapped = true;\n" : "") + "define.parameters.system = \"" + PKX_SYSTEM + "\";\ndefine.parameters.id = \"" + pkx.id + resourceId + "\";\ndefine.parameters.pkx = " + descriptor + ";" + depStr + configuration + "\n";
                 }
+                moduleCode += "define.prepare();\n\n";
                 moduleCode += "using = define.getUsing(define.parameters.id);\n";
                 moduleCode += "require = define.getRequire(define.parameters.id, require);\n";
-                moduleCode += code + "\n})(typeof using != \"undefined\"? using : null, typeof require != \"undefined\"? require : null);" + (addSourceMap? "\n//# sourceURL=http://" + (sourceMapName? sourceMapName : (pkx.id + resourceId)) : "");
+                moduleCode += code + "\n\nif(module.exports) {\n    define(function factory() { return module.exports; });\n}\n})({},typeof using != \"undefined\"? using : null, typeof require != \"undefined\"? require : null);" + (addSourceMap? "\n//# sourceURL=http://" + (sourceMapName? sourceMapName : (pkx.id + resourceId)) : "");
     
                 // add code indent to make it pretty
                 var moduleLines = moduleCode.split(/\r*\n/);
@@ -767,6 +783,7 @@
             };
     
             this.PKXSelector = function(selector, validateId) {
+                //console.log("DEBUG SELECTOR: " + JSON.stringify(selector));
                 var own = this;
                 var errName = self.ERROR_INVALID_PKX_SELECTOR;
                 var addDefaultResource = false;
@@ -787,6 +804,11 @@
                         throw new Error(errName, "Mandatory parameter 'selector' should be of type 'String' or 'Object'.");
                 }
     
+                //DEBUG
+                if (selector.package.substr(0,4) == "git+") {
+                    selector.package = selector.package.substr(4);
+                }
+
                 // name
                 try {
                     validate(selector.package, string, errName, "package")
@@ -794,8 +816,13 @@
                 }
                 catch(e) {
                     validate(selector.package, string, errName, "package")
-                        .allow(string.LOWERCASE_LETTER, string.DIGIT, string.DASH, string.DOT, string.SLASH)
+                        //.allow(string.LOWERCASE_LETTER, string.DIGIT, string.DASH, string.DOT, string.SLASH)
                         .notNull();
+                        //console.log("DEBUG PKG: " + selector.package);
+                        //if (selector.package.substr(0,3) == "cc.") {
+                        //    console.trace("Old style dependencies!");
+                        //    process.exit();
+                        //}
                 }
                 // verify naming pattern
                 var idxSlash = selector.package.lastIndexOf("/", selector.package.length - 2);
@@ -999,10 +1026,16 @@
                 validate(descriptor.title, string, errName);
                 validate(descriptor.description, string, errName);
                 validate(descriptor.pkx, object, errName)
-                    .notNull();
+                    //.notNull();
                 //TODO
                 // validate pkx sub structure
-    
+                //DEBUG NEW PKX
+                if (!descriptor.pkx) {
+                    descriptor.pkx = {
+                        "dependencies" : descriptor.dependencies,
+                        "main" : descriptor.main
+                    };
+                }
     
                 //validate(descriptor.pkxDependencies, array, errName)
                 //    .allow(array.STRING, array.OBJECT);

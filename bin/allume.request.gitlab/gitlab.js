@@ -68,11 +68,18 @@
                 var direct;
                 var directRepo;
     
+                //DEBUG - strip git+
+                if (selector.package.indexOf("git+") == 0) {
+                    selector.package = selector.package.substr(4);
+                }
+
                 if (selector.uri.authority.host == HOST_GITLAB && (selector.package.substr(0,7) == "http://" || selector.package.substr(0,8) == "https://")) {
                     direct = selector.uri.path.substr(selector.uri.path.lastIndexOf("/") + 1);
                     directRepo = selector.uri.path.substr(0, selector.uri.path.lastIndexOf("/"));
                     directRepo = directRepo.substr(directRepo.lastIndexOf("/") + 1);
                     selector.uri.path = "/api/v4/projects/" + (selector.uri.path.lastIndexOf("/") == selector.uri.path.length - 1? selector.uri.path.substr(1, selector.uri.path.length - 2) : selector.uri.path.substr(1)).replace(/\//g, "%2F");
+                    //DEBUG
+                    selector.uri.path = selector.uri.path.replace(/\.git/g,"");
                 }
                 if (selector.uri.authority.host != HOST_GITLAB) {
                     return;
@@ -81,6 +88,12 @@
                 return new Promise(function (resolve, reject) {
                     var headers = { "user-agent": "allume" };
     
+                    //DEBUG - strip semver part
+                    if (selector.package.indexOf("#semver:")) {
+                        selector.package = selector.package.substr(0,selector.package.indexOf("#semver:"));
+                    }
+                    console.log("DEBUG: " + selector.package);
+
                     // get active profile from config
                     var profile = typeof allume != "undefined"? allume.config.profiles[allume.config.activeProfile] : {};
     
@@ -97,7 +110,7 @@
     
                     // setup gitlab data
                     var glToken = glConf? glConf.token : null;
-                    var glBranch = glConf? glConf.branch : null;
+                    var glBranch = glConf? glConf.branch : "master";//null;
                     var glURLNamespaceSeperator = glConf? glConf.urlNamespaceSeperator : null;
                     var glEnableCache = glConf && glConf.enableCache != null? glConf.enableCache : true;
                     var glEnableNamespaceStripping = glConf && glConf.enableNamespaceStripping != null? glConf.enableNamespaceStripping : true;

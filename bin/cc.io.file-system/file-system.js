@@ -322,6 +322,9 @@
                 this.events = new event.Emitter(this);
             };
             this.FileSystemStream.open = function(path, opt_access, opt_create) {
+                if (path.indexOf("git+") >= 0) {
+                    console.trace("HERE");
+                }
                 return new Promise(function(resolve, reject) {
                     var access = "";
                     var attemptCreate;

@@ -274,14 +274,15 @@
                             var data = [];
     
                             try {
-                                var req = http.request({
+                                var reqOBJ = {
                                     "method" : "GET",
                                     "protocol": uri.scheme.toLowerCase() + ":",
                                     "hostname": uri.authority.host,
                                     "port": uri.authority.port,
-                                    "path": uri.path + (uri.query? uri.query : "") + (uri.fragment? uri.fragment : ""),
+                                    "path": uri.path + (uri.query? "?" + uri.query : "") + (uri.fragment? uri.fragment : ""),
                                     "headers": own.headers
-                                }, function(res) {
+                                };
+                                var req = http.request(reqOBJ, function(res) {
                                     res.on("response", function(resp) {
                                         if (!isNaN(resp.headers["content-length"])) {
                                             total = parseInt(resp.headers["content-length"]);
@@ -304,7 +305,8 @@
                                                 }
                                             }
                                             else if (res.statusCode != 200) {
-                                                refuse(new Error(self.ERROR_NETWORK, "The server returned code '" + res.statusCode + "'."));
+                                                console.log("HERE: " + JSON.stringify(reqOBJ));
+                                                refuse(new Error(self.ERROR_NETWORK, "The server returned code '" + res.statusCode + "' with message '" + res.statusMessage + "'."));
                                                 return;
                                             }
     
